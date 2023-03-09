@@ -64,7 +64,8 @@ public class BoursoramaDataProvider : StockDataProviderBase
             };
 
             var client = new HttpClient();
-            var url = $"https://www.boursorama.com/bourse/action/graph/ws/GetTicksEOD?symbol={symbol}&length={length}&period={period}&guid=";
+            var boursoSymbol = "1rP" + symbol;
+            var url = $"https://www.boursorama.com/bourse/action/graph/ws/GetTicksEOD?symbol={boursoSymbol}&length={length}&period={period}&guid=";
             var response = client.GetStringAsync(url).Result;
             if (response == "[]")
                 return null;

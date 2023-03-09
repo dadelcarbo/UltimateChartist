@@ -5,6 +5,45 @@ using System.Threading;
 
 namespace UltimateChartist.Helpers;
 
+public interface IStockLogger :IDisposable
+{
+    void WriteLine(string message);
+}
+public class DebugWriter : IStockLogger
+{
+    public DebugWriter()
+    {
+        Debug.AutoFlush = true;
+    }
+
+    public void Dispose() { }
+
+    public void WriteLine(string message)
+    {
+        Debug.WriteLine(message);
+    }
+}
+public class LogFileWriter : IStockLogger
+{
+    private StreamWriter sw;
+
+    public LogFileWriter(string fileName)
+    {
+        sw = new StreamWriter(fileName, false);
+        sw.AutoFlush = true;
+    }
+
+    public void Dispose()
+    {
+        sw.Close();
+        sw.Dispose();
+    }
+
+    public void WriteLine(string message)
+    {
+        sw.WriteLine(message);
+    }
+}
 public class MethodLogger : IDisposable
 {
     private StackFrame sf;
@@ -40,7 +79,7 @@ public class MethodLogger : IDisposable
         }
     }
 }
-public class StockLog : IDisposable
+public class StockLog
 {
     public bool isEnabled = false;
     public bool isMethodLoggingEnabled = false;
@@ -50,7 +89,7 @@ public class StockLog : IDisposable
     static private StockLog logger = null;
     static public StockLog Logger { get { if (logger == null) { logger = new StockLog(); } return logger; } }
 
-    private StreamWriter sw;
+    private IStockLogger sw;
 
     private StockLog()
     {
@@ -82,13 +121,11 @@ public class StockLog : IDisposable
                     Directory.CreateDirectory(logFolder);
                 }
                 string fileName = logFolder + @"\log_" + DateTime.Now.ToString("yyyMMdd_hhmmss") + ".log";
-                sw = new StreamWriter(fileName, false);
-                sw.AutoFlush = true;
+                sw = new LogFileWriter(fileName);
             }
             else
             {
-                sw = new StreamWriter(Console.OpenStandardOutput());
-                sw.AutoFlush = true;
+                sw = new DebugWriter();
             }
         }
     }
@@ -133,7 +170,7 @@ public class StockLog : IDisposable
                 padding += "  ";
                 innerException = innerException.InnerException;
             }
-            StreamWriter sw = Logger.sw;
+            var sw = Logger.sw;
             if (objException.Source != null)
             {
                 sw.WriteLine("Source      : " + objException.Source.ToString().Trim());
@@ -152,15 +189,6 @@ public class StockLog : IDisposable
                         objException.StackTrace.ToString().Trim());
             }
             sw.WriteLine("^^-------------------------------------------------------------------^^");
-            sw.Flush();
-        }
-    }
-
-    public void Dispose()
-    {
-        if (sw != null)
-        {
-            sw.Close();
         }
     }
 }

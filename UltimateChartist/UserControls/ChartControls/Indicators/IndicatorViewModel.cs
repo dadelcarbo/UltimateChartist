@@ -46,6 +46,13 @@ public class IndicatorViewModel : ViewModelBase
                 continue;
             switch (attribute.Type.Name)
             {
+                case "Decimal":
+                    Parameters.Add(new IndicatorParameterViewModel<decimal>(prop.Name)
+                    {
+                        Value = (decimal)prop.GetValue(indicator),
+                        Parameter = attribute
+                    });
+                    break;
                 case "Double":
                     Parameters.Add(new IndicatorParameterViewModel<double>(prop.Name)
                     {
