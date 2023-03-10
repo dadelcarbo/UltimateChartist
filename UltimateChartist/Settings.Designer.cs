@@ -61,7 +61,7 @@ namespace UltimateChartist {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2020")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2018")]
         public int LoadStartYear {
             get {
                 return ((int)(this["LoadStartYear"]));

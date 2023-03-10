@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Authentication;
 using UltimateChartist.DataModels.DataProviders;
@@ -47,6 +48,7 @@ public enum StockGroup
     ALL
 }
 
+[DebuggerDisplay("Name={Name} Symbol={Symbol} ISIN={ISIN}")]
 public class Instrument
 {
     public string Name { get; set; }

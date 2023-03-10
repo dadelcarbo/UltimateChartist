@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -185,15 +184,20 @@ public class StockBar
         }
         if (endDate != null)
         {
-            selectedBars = selectedBars.Where(b => b.Date <= endDate);
+            selectedBars = selectedBars.Where(b => b.Date < endDate);
         }
-        using (StreamWriter sw = new StreamWriter(fileName))
+        if (selectedBars.Any())
         {
-            sw.WriteLine(StockBar.Header);
-            if (selectedBars.Any())
+            using (StreamWriter sw = new StreamWriter(fileName))
             {
+                sw.WriteLine(StockBar.Header);
                 sw.Write(selectedBars.Select(b => b.ToCsvString()).Aggregate((i, j) => i + Environment.NewLine + j));
             }
+        }
+        else
+        {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows;
+using Telerik.Windows.Documents.Spreadsheet.Model.DataValidation;
 using UltimateChartist.Helpers;
 
 namespace UltimateChartist.DataModels.DataProviders.ABC
@@ -23,7 +25,9 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
 
         #region INITIALISATION
 
-        static string defaultConfigFile = $"ISIN;NOM;SICOVAM;TICKER;GROUP{Environment.NewLine}FR0003500008;CAC40;;CAC40;INDICES";
+        static string defaultConfigFile = $"ISIN;NOM;SICOVAM;SYMBOL;GROUP{Environment.NewLine}FR0003500008;CAC40;;CAC;INDICES";
+
+        private DateTime archiveEndDate = new DateTime(DateTime.Today.Year, 1, 1);
 
         public override void InitDictionary()
         {
@@ -38,13 +42,13 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
 
             // Init From LBL file
             DownloadLibelleFromABC(CFG_FOLDER, StockGroup.EURO_A);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.EURO_B);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.EURO_C);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.ALTERNEXT);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.BELGIUM);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.HOLLAND);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.PORTUGAL);
-            DownloadLibelleFromABC(CFG_FOLDER, StockGroup.SECTORS_CAC);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.EURO_B);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.EURO_C);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.ALTERNEXT);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.BELGIUM);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.HOLLAND);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.PORTUGAL);
+            //DownloadLibelleFromABC(CFG_FOLDER, StockGroup.SECTORS_CAC);
             DownloadLibelleFromABC(CFG_GROUP_FOLDER, StockGroup.CAC40, false, false);
             DownloadLibelleFromABC(CFG_GROUP_FOLDER, StockGroup.SBF120, false, false);
             //DownloadLibelleFromABC(Folders.DataFolder, ABC_DAILY_CFG_FOLDER, StockGroup.USA);
@@ -197,8 +201,7 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                         Instruments.Add(instrument);
                         if (instrument.Name == "CAC40")
                         {
-                            var serie = instrument.GetStockSerie(BarDuration.Daily);
-                            var bars = serie.Bars;
+                            var bars = LoadData(instrument, DefaultBarDuration);
                             if (bars != null && bars.Count > 0)
                             {
                                 lastLoadedCAC40Date = bars.Last().Date;
@@ -212,14 +215,14 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                                         {
                                             bars.Add(newBar);
                                         }
-                                        string cacFileName = GetCacheFilePath(instrument);
-                                        StockBar.SaveCsv(bars, cacFileName, new DateTime(LOAD_START_YEAR, 1, 1));
+                                        StockBar.SaveCsv(bars, GetArchiveFilePath(instrument), null, archiveEndDate);
+                                        StockBar.SaveCsv(bars, GetCacheFilePath(instrument), archiveEndDate);
                                     }
                                 }
                             }
                             else
                             {
-                                serie.Bars = ForceDownloadData(instrument);
+                                ForceDownloadData(instrument);
                                 needDownload = true;
                             }
                         }
@@ -319,36 +322,34 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
         public override List<StockBar> LoadData(Instrument instrument, BarDuration duration)
         {
             // Read Data from Cache
-            string fileName = GetCacheFilePath(instrument); ;
-            var archiveBars = StockBar.Load(fileName, new DateTime(LOAD_START_YEAR, 1, 1));
-            var tmpFileName = Path.Combine(TEMP_FOLDER, "Stock", GetFileName(instrument));
+            var archiveFileName = GetArchiveFilePath(instrument);
+            var archiveBars = StockBar.Load(archiveFileName, new DateTime(LOAD_START_YEAR, 1, 1));
+            var cacheFileName = GetCacheFilePath(instrument);
+            var cacheBars = StockBar.Load(cacheFileName);
             if (archiveBars == null)
             {
-                var bars = StockBar.Load(tmpFileName);
-                if (bars == null)
-                {
+                if (cacheBars == null)
                     return null;
-                }
-                else
+                if (cacheBars.First().Date < archiveEndDate)
                 {
-                    StockBar.SaveCsv(bars, fileName);
-                    return bars;
+                    StockBar.SaveCsv(cacheBars, archiveFileName, null, archiveEndDate);
+                    StockBar.SaveCsv(cacheBars, cacheFileName, archiveEndDate);
                 }
+                return cacheBars;
             }
             else
             {
-                var bars = StockBar.Load(tmpFileName, archiveBars.Last().Date);
-                if (bars == null || bars.Count == 0)
-                {
+                if (cacheBars == null || cacheBars.Count == 0)
                     return archiveBars;
-                }
-                else
+
+                var firstCacheDate = cacheBars.First().Date;
+                archiveBars.AddRange(cacheBars);
+                if (firstCacheDate < archiveEndDate)
                 {
-                    archiveBars.AddRange(bars);
-                    StockBar.SaveCsv(archiveBars, fileName);
-                    File.Delete(tmpFileName);
-                    return archiveBars;
+                    StockBar.SaveCsv(archiveBars, archiveFileName, null, archiveEndDate);
+                    StockBar.SaveCsv(archiveBars, cacheFileName, archiveEndDate);
                 }
+                return archiveBars;
             }
         }
         public override List<StockBar> DownloadData(Instrument instrument, BarDuration duration)
@@ -393,7 +394,8 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                 bars.AddRange(ReadABCFile(csvFileName));
                 File.Delete(csvFileName);
             }
-            StockBar.SaveCsv(bars, GetCacheFilePath(instrument));
+            StockBar.SaveCsv(bars, GetArchiveFilePath(instrument), null, archiveEndDate);
+            StockBar.SaveCsv(bars, GetCacheFilePath(instrument), archiveEndDate);
             return bars;
         }
 
@@ -439,7 +441,7 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                     startDate = endOfMonth.AddDays(1);
                 }
 
-                string fileName = destFolder + @"\" + group + "_" + endDate.Year + "_" + endDate.Month + ".csv";
+                string fileName = group + "_" + endDate.Year + "_" + endDate.Month + ".csv";
 
                 success |= DownloadGroup(destFolder, fileName, startDate, endDate, group);
             }
@@ -464,15 +466,8 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                     File.Delete(currentFile);
                 }
 
-                var fileName = Path.Combine(TEMP_FOLDER, "Group", group + ".csv");
-                if (File.Exists(fileName))
-                {
-                    lines.Add(File.ReadAllLines(fileName));
-                    File.Delete(fileName);
-                }
-
                 // Save to CSV file
-                if (lines.Count() > 0)
+                if (lines.Count > 0)
                 {
                     NotifyProgress($"Saving files for {group}");
                     var isinBars = ParseABCGroupCSVFile(lines.SelectMany(l => l));
@@ -481,16 +476,18 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
                         var instrument = Instruments.FirstOrDefault(i => i.ISIN == isinBar.Key);
                         if (instrument != null)
                         {
-                            var stockSerie = instrument.GetStockSerie(BarDuration.Daily);
-                            if (stockSerie.Bars == null)
+                            var cacheFileName = GetCacheFilePath(instrument);
+                            var cacheBars = StockBar.Load(cacheFileName);
+                            if (cacheBars == null)
                             {
-                                stockSerie.Bars = isinBar.Value.ToList();
+                                cacheBars = isinBar.Value.ToList();
                             }
                             else
                             {
-                                stockSerie.Bars.AddRange(isinBar.Value);
+                                var lastDate = cacheBars.Last().Date;
+                                cacheBars.AddRange(isinBar.Value.Where(b => b.Date > lastDate));
                             }
-                            StockBar.SaveCsv(isinBar.Value, GetCacheFilePath(instrument));
+                            StockBar.SaveCsv(cacheBars, GetCacheFilePath(instrument));
                         }
                     }
                 }
@@ -504,20 +501,22 @@ namespace UltimateChartist.DataModels.DataProviders.ABC
         {
             try
             {
-                var bars = new SortedDictionary<string, IEnumerable<StockBar>>();
+                var isinBars = new SortedDictionary<string, IEnumerable<StockBar>>();
 
+                CultureInfo provider = CultureInfo.InvariantCulture;
                 var data = lines.Select(l => l.Replace(",", ".").Split(';'));
                 foreach (var l in data.GroupBy(d => d[0]))
                 {
-                    bars.Add(l.Key, l.Select(v => new StockBar(
-                                        DateTime.Parse(v[1]),
+                    var bars = l.Select(v => new StockBar(
+                                        DateTime.ParseExact(v[1], "dd/MM/yy", provider),
                                       decimal.Parse(v[2]),
                                       decimal.Parse(v[3]),
                                       decimal.Parse(v[4]),
                                       decimal.Parse(v[5]),
-                                      long.Parse(v[6]))));
+                                      long.Parse(v[6]))).OrderBy(b => b.Date);
+                    isinBars.Add(l.Key, bars);
                 }
-                return bars;
+                return isinBars;
             }
             catch (Exception ex)
             {

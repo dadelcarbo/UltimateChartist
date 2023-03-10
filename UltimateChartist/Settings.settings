@@ -12,7 +12,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LoadStartYear" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2020</Value>
+      <Value Profile="(Default)">2018</Value>
     </Setting>
   </Settings>
 </SettingsFile>
