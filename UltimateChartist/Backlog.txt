@@ -1,0 +1,14 @@
+﻿Objective: Use Ultimate Chartist daily
+	Data (ABC daily)
+	Indicator selection
+	Event implementation.
+	Screener
+	Saxo Integration
+Objective: Main chart usability
+Objective: Backtesting
+	Backtest Stop Loss
+	Backtest Entry/Exit point
+	Backtest Expectancy, win/loss ratio, win rate.
+Objective:
+	Saxo Data provider
+	Intraday screener (on trade candidates stock)

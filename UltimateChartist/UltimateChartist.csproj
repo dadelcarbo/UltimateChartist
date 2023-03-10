@@ -49,6 +49,8 @@
     </Compile>
     <Compile Include="DataModels\DataProviders\ABC\ABCDataProvider.cs" />
     <Compile Include="DataModels\DataProviders\SaxoTurbo\SaxoTurboDataProvider.cs" />
+    <Compile Include="Indicators\Events\IStockEvents.cs" />
+    <Compile Include="Indicators\Events\StockEvent_MA.cs" />
     <Compile Include="Indicators\IndicatorManager.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorViewModel.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorWindow.xaml.cs" />
@@ -110,6 +112,9 @@
     <Compile Include="UserControls\InstrumentControls\InstrumentWindow.xaml.cs" />
     <Compile Include="UserControls\InstrumentControls\PalmaresWindow.xaml.cs" />
     <Compile Include="UserControls\InstrumentControls\ScreenerWindow.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Backlog.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\bartchart.png" />

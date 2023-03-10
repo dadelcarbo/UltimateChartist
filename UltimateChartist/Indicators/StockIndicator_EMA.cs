@@ -6,7 +6,7 @@ namespace UltimateChartist.Indicators;
 
 public class StockIndicator_EMA : MovingAverageBase
 {
-    public override void Initialize(StockSerie stockSerie)
+    protected override void InitializeMA(StockSerie stockSerie)
     {
         var values = new IndicatorLineValue[stockSerie.Bars.Count];
 
