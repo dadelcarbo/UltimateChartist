@@ -32,7 +32,7 @@
         </RoutedUICommand>
         <RoutedUICommand x:Key="AddEmaCommand" Text="Add EMA" >
             <RoutedUICommand.InputGestures>
-                <KeyGesture>CTRL+I</KeyGesture>
+                <KeyGesture>CTRL+E</KeyGesture>
             </RoutedUICommand.InputGestures>
         </RoutedUICommand>
     </Window.Resources>
@@ -63,7 +63,6 @@
                 <telerik:RadMenuItem Command="{StaticResource NewChartViewCommand}"></telerik:RadMenuItem>
                 <telerik:RadMenuItem Command="{StaticResource CloseChartViewCommand}"></telerik:RadMenuItem>
                 <telerik:RadMenuItem Command="{StaticResource AddEmaCommand}"></telerik:RadMenuItem>
-                <telerik:RadMenuItem Header="Add Indicator" Command="{Binding AddIndicatorCommand}"></telerik:RadMenuItem>
             </telerik:RadMenuItem>
         </telerik:RadMenu>
 

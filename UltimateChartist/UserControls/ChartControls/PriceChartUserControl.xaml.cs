@@ -232,4 +232,15 @@ public partial class PriceChartUserControl : UserControl
         if (radioButton.Tag is BarDuration)
             this.viewModel.BarDuration = (BarDuration)radioButton.Tag;
     }
+
+    private void AddIndicatorCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+    {
+        var indicatorSelectorWindow = new IndicatorSelectorWindow();
+        indicatorSelectorWindow.DataContext = new IndicatorSelectorViewModel();
+        indicatorSelectorWindow.Show();
+
+        //if (this.CurrentChartView == null)
+        //    return;
+        //this.currentChartView.AddIndicator();
+    }
 }

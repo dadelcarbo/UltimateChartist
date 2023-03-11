@@ -3,11 +3,10 @@ using UltimateChartist.Indicators.Display;
 
 namespace UltimateChartist.Indicators;
 
-public class StockIndicator_TrailATR : IndicatorBase
+public class StockIndicator_TrailATR : TrailStopBase
 {
     public StockIndicator_TrailATR()
     {
-        this.Series = new IndicatorTrailSeries();
     }
     public override DisplayType DisplayType => DisplayType.Price;
 
@@ -30,7 +29,7 @@ public class StockIndicator_TrailATR : IndicatorBase
     [IndicatorParameterDecimal("Down Width", 0, 50, 0.1, "{0:F2}")]
     public decimal DownWidth { get => downWidth; set { if (downWidth != value) { downWidth = value; RaiseParameterChanged(); } } }
 
-    public override void Initialize(StockSerie stockSerie)
+    protected override void InitializeTrailStop(StockSerie stockSerie)
     {
         var values = new IndicatorTrailValue[stockSerie.Bars.Count];
         var atrSerie = stockSerie.Bars.CalculateATR().CalculateEMA(AtrPeriod).Mult(upWidth);

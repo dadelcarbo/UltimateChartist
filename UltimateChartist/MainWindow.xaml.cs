@@ -134,5 +134,4 @@ public partial class MainWindow : Window
         //    this.viewModel.ChartViews.Remove(chartViewModel);
         //}
     }
-
 }

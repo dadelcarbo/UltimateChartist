@@ -30,7 +30,16 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <RoutedUICommand x:Key="AddIndicatorCommand" Text="Add Indicator" >
+            <RoutedUICommand.InputGestures>
+                <KeyGesture>CTRL+I</KeyGesture>
+            </RoutedUICommand.InputGestures>
+        </RoutedUICommand>
     </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource AddIndicatorCommand}" Executed="AddIndicatorCommand_Executed"/>
+    </UserControl.CommandBindings>
     <Grid x:Name="ChartGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -44,7 +53,7 @@
                                         ItemsSource="{Binding Instruments, Source={x:Static main:MainWindowViewModel.Instance}}"
                                         SelectedItem="{Binding Instrument, Mode=TwoWay}" 
                                         SelectionMode="Single"/>
-            <Button Name="indicatorSettings" BorderThickness="0" Background="Transparent" Margin="1" Height="16">
+            <Button Name="indicatorSettings" BorderThickness="0" Background="Transparent" Margin="1" Height="16" Command="{StaticResource AddIndicatorCommand}">
                 <Image Source="{Binding Source={StaticResource settingsImg}}"></Image>
             </Button>
             <StackPanel Margin="2,0,0,2" Orientation="Horizontal">

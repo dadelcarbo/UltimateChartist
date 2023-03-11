@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators;
 

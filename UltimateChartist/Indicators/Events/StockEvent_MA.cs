@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UltimateChartist.Indicators.Events
+﻿namespace UltimateChartist.Indicators.Events
 {
     public class StockEvent_MA : IStockEvents
     {

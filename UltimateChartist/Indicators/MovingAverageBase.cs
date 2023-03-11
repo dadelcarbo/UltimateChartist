@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators.Display;
 using UltimateChartist.Indicators.Events;

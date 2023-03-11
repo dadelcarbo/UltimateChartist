@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows;
-using Telerik.Windows.Documents.Spreadsheet.Model.DataValidation;
 using UltimateChartist.Helpers;
 
 namespace UltimateChartist.DataModels.DataProviders.ABC

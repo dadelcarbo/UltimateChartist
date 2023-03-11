@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows.Data;
-using Telerik.Windows.Persistence.Core;
-using UltimateChartist.DataModels;
 
 namespace UltimateChartist.UserControls.Converters;
 

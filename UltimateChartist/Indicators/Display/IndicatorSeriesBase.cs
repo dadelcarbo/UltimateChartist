@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Telerik.Windows.Controls;
+﻿using Telerik.Windows.Controls;
 
 namespace UltimateChartist.Indicators.Display;
 

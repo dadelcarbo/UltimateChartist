@@ -1,5 +1,4 @@
-﻿using MediaFoundation;
-using System;
+﻿using System;
 using System.Linq;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators.Display;

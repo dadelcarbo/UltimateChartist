@@ -50,8 +50,10 @@
     <Compile Include="DataModels\DataProviders\ABC\ABCDataProvider.cs" />
     <Compile Include="DataModels\DataProviders\SaxoTurbo\SaxoTurboDataProvider.cs" />
     <Compile Include="Indicators\Events\IStockEvents.cs" />
+    <Compile Include="Indicators\Events\StockEvent_TrailStop.cs" />
     <Compile Include="Indicators\Events\StockEvent_MA.cs" />
     <Compile Include="Indicators\IndicatorManager.cs" />
+    <Compile Include="Indicators\TrailStopBase.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorViewModel.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorWindow.xaml.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorTreeViewModel.cs" />

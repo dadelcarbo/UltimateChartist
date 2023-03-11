@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System;
-using UltimateChartist.Helpers;
 
 namespace UltimateChartist.Indicators;
 

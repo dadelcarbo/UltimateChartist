@@ -1,7 +1,7 @@
 ﻿Objective: Use Ultimate Chartist daily
 	Data (ABC daily)
 	Indicator selection
-	Event implementation.
+	Event implementation
 	Screener
 	Saxo Integration
 Objective: Main chart usability
