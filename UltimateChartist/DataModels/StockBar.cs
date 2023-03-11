@@ -14,7 +14,7 @@ public class StockBar
     public decimal High { get; private set; }
     public decimal Low { get; private set; }
     public decimal Close { get; private set; }
-    public long Volume { get; private set; }
+    public decimal Volume { get; private set; }
 
     public decimal BodyHigh => Math.Max(Open, Close);
     public decimal BodyLow => Math.Min(Open, Close);
@@ -22,7 +22,7 @@ public class StockBar
 
     public bool IsComplete { get; set; } = true;
 
-    public StockBar(DateTime date, decimal open, decimal high, decimal low, decimal close, long volume)
+    public StockBar(DateTime date, decimal open, decimal high, decimal low, decimal close, decimal volume)
     {
         Date = date;
         Open = open;

@@ -3,30 +3,29 @@ using System;
 
 namespace UltimateChartist.Indicators;
 
-public class IndicatorManager
+public static class IndicatorManager
 {
-    static private List<string> indicatorList = null;
-    static public List<string> GetIndicatorList()
+    static private List<IndicatorBase> indicatorList = null;
+    static private List<IndicatorBase> GetIndicatorList()
     {
-        if (indicatorList == null)
+        indicatorList = new List<IndicatorBase>();
+        var assembly = typeof(IndicatorManager).Assembly;
+        foreach (Type t in assembly.GetTypes())
         {
-            indicatorList = new List<string>();
-            var sm = new IndicatorManager();
-            foreach (Type t in sm.GetType().Assembly.GetTypes())
+            Type st = t.GetInterface("IIndicator");
+            if (st != null)
             {
-                Type st = t.GetInterface("IIndicator");
-                if (st != null)
+                if (!(t.Name.EndsWith("Base") || t.Name.Contains("StockTrail")))
                 {
-                    if (!(t.Name.EndsWith("Base") || t.Name.Contains("StockTrail")))
-                    {
-                        indicatorList.Add(t.Name.Replace("Indicator_", ""));
-                    }
+                    var instance = assembly.CreateInstance(t.FullName);
+                    indicatorList.Add(instance as IndicatorBase);
                 }
             }
         }
-        indicatorList.Sort();
         return indicatorList;
     }
+    static public List<IndicatorBase> Indicators => indicatorList ??= GetIndicatorList();
+
     //static public IIndicator CreateIndicator(string fullName)
     //{
     //    using (MethodLogger ml = new MethodLogger(typeof(IndicatorManager)))

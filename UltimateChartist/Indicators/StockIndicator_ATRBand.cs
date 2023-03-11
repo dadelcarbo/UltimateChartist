@@ -12,6 +12,8 @@ public class StockIndicator_ATRBand : IndicatorBase
         this.Series = new IndicatorBandSeries();
     }
 
+    public override string Description => "Draw a volatilty band based on ATR";
+
     public override DisplayType DisplayType => DisplayType.Price;
 
     public override string DisplayName => $"{ShortName}({Period},{AtrPeriod},{UpWidth},{downWidth})";

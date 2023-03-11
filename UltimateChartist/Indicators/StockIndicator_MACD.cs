@@ -11,6 +11,7 @@ public class StockIndicator_MACD : IndicatorBase
     {
         this.Series = new IndicatorLineSignalSeries();
     }
+    public override string Description => "Moving average convergence divergence";
     public override DisplayType DisplayType => DisplayType.NonRanged;
 
     public override string DisplayName => $"{ShortName}({SlowPeriod},{FastPeriod})";

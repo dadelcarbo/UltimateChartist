@@ -5,6 +5,7 @@ namespace UltimateChartist.Indicators;
 
 public class StockIndicator_MA : MovingAverageBase
 {
+    public override string Description => "Moving average";
     protected override void InitializeMA(StockSerie stockSerie)
     {
         var values = new IndicatorLineValue[stockSerie.Bars.Count];

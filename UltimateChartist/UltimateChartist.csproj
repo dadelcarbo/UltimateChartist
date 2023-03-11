@@ -11,7 +11,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="UserControls\ChartControls\Indicators\IndicatorSelectorWindow.xaml">
+    <Page Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChartControls\Indicators\IndicatorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChartControls\Indicators\RangeConfigUserControl.xaml">
@@ -54,8 +57,9 @@
     <Compile Include="Indicators\Events\StockEvent_MA.cs" />
     <Compile Include="Indicators\IndicatorManager.cs" />
     <Compile Include="Indicators\TrailStopBase.cs" />
-    <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorViewModel.cs" />
-    <Compile Include="UserControls\ChartControls\Indicators\IndicatorSelectorWindow.xaml.cs" />
+    <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigViewModel.cs" />
+    <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml.cs" />
+    <Compile Include="UserControls\ChartControls\Indicators\IndicatorPicker.xaml.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorTreeViewModel.cs" />
     <Compile Include="UserControls\Converters\BarDurationsToVisibilityConverter.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\RangeConfigUserControl.xaml.cs">

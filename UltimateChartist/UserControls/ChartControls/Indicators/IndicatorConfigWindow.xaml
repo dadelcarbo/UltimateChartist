@@ -1,18 +1,17 @@
-﻿<Window x:Class="UltimateChartist.UserControls.ChartControls.Indicators.IndicatorSelectorWindow"
+﻿<Window x:Class="UltimateChartist.UserControls.ChartControls.Indicators.IndicatorConfigWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UltimateChartist.UserControls.ChartControls.Indicators"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
-        d:DataContext="{d:DesignInstance Type=local:IndicatorSelectorViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:IndicatorConfigViewModel}"
         mc:Ignorable="d"
-        Title="IndicatorSelectorWindow" Height="450" Width="800">
+        Title="IndicatorConfigWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -20,11 +19,11 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Button Content="Add Indicator" Margin="1"></Button>
+            <Button Name="AddIndicatorBtn" Content="Add Indicator" Margin="1" Click="AddIndicatorBtn_Click"></Button>
         </StackPanel>
 
-        <telerik:RadTreeListView ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False" 
-                                 AutoExpandItems="True" AutoGenerateColumns="False">
+        <telerik:RadTreeListView Grid.Row="1" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="True" 
+                                 AutoExpandItems="True" AutoGenerateColumns="True">
             <telerik:RadTreeListView.ChildTableDefinitions>
                 <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}" />
             </telerik:RadTreeListView.ChildTableDefinitions>

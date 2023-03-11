@@ -54,7 +54,10 @@ public class StockSerie
     private decimal[] openValues;
     public decimal[] OpenValues => openValues ??= this.Bars.Select(b => b.Open).ToArray();
 
-    private long[] volumeValues;
-    public long[] VolumeValues => volumeValues ??= this.Bars.Select(b => b.Volume).ToArray();
+    private decimal[] volumeValues;
+    public decimal[] VolumeValues => volumeValues ??= this.Bars.Select(b => b.Volume).ToArray();
+
+    private decimal[] exchangedValues;
+    public decimal[] ExchangedValues => exchangedValues ??= this.Bars.Select(b => b.Exchanged).ToArray();
     #endregion
 }

@@ -7,6 +7,7 @@ namespace UltimateChartist.Indicators;
 public enum DisplayType
 {
     Price,
+    TrailStop,
     Ranged,
     NonRanged,
     Volume

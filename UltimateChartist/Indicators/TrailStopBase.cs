@@ -12,6 +12,7 @@ public abstract class TrailStopBase : IndicatorBase
     {
         this.Series = new IndicatorTrailSeries();
     }
+    public override DisplayType DisplayType => DisplayType.TrailStop;
 
     public override void Initialize(StockSerie stockSerie)
     {

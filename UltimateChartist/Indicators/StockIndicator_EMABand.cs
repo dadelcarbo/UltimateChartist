@@ -11,6 +11,7 @@ public class StockIndicator_EMABand : IndicatorBase
     {
         this.Series = new IndicatorRangeSeries();
     }
+    public override string Description => "Exponential moving average";
 
     public override DisplayType DisplayType => DisplayType.Price;
 

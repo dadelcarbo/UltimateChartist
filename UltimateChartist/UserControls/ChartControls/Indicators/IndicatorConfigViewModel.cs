@@ -2,9 +2,9 @@
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
 {
-    public class IndicatorSelectorViewModel
+    public class IndicatorConfigViewModel
     {
-        public IndicatorSelectorViewModel()
+        public IndicatorConfigViewModel()
         {
             this.Root = new ObservableCollection<IndicatorTreeViewModel>
             {
@@ -23,10 +23,18 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                          new IndicatorTreeViewModel {Name= "Item3"},
                          new IndicatorTreeViewModel {Name= "Item4"},
                     }
+                },
+                new IndicatorTreeViewModel {
+                    Name = "Indicator2",
+                    Items = new ObservableCollection<IndicatorTreeViewModel>
+                    {
+                         new IndicatorTreeViewModel {Name= "Item5"},
+                         new IndicatorTreeViewModel {Name= "Item6"},
+                         new IndicatorTreeViewModel {Name= "Item7"},
+                    }
                 }
             };
         }
         public ObservableCollection<IndicatorTreeViewModel> Root { get; set; }
-
     }
 }

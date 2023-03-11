@@ -5,13 +5,9 @@ namespace UltimateChartist.Indicators;
 
 public class StockIndicator_TrailATR : TrailStopBase
 {
-    public StockIndicator_TrailATR()
-    {
-    }
-    public override DisplayType DisplayType => DisplayType.Price;
+    public override string Description => "Trail Stop based on ATR";
 
     public override string DisplayName => $"{ShortName}({Period},{AtrPeriod},{UpWidth},{downWidth})";
-
 
     private int period = 20;
     [IndicatorParameterInt("Period", 1, 500)]

@@ -1,14 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 using Telerik.Windows.Controls;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
-using UltimateChartist.Helpers;
-using UltimateChartist.Indicators;
-using UltimateChartist.Indicators.Events;
 using UltimateChartist.UserControls.ChartControls;
-using UltimateChartist.UserControls.ChartControls.Indicators;
 
 namespace UltimateChartist;
 
@@ -34,26 +28,27 @@ public class MainWindowViewModel : ViewModelBase
     {
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
 
-        foreach (var instrument in this.Instruments.Where(i => i.Group == StockGroup.EURO_A))
-        {
-            var serie = instrument.GetStockSerie(BarDuration.Daily);
-            if (serie != null)
-            {
-                var emaIndicator = new StockIndicator_EMA() { Period = 85 };
-                emaIndicator.Initialize(serie);
-                var events = emaIndicator.Series.Values.Last().Events as StockEvent_MA;
-                if (events != null)
-                {
-                    if (events.IsAbove)
-                    {
-                        StockLog.Write($"Instrument: {instrument.Name} is above EMA(85)");
-                    }
-                    else
-                    {
-                        StockLog.Write($"Instrument: {instrument.Name} is below EMA(85)");
-                    }
-                }
-            }
-        }
+        // @@@@ Daily alerts
+        //foreach (var instrument in this.Instruments.Where(i => i.Group == StockGroup.EURO_A))
+        //{
+        //    var serie = instrument.GetStockSerie(BarDuration.Daily);
+        //    if (serie != null)
+        //    {
+        //        var emaIndicator = new StockIndicator_EMA() { Period = 85 };
+        //        emaIndicator.Initialize(serie);
+        //        var events = emaIndicator.Series.Values.Last().Events as StockEvent_MA;
+        //        if (events != null)
+        //        {
+        //            if (events.IsAbove)
+        //            {
+        //                StockLog.Write($"Instrument: {instrument.Name} is above EMA(85)");
+        //            }
+        //            else
+        //            {
+        //                StockLog.Write($"Instrument: {instrument.Name} is below EMA(85)");
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
