@@ -1,18 +1,29 @@
 ﻿Objective: Use Ultimate Chartist daily
 	Data (ABC daily)
 	Indicator selection
+		Make IndicationConfig dialog unique per chart
+		Indicator picker
+		Indicator config
+		Theme Management
 	Event implementation
+		Implementation in Indicators
 	Screener
-	Saxo Integration
+		Alert definition
+		Screener view
+		Daily report
+	Saxo Portofolio Integration
+		Portfolio sync
+		Display orders/position on graph
+		Order execution
 Objective: Main chart usability
+		Zooming
+		Axis
 Objective: Backtesting
 	Backtest Stop Loss
 	Backtest Entry/Exit point
 	Backtest Expectancy, win/loss ratio, win rate.
 Objective: Intraday entry
 	Intraday data provider/Saxo Data provider
-	Intraday screener (on trade candidates stock)
-
+	Intraday screener (on daily candidates stock)
 Objective: Improve Config dialog UI
-	Opacity management: Check with RadDropDownButton demo
-
+	Opacity management: Check with RadDropDownButton demo (Bind to color transparency or Area opacity ?)

@@ -11,7 +11,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
     {
         public IndicatorConfigViewModel()
         {
-            this.Themes = new ObservableCollection<Theme>();
+            this.Themes = new ObservableCollection<StockTheme>();
             this.Themes.AddRange(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null));
             this.Root = new ObservableCollection<IndicatorTreeViewModel>
             {
@@ -45,6 +45,6 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
 
         public ObservableCollection<IndicatorTreeViewModel> Root { get; set; }
 
-        public ObservableCollection<Theme> Themes { get; set; }
+        public ObservableCollection<StockTheme> Themes { get; set; }
     }
 }

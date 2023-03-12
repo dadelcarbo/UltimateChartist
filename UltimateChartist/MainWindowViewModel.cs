@@ -30,10 +30,6 @@ public class MainWindowViewModel : ViewModelBase
     {
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
 
-        var theme = new StockTheme();
-        theme.Save();
-
-        var theme2 = StockTheme.Load(theme.Name);
 
 
         // @@@@ Daily alerts
