@@ -29,6 +29,8 @@ public interface IIndicator
 
     IIndicatorSeries Series { get; }
 
+
+
     void Initialize(StockSerie stockSerie);
 }
 

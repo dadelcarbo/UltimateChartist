@@ -2,6 +2,8 @@
 using Telerik.Windows.Controls;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
+using UltimateChartist.Helpers;
+using UltimateChartist.Indicators.Theme;
 using UltimateChartist.UserControls.ChartControls;
 
 namespace UltimateChartist;
@@ -27,6 +29,12 @@ public class MainWindowViewModel : ViewModelBase
     public void StartUp()
     {
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
+
+        var theme = new StockTheme();
+        theme.Save();
+
+        var theme2 = StockTheme.Load(theme.Name);
+
 
         // @@@@ Daily alerts
         //foreach (var instrument in this.Instruments.Where(i => i.Group == StockGroup.EURO_A))

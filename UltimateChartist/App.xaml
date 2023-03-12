@@ -11,15 +11,18 @@
         <BitmapImage x:Key="backImg" UriSource="Resources/back.png" />
         <BitmapImage x:Key="cancelImg" UriSource="Resources/cancel.png" />
         <BitmapImage x:Key="copyImg" UriSource="Resources/copy.png" />
-        <BitmapImage x:Key="garbageImg" UriSource="Resources/garbage.png" />
+        <BitmapImage x:Key="trashImg" UriSource="Resources/trash.png" />
         <BitmapImage x:Key="nextImg" UriSource="Resources/next.png" />
         <BitmapImage x:Key="preferenceImg" UriSource="Resources/preference.png" />
         <BitmapImage x:Key="reloadImg" UriSource="Resources/reload.png" />
         <BitmapImage x:Key="starImg" UriSource="Resources/star.png" />
         <BitmapImage x:Key="settingsImg" UriSource="Resources/settings.png" />
+        <BitmapImage x:Key="indicatorImg" UriSource="Resources/indicator.png" />
+        <BitmapImage x:Key="newImg" UriSource="Resources/new.png" />
+        <BitmapImage x:Key="checkImg" UriSource="Resources/check.png" />
 
         <BitmapImage x:Key="candleImg" UriSource="Resources/candlestick.png" />
-        <BitmapImage x:Key="barchartImg" UriSource="Resources/bartchart.png" />
+        <BitmapImage x:Key="barchartImg" UriSource="Resources/barchart.png" />
         <BitmapImage x:Key="curveImg" UriSource="Resources/curve.png" />
 
         <converters:AxisDateLabelConverter x:Key="axisDateLabelConverter"/>

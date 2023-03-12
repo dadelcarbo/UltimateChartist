@@ -11,11 +11,5 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
         {
             InitializeComponent();
         }
-
-        private void AddIndicatorBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var indicatorPicker = new IndicatorPicker();
-            indicatorPicker.Show();
-        }
     }
 }

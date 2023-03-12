@@ -1,4 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using Telerik.Windows.Controls;
+using UltimateChartist.Helpers;
+using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
 {
@@ -6,6 +11,8 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
     {
         public IndicatorConfigViewModel()
         {
+            this.Themes = new ObservableCollection<Theme>();
+            this.Themes.AddRange(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null));
             this.Root = new ObservableCollection<IndicatorTreeViewModel>
             {
                 new IndicatorTreeViewModel {
@@ -35,6 +42,9 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                 }
             };
         }
+
         public ObservableCollection<IndicatorTreeViewModel> Root { get; set; }
+
+        public ObservableCollection<Theme> Themes { get; set; }
     }
 }

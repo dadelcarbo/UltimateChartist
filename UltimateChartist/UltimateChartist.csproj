@@ -14,9 +14,6 @@
     <Page Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ChartControls\Indicators\IndicatorPicker.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\ChartControls\Indicators\RangeConfigUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -52,14 +49,18 @@
     </Compile>
     <Compile Include="DataModels\DataProviders\ABC\ABCDataProvider.cs" />
     <Compile Include="DataModels\DataProviders\SaxoTurbo\SaxoTurboDataProvider.cs" />
+    <Compile Include="Indicators\Display\IDisplayItem.cs" />
     <Compile Include="Indicators\Events\IStockEvents.cs" />
     <Compile Include="Indicators\Events\StockEvent_TrailStop.cs" />
     <Compile Include="Indicators\Events\StockEvent_MA.cs" />
     <Compile Include="Indicators\IndicatorManager.cs" />
+    <Compile Include="Indicators\Theme\DisplaySettings.cs" />
+    <Compile Include="Indicators\Theme\IndicatorSettings.cs" />
+    <Compile Include="Indicators\Theme\ParameterValue.cs" />
+    <Compile Include="Indicators\Theme\StockTheme.cs" />
     <Compile Include="Indicators\TrailStopBase.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigViewModel.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml.cs" />
-    <Compile Include="UserControls\ChartControls\Indicators\IndicatorPicker.xaml.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorTreeViewModel.cs" />
     <Compile Include="UserControls\Converters\BarDurationsToVisibilityConverter.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\RangeConfigUserControl.xaml.cs">
@@ -121,9 +122,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backlog.txt" />
+    <Resource Include="Resources\trash.png" />
+    <Resource Include="Resources\check.png" />
+    <Resource Include="Resources\new.png" />
+    <Resource Include="Resources\indicator.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\bartchart.png" />
+    <Resource Include="Resources\barchart.png" />
     <Resource Include="Resources\curve.png" />
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +138,6 @@
     <Resource Include="Resources\back.png" />
     <Resource Include="Resources\cancel.png" />
     <Resource Include="Resources\copy.png" />
-    <Resource Include="Resources\garbage.png" />
     <Resource Include="Resources\next.png" />
     <Resource Include="Resources\preference.png" />
     <Resource Include="Resources\reload.png" />

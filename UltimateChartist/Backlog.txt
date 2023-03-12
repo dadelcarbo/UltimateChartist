@@ -9,6 +9,10 @@ Objective: Backtesting
 	Backtest Stop Loss
 	Backtest Entry/Exit point
 	Backtest Expectancy, win/loss ratio, win rate.
-Objective:
-	Saxo Data provider
+Objective: Intraday entry
+	Intraday data provider/Saxo Data provider
 	Intraday screener (on trade candidates stock)
+
+Objective: Improve Config dialog UI
+	Opacity management: Check with RadDropDownButton demo
+
