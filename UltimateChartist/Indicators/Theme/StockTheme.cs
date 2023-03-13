@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using UltimateChartist.Helpers;
-using UltimateChartist.Indicators.Display;
 
 namespace UltimateChartist.Indicators.Theme
 {
@@ -37,9 +35,11 @@ namespace UltimateChartist.Indicators.Theme
         {
             try
             {
-                return JsonSerializer.Deserialize<StockTheme>(File.ReadAllText(path));
+                var theme = JsonSerializer.Deserialize<StockTheme>(File.ReadAllText(path));
+                theme.Indicators = theme.IndicatorSettings.Select(i => i.GetIndicator()).ToList();
+                return theme;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 StockLog.Write(ex);
             }

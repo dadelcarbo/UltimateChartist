@@ -23,8 +23,8 @@ public partial class IndicatorConfigUserControl : Window
         {
             switch (parameter.Parameter.Type.Name)
             {
-                case "Double":
-                    CreateDoubleParameter(parameter);
+                case "Decimal":
+                    CreateDecimalParameter(parameter);
                     break;
                 case "Int32":
                     CreateIntParameter(parameter);
@@ -134,7 +134,7 @@ public partial class IndicatorConfigUserControl : Window
         stackPanel.Children.Add(upDown);
         this.parameterPanel.Children.Add(stackPanel);
     }
-    private void CreateDoubleParameter(IIndicatorParameterViewModel parameter)
+    private void CreateDecimalParameter(IIndicatorParameterViewModel parameter)
     {
         var doubleParameter = parameter.Parameter as IndicatorParameterDecimalAttribute;
         var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 80, Margin = new Thickness(2) };

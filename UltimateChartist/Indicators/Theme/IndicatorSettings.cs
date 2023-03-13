@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Telerik.Windows.Controls.FieldList;
+using System.Reflection.Metadata;
 using UltimateChartist.Indicators.Display;
-using UltimateChartist.UserControls.ChartControls.Indicators;
 
 namespace UltimateChartist.Indicators.Theme
 {
@@ -23,7 +19,7 @@ namespace UltimateChartist.Indicators.Theme
                 var attribute = prop.GetCustomAttributes(typeof(IndicatorParameterAttribute), true).FirstOrDefault() as IndicatorParameterAttribute;
                 if (attribute == null)
                     continue;
-                this.Parameters.Add(new ParameterValue { Name = prop.Name, Value = prop.GetValue(indicator) });
+                this.Parameters.Add(new ParameterValue { Name = prop.Name, Value = prop.GetValue(indicator).ToString() });
             }
             this.DisplaySettings = new List<DisplaySettings>();
             foreach (PropertyInfo prop in indicator.Series.GetType().GetProperties())
@@ -38,7 +34,37 @@ namespace UltimateChartist.Indicators.Theme
 
         public IIndicator GetIndicator()
         {
-            return null;
+            var indicator = typeof(IIndicator).Assembly.CreateInstance(this.TypeName) as IIndicator;
+            var indicatorType = typeof(IIndicator).Assembly.GetType(this.TypeName);
+            foreach (var parameter in this.Parameters)
+            {
+                var prop = indicatorType.GetProperty(parameter.Name);
+                switch (prop.PropertyType.Name)
+                {
+                    case "Int32":
+                        prop.SetValue(indicator, int.Parse(parameter.Value));
+                        break;
+                    case "Double":
+                        prop.SetValue(indicator, double.Parse(parameter.Value));
+                        break;
+                    case "Decimal":
+                        prop.SetValue(indicator, decimal.Parse(parameter.Value));
+                        break;
+                    case "Boolean":
+                        prop.SetValue(indicator, bool.Parse(parameter.Value));
+                        break;
+                    default:
+                        throw new NotImplementedException($"Parameters of type:{prop.PropertyType.Name} not supported");
+                };
+            }
+            foreach (var settings in this.DisplaySettings)
+            {
+                var seriesType = indicator.Series.GetType();
+                var prop = seriesType.GetProperty(settings.Name);
+                var displayItem = prop.GetValue(indicator.Series) as IDisplayItem;
+                displayItem.FromJson(settings.Json);
+            }
+            return indicator;
         }
 
         public string TypeName { get; set; }
