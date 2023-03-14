@@ -12,9 +12,6 @@ namespace UltimateChartist.Indicators.Theme
     {
         public StockTheme()
         {
-            this.Name = "Test";
-            this.Indicators.Add(new StockIndicator_EMA());
-            this.Indicators.Add(new StockIndicator_TrailATR());
         }
 
         public string Name { get; set; }

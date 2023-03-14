@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using Telerik.Windows.Controls;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
 using UltimateChartist.Helpers;
+using UltimateChartist.Indicators;
 using UltimateChartist.Indicators.Theme;
 using UltimateChartist.UserControls.ChartControls;
 
@@ -30,7 +32,14 @@ public class MainWindowViewModel : ViewModelBase
     {
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
 
-
+        //var theme = new StockTheme()
+        //{
+        //    Name = "Test2"
+        //};
+        //theme.Indicators.Add(new StockIndicator_EMA());
+        //theme.Indicators.Add(new StockIndicator_MACD());
+        //theme.Indicators.Add(new StockIndicator_STOCK());
+        //theme.Save();
 
         // @@@@ Daily alerts
         //foreach (var instrument in this.Instruments.Where(i => i.Group == StockGroup.EURO_A))

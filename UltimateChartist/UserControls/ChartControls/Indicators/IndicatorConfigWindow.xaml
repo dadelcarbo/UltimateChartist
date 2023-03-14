@@ -36,7 +36,8 @@
                     </telerik:RadGridView>
                 </telerik:RadDropDownButton.DropDownContent>
             </telerik:RadDropDownButton>
-            <telerik:RadComboBox ItemsSource="{Binding Themes}" Width="200" Background="Transparent" Margin="2" DisplayMemberPath="Name"></telerik:RadComboBox>
+            <telerik:RadComboBox Width="200" Background="Transparent" Margin="2" DisplayMemberPath="Name"
+                                  ItemsSource="{Binding Themes}" SelectedItem="{Binding ChartViewModel.Theme}"></telerik:RadComboBox>
             <telerik:RadButton Margin="2" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="{Binding Source={StaticResource checkImg}}" Height="16" Width="16"></Image>
             </telerik:RadButton>

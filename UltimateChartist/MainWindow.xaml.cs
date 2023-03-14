@@ -114,6 +114,8 @@ public partial class MainWindow : Window
             IIndicator indicator = new StockIndicator_TrailATR();
 
             this.viewModel.CurrentChartView.PriceIndicators.Add(indicator);
+
+            this.viewModel.CurrentChartView.AddIndicator();
         }
     }
     private void AddEmaCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

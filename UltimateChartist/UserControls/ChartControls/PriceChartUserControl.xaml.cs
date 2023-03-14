@@ -7,6 +7,8 @@ using Telerik.Windows.Controls.ChartView;
 using UltimateChartist.UserControls.ChartControls.Indicators;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators;
+using System.Linq;
+using Telerik.Windows.Controls;
 
 namespace UltimateChartist.UserControls.ChartControls;
 
@@ -74,6 +76,14 @@ public partial class PriceChartUserControl : UserControl
                     }
                 }
                 break;
+            case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                int count = this.ChartGrid.Children.Count - 2;
+                if (count > 0)
+                {
+                    this.ChartGrid.RowDefinitions.RemoveRange(2, count);
+                    this.ChartGrid.Children.RemoveRange(2, count);
+                }
+                break;
             default:
                 throw new NotImplementedException("ChartViews_CollectionChanged: " + e.Action + " Not Yet Implement");
         }
@@ -85,7 +95,6 @@ public partial class PriceChartUserControl : UserControl
             case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
                 {
                     var indicatorViewModel = new IndicatorViewModel(e.NewItems[0] as IIndicator, this.viewModel.StockSerie);
-
                     foreach (var series in indicatorViewModel.CartesianSeries)
                     {
                         this.priceChart.Series.Insert(0, series);
@@ -94,7 +103,15 @@ public partial class PriceChartUserControl : UserControl
                 break;
             case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                 {
+                    var indicatorViewModel = new IndicatorViewModel(e.OldItems[0] as IIndicator, this.viewModel.StockSerie);
+                    foreach (var series in indicatorViewModel.CartesianSeries)
+                    {
+                        this.priceChart.Series.Remove(series);
+                    }
                 }
+                break;
+            case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                this.priceChart.Series.RemoveAll(series => series.Tag?.ToString() != "Price");
                 break;
             default:
                 throw new NotImplementedException("ChartViews_CollectionChanged: " + e.Action + " Not Yet Implement");
@@ -156,6 +173,7 @@ public partial class PriceChartUserControl : UserControl
             default:
                 return;
         }
+        series.Tag = "Price";
         this.priceChart.Series.Clear();
         SetBindings(series);
         SetSourceBinding(series);
@@ -225,7 +243,7 @@ public partial class PriceChartUserControl : UserControl
         var radioButton = sender as RadioButton;
         if (radioButton?.Tag == null)
             return;
-        
+
         if (radioButton.Tag is SeriesType)
             this.viewModel.SeriesType = (SeriesType)radioButton.Tag;
 
@@ -236,7 +254,7 @@ public partial class PriceChartUserControl : UserControl
     private void AddIndicatorCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
     {
         var indicatorSelectorWindow = new IndicatorConfigWindow();
-        indicatorSelectorWindow.DataContext = new IndicatorConfigViewModel();
+        indicatorSelectorWindow.DataContext = new IndicatorConfigViewModel(this.viewModel);
         indicatorSelectorWindow.Show();
 
         //if (this.CurrentChartView == null)

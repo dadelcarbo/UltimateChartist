@@ -7,9 +7,10 @@ using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
 {
-    public class IndicatorConfigViewModel
+    public class IndicatorConfigViewModel : ViewModelBase
     {
-        public IndicatorConfigViewModel()
+        public ChartViewModel ChartViewModel { get;}
+        public IndicatorConfigViewModel(ChartViewModel chartViewModel)
         {
             this.Themes = new ObservableCollection<StockTheme>();
             this.Themes.AddRange(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null));
@@ -41,6 +42,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                     }
                 }
             };
+            this.ChartViewModel = chartViewModel;
         }
 
         public ObservableCollection<IndicatorTreeViewModel> Root { get; set; }

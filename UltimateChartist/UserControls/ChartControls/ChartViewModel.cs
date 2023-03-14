@@ -6,6 +6,7 @@ using System.Windows;
 using Telerik.Windows.Controls;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators;
+using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist.UserControls.ChartControls;
 
@@ -21,6 +22,7 @@ public class ChartViewModel : ViewModelBase
     private string name;
     public string Name { get => name; set { if (name != value) { name = value; RaisePropertyChanged(); } } }
 
+    #region THEME & INDICATORS
     public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
     public void AddIndicator()
@@ -33,6 +35,47 @@ public class ChartViewModel : ViewModelBase
     {
         Indicators.Remove(indicatorViewModel);
     }
+
+    private StockTheme theme;
+    public StockTheme Theme
+    {
+        get { return theme; }
+        set
+        {
+            if (theme != value)
+            {
+                theme = value;
+                this.Indicators.Clear();
+                this.PriceIndicators.Clear();
+                if (theme!=null)
+                {
+                    foreach (var indicator in theme.Indicators)
+                    {
+                        switch (indicator.DisplayType)
+                        {
+                            case DisplayType.Price:
+                            case DisplayType.TrailStop:
+                                PriceIndicators.Add(indicator);
+                                break;
+                            case DisplayType.Ranged:
+                            case DisplayType.NonRanged:
+                                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                                break;
+                            case DisplayType.Volume:
+                                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                RaisePropertyChanged();
+            }
+        }
+    }
+    #endregion
+
 
     private Instrument instrument;
     public Instrument Instrument
