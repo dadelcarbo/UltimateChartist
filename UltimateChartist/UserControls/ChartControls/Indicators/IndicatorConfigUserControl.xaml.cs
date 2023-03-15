@@ -11,7 +11,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators;
 /// <summary>
 /// Interaction logic for IndicatorConfigUserControl.xaml
 /// </summary>
-public partial class IndicatorConfigUserControl : Window
+public partial class IndicatorConfigUserControl : UserControl
 {
     public IndicatorViewModel IndicatorViewModel { get; }
     public IndicatorConfigUserControl(IndicatorViewModel indicatorViewModel)
@@ -155,11 +155,5 @@ public partial class IndicatorConfigUserControl : Window
         stackPanel.Children.Add(label);
         stackPanel.Children.Add(upDown);
         this.parameterPanel.Children.Add(stackPanel);
-    }
-
-    private void okButton_Click(object sender, RoutedEventArgs e)
-    {
-        this.DialogResult = true;
-        this.Close();
     }
 }

@@ -253,8 +253,7 @@ public partial class PriceChartUserControl : UserControl
 
     private void AddIndicatorCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
     {
-        var indicatorSelectorWindow = new IndicatorConfigWindow();
-        indicatorSelectorWindow.DataContext = new IndicatorConfigViewModel(this.viewModel);
+        var indicatorSelectorWindow = new IndicatorConfigWindow(this.viewModel);
         indicatorSelectorWindow.Show();
 
         //if (this.CurrentChartView == null)

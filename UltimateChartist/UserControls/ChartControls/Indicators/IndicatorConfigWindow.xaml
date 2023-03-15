@@ -8,7 +8,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         d:DataContext="{d:DesignInstance Type=local:IndicatorConfigViewModel}"
         mc:Ignorable="d"
-        Title="IndicatorConfigWindow" Height="450" Width="800">
+        Title="Indicator  Configuration" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -48,11 +48,15 @@
                 <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
             </telerik:RadButton>
         </StackPanel>
-        <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="True" 
-                                 AutoExpandItems="True" AutoGenerateColumns="True" FrozenColumnsSplitterVisibility="Collapsed">
+        <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False" 
+                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed" SelectedItem="{Binding SelectedItem}">
+            <telerik:RadTreeListView.Columns>
+                <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"/>
+            </telerik:RadTreeListView.Columns>
             <telerik:RadTreeListView.ChildTableDefinitions>
                 <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}" />
             </telerik:RadTreeListView.ChildTableDefinitions>
         </telerik:RadTreeListView>
+        <StackPanel Grid.Row="1" Grid.Column="1" Name="IndicatorConfigPanel"></StackPanel>
     </Grid>
 </Window>

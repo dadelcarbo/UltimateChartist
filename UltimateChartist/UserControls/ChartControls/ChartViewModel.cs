@@ -18,6 +18,7 @@ public class ChartViewModel : ViewModelBase
     {
         name = "Chart" + count++;
         Instrument = MainWindowViewModel.Instance.Instruments.FirstOrDefault();
+        Theme = MainWindowViewModel.Instance.Themes.FirstOrDefault();
     }
     private string name;
     public string Name { get => name; set { if (name != value) { name = value; RaisePropertyChanged(); } } }
