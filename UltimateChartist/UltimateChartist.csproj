@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backlog.txt" />
+    <Resource Include="Resources\disk.png" />
     <Resource Include="Resources\trash.png" />
     <Resource Include="Resources\check.png" />
     <Resource Include="Resources\new.png" />

@@ -15,7 +15,7 @@ public class IndicatorLineSeries : IndicatorSeriesBase
         {
             Stroke = Brushes.Black,
             Thickness = 1,
-            Name = string.Empty
+            Name = "Indicator"
         };
     }
 

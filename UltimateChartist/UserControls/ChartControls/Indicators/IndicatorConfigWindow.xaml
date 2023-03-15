@@ -7,8 +7,8 @@
         xmlns:indicator="clr-namespace:UltimateChartist.Indicators"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         d:DataContext="{d:DesignInstance Type=local:IndicatorConfigViewModel}"
-        mc:Ignorable="d"
-        Title="Indicator Configuration" Height="450" Width="900">
+        mc:Ignorable="d" WindowStyle="ToolWindow"
+        Title="Indicator Configuration" Height="450" Width="750">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,8 +18,8 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Margin="2" Background="Transparent" BorderBrush="Transparent" >
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="2">
+            <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Background="Transparent" BorderBrush="Transparent" >
                 <telerik:EventToCommandBehavior.EventBindings>
                     <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
                     <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" EventName="DropDownOpening" />
@@ -42,17 +42,17 @@
                     </telerik:RadGridView>
                 </telerik:RadDropDownButton.DropDownContent>
             </telerik:RadDropDownButton>
-            <telerik:RadComboBox Width="200" Background="Transparent" Margin="2" DisplayMemberPath="Name"
+            <telerik:RadComboBox Width="200" Background="Transparent" Margin="0" DisplayMemberPath="Name"
                                   ItemsSource="{Binding Themes}" SelectedItem="{Binding ChartViewModel.Theme}"></telerik:RadComboBox>
-            <telerik:RadButton Margin="2" Background="Transparent" BorderBrush="Transparent">
-                <Image Source="{Binding Source={StaticResource checkImg}}" Height="16" Width="16"></Image>
-            </telerik:RadButton>
-            <telerik:RadButton Margin="2" Background="Transparent" BorderBrush="Transparent">
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding SaveThemeCommand}">
+                <Image Source="{Binding Source={StaticResource diskImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent"  Command="{Binding NewThemeCommand}">
                 <Image Source="{Binding Source={StaticResource newImg}}" Height="16" Width="16"></Image>
-            </telerik:RadButton>
-            <telerik:RadButton Margin="2" Background="Transparent" BorderBrush="Transparent">
+            </Button>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding DeleteThemeCommand}">
                 <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
-            </telerik:RadButton>
+            </Button>
         </StackPanel>
         <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False"
                                  AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed" SelectedItem="{Binding SelectedItem}" >

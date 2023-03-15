@@ -17,7 +17,7 @@ public partial class MainWindow : Window
     private MainWindowViewModel viewModel;
     public MainWindow()
     {
-        StyleManager.ApplicationTheme = new Office2019Theme();
+        StyleManager.ApplicationTheme = new VisualStudio2019Theme();
 
         InitializeComponent();
 

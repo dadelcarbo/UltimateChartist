@@ -9,9 +9,7 @@ public class StockIndicator_MACD : IndicatorBase
 {
     public StockIndicator_MACD()
     {
-        var series = new IndicatorLineSignalSeries();
-        series.Curve.Name = "MACD";
-        this.Series = series;
+        this.Series = new IndicatorLineSignalSeries(this.ShortName);
     }
     public override string Description => "Moving average convergence divergence";
     public override DisplayType DisplayType => DisplayType.NonRanged;

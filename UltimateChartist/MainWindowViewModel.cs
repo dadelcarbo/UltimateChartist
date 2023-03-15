@@ -1,12 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Documents.Model.Themes;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
 using UltimateChartist.Helpers;
-using UltimateChartist.Indicators;
 using UltimateChartist.Indicators.Theme;
 using UltimateChartist.UserControls.ChartControls;
 
@@ -30,22 +30,19 @@ public class MainWindowViewModel : ViewModelBase
 
     public ObservableCollection<Instrument> Instruments { get; }
 
-
     public ObservableCollection<StockTheme> Themes { get; private set; }
-    public StockTheme EmptyTheme { get; private set; }
-
 
     public void StartUp()
     {
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
 
-        this.Themes = new ObservableCollection<StockTheme>(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null));
-        this.EmptyTheme = this.Themes.FirstOrDefault(t => t.Name == "Empty" );
-        if (EmptyTheme==null)
+        this.Themes = new ObservableCollection<StockTheme>(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null).OrderBy(t => t.Name));
+        if (this.Themes.Count == 0)
         {
-            this.EmptyTheme = new StockTheme { Name = "Empty" };
-            this.EmptyTheme.Save();
+            this.Themes.Add(new StockTheme() { Name = "New" });
         }
+
+        ApplicationThemes = typeof(Theme).Assembly.ExportedTypes.Where(t => t.IsAssignableTo(typeof(Theme))).Select(t => (Theme)Activator.CreateInstance(t));
 
         //var theme = new StockTheme()
         //{
@@ -79,4 +76,7 @@ public class MainWindowViewModel : ViewModelBase
         //    }
         //}
     }
+
+    public IEnumerable<Theme> ApplicationThemes { get; set; }
+    public Theme ApplicationTheme { get { return StyleManager.ApplicationTheme; } set { StyleManager.ApplicationTheme = value; } }
 }

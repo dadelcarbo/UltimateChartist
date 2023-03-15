@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
 using UltimateChartist.Indicators;
@@ -48,34 +49,37 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                 }
             };
             int count = 1;
-            foreach (var indicator in theme.Indicators)
+            if (theme != null)
             {
-                switch (indicator.DisplayType)
+                foreach (var indicator in theme.Indicators)
                 {
-                    case DisplayType.Price:
-                    case DisplayType.TrailStop:
-                        priceTreeViewModel.Add(new IndicatorTreeViewModel
-                        {
-                            Name = indicator.DisplayName,
-                            Indicator = indicator
-                        });
-                        break;
-                    case DisplayType.Ranged:
-                    case DisplayType.NonRanged:
-                        var indicatorTreeViewModel = new IndicatorTreeViewModel
-                        {
-                            Name = $"Indicator{count++} Graph"
-                        };
-                        indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel
-                        {
-                            Name = indicator.DisplayName,
-                            Indicator = indicator
-                        });
-                        root.Add(indicatorTreeViewModel);
-                        break;
-                    case DisplayType.Volume:
-                        throw new NotImplementedException();
-                        break;
+                    switch (indicator.DisplayType)
+                    {
+                        case DisplayType.Price:
+                        case DisplayType.TrailStop:
+                            priceTreeViewModel.Add(new IndicatorTreeViewModel
+                            {
+                                Name = indicator.DisplayName,
+                                Indicator = indicator
+                            });
+                            break;
+                        case DisplayType.Ranged:
+                        case DisplayType.NonRanged:
+                            var indicatorTreeViewModel = new IndicatorTreeViewModel
+                            {
+                                Name = $"Indicator{count++} Graph"
+                            };
+                            indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel
+                            {
+                                Name = indicator.DisplayName,
+                                Indicator = indicator
+                            });
+                            root.Add(indicatorTreeViewModel);
+                            break;
+                        case DisplayType.Volume:
+                            throw new NotImplementedException();
+                            break;
+                    }
                 }
             }
             this.Root = root;
@@ -136,5 +140,94 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                 this.SelectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault();
             }
         }
+
+        #region THEME COMMANDS
+        private DelegateCommand saveThemeCommand;
+        public ICommand SaveThemeCommand => saveThemeCommand ??= new DelegateCommand(SaveTheme);
+
+        private void SaveTheme(object commandParameter)
+        {
+            if (this.ChartViewModel.Theme.Name.StartsWith("New"))
+            {
+                RadWindow.Prompt(new DialogParameters()
+                {
+                    Content = "Enter new theme name",
+                    Closed = this.OnSavePromptClosed,
+                    DialogStartupLocation = WindowStartupLocation.CenterOwner
+                });
+            }
+            else
+            {
+                this.ChartViewModel.Theme.Save();
+            }
+        }
+        private void OnSavePromptClosed(object sender, WindowClosedEventArgs e)
+        {
+            if (e.DialogResult == true)
+            {
+                if (string.IsNullOrEmpty(e.PromptResult) || e.PromptResult.StartsWith("New"))
+                {
+                    RadWindow.Alert(new DialogParameters()
+                    {
+                        Content = "Please enter a valid theme name",
+                        DialogStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                    return;
+                }
+                var existingTheme = this.Themes.FirstOrDefault(t=>t.Name == e.PromptResult);
+                if (existingTheme != null && existingTheme == this.ChartViewModel.Theme)
+                {
+                    RadWindow.Alert(new DialogParameters()
+                    {
+                        Content = "A theme with the same name already exists",
+                        DialogStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                    return;
+                }
+                this.ChartViewModel.Theme.Name = e.PromptResult;
+                this.ChartViewModel.Theme.Save();
+                RaisePropertyChanged("Themes");
+            }
+        }
+
+        private DelegateCommand newThemeCommand;
+        public ICommand NewThemeCommand => newThemeCommand ??= new DelegateCommand(NewTheme);
+
+        private void NewTheme(object commandParameter)
+        {
+            int count = 1;
+            string name = "New";
+            while (this.Themes.Any(t => t.Name == name))
+            {
+                name = $"New ({count++})";
+            }
+            var newTheme = new StockTheme() { Name = name };
+            this.Themes.Add(newTheme);
+            this.ChartViewModel.Theme = newTheme;
+        }
+
+        private DelegateCommand deleteThemeCommand;
+        public ICommand DeleteThemeCommand => deleteThemeCommand ??= new DelegateCommand(DeleteTheme);
+
+        private void DeleteTheme(object commandParameter)
+        {
+            RadWindow.Confirm(new DialogParameters
+            {
+                Content = "Are you sure you want to delete theme ?",
+                Closed = this.OnConfirmDeleteClosed,
+                DialogStartupLocation = WindowStartupLocation.CenterOwner
+            });
+        }
+        private void OnConfirmDeleteClosed(object sender, WindowClosedEventArgs e)
+        {
+            if (e.DialogResult == true)
+            {
+                var oldTheme = this.ChartViewModel.Theme;
+                oldTheme.Delete();
+                this.ChartViewModel.Theme = this.Themes.FirstOrDefault(t => t.Name != oldTheme.Name);
+                this.Themes.Remove(oldTheme);
+            }
+        }
+        #endregion
     }
 }

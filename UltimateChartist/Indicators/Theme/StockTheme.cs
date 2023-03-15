@@ -28,6 +28,14 @@ namespace UltimateChartist.Indicators.Theme
             var themeString = JsonSerializer.Serialize(this, jsonOptions);
             File.WriteAllText(path, themeString);
         }
+        public void Delete()
+        {
+            var path = Path.Combine(Folders.Theme, this.Name + ".thm");
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
         public static StockTheme Load(string path)
         {
             try

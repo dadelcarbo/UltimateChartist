@@ -7,9 +7,9 @@ public class StockIndicator_STOCK : IndicatorBase, IRangedIndicator
 {
     public StockIndicator_STOCK()
     {
-        this.Series = new IndicatorLineSignalSeries();
+        this.Series = new IndicatorLineSignalSeries(this.ShortName);
     }
-    
+
     public override string Description => "A stochastic oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time";
     public override DisplayType DisplayType => DisplayType.Ranged;
     public decimal Minimum => 0;
@@ -34,7 +34,7 @@ public class StockIndicator_STOCK : IndicatorBase, IRangedIndicator
     public override void Initialize(StockSerie stockSerie)
     {
         var values = new IndicatorLineSignalValue[stockSerie.Bars.Count];
-        var stockf = stockSerie.CalculateFastOscillator(this.period, false);
+        var stockf = stockSerie.CalculateFastOscillator(this.period, useBody);
 
         var signalAlpha = 2.0m / (SignalPeriod + 1.0m);
 

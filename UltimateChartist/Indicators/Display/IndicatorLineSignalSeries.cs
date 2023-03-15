@@ -10,8 +10,9 @@ public class IndicatorLineSignalValue : IndicatorValueBase
 public class IndicatorLineSignalSeries : IndicatorLineSeries
 {
     private Curve signal;
-    public IndicatorLineSignalSeries()
+    public IndicatorLineSignalSeries(string name)
     {
+        Curve.Name = name;
         signal = new Curve()
         {
             Stroke = Brushes.DarkRed,

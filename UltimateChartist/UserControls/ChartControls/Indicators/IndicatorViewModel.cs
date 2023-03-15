@@ -36,7 +36,8 @@ public class IndicatorViewModel : ViewModelBase
     {
         Indicator = indicator;
         this.stockSerie = stockSerie;
-        indicator.Initialize(stockSerie);
+        if (indicator.Series.Values == null)
+            indicator.Initialize(stockSerie);
 
         // Get Parameters from instrospection
         foreach (PropertyInfo prop in indicator.GetType().GetProperties())

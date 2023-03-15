@@ -101,7 +101,6 @@ public partial class IndicatorConfigUserControl : UserControl
 
     private void CreateBoolParameter(IIndicatorParameterViewModel parameter)
     {
-        var boolParameter = parameter.Parameter as IndicatorParameterBoolAttribute;
         var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 90, Margin = new Thickness(2) };
         var upDown = new CheckBox() { VerticalAlignment = VerticalAlignment.Center };
 
@@ -124,7 +123,8 @@ public partial class IndicatorConfigUserControl : UserControl
             Maximum = intParameter.Max,
             Margin = new Thickness(2),
             NumberDecimalDigits= 0,
-            Width = 80
+            Width = 80,
+            Height = 22
         };
 
         var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay };
@@ -147,7 +147,8 @@ public partial class IndicatorConfigUserControl : UserControl
             LargeChange =  (double) doubleParameter.Step * 10,
             Margin = new Thickness(2),
             NumberDecimalDigits = -(int)Math.Round(Math.Log10((double) doubleParameter.Step)),
-            Width = 80
+            Width = 80,
+            Height = 22
         };
 
         var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay, StringFormat = doubleParameter.Format };
