@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
+using UltimateChartist.Helpers;
 
 namespace UltimateChartist.UserControls.Converters;
 
@@ -21,6 +22,7 @@ public class AxisDateLabelConverter : IValueConverter
         }
         catch (Exception ex)
         {
+            StockLog.Write(ex);
             return null;
         }
     }

@@ -103,11 +103,8 @@ public partial class PriceChartUserControl : UserControl
                 break;
             case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                 {
-                    var indicatorViewModel = new IndicatorViewModel(e.OldItems[0] as IIndicator, this.viewModel.StockSerie);
-                    foreach (var series in indicatorViewModel.CartesianSeries)
-                    {
-                        this.priceChart.Series.Remove(series);
-                    }
+                    var indicator = e.OldItems[0] as IIndicator;
+                    this.priceChart.Series.RemoveAll(s=>s.DataContext == indicator);
                 }
                 break;
             case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:

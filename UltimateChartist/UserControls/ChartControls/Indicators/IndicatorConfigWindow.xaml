@@ -4,28 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UltimateChartist.UserControls.ChartControls.Indicators"
-        xmlns:indicator="clr-namespace:UltimateChartist.Indicators" 
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+        xmlns:indicator="clr-namespace:UltimateChartist.Indicators"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         d:DataContext="{d:DesignInstance Type=local:IndicatorConfigViewModel}"
         mc:Ignorable="d"
-        Title="Indicator  Configuration" Height="450" Width="800">
+        Title="Indicator Configuration" Height="450" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Margin="2" Background="Transparent" BorderBrush="Transparent">
+            <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Margin="2" Background="Transparent" BorderBrush="Transparent" >
+                <telerik:EventToCommandBehavior.EventBindings>
+                    <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
+                    <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" EventName="DropDownOpening" />
+                </telerik:EventToCommandBehavior.EventBindings>
                 <telerik:RadDropDownButton.Content>
                     <Image Source="{Binding Source={StaticResource indicatorImg}}" Height="16" Width="16"></Image>
                 </telerik:RadDropDownButton.Content>
                 <telerik:RadDropDownButton.DropDownContent>
                     <telerik:RadGridView ItemsSource="{Binding Source={x:Static indicator:IndicatorManager.Indicators}}" RowIndicatorVisibility="Collapsed"
-                             AutoGenerateColumns="False" ShowGroupPanel="False" CanUserDeleteRows="False" FrozenColumnsSplitterVisibility="Collapsed">
+                                         AutoGenerateColumns="False" ShowGroupPanel="False" CanUserDeleteRows="False" FrozenColumnsSplitterVisibility="Collapsed" 
+                                         SelectionMode="Single" SelectionUnit="FullRow"
+                                         SelectedItem="{Binding NewIndicator}">
                         <telerik:RadGridView.Columns>
                             <telerik:GridViewDataColumn Header="Name" MinWidth="100" DataMemberBinding="{Binding ShortName}"/>
                             <telerik:GridViewDataColumn Header="Type" MinWidth="80" DataMemberBinding="{Binding DisplayType}"/>
@@ -48,10 +54,13 @@
                 <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
             </telerik:RadButton>
         </StackPanel>
-        <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False" 
-                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed" SelectedItem="{Binding SelectedItem}">
+        <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False"
+                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed" SelectedItem="{Binding SelectedItem}" >
+            <telerik:EventToCommandBehavior.EventBindings>
+                <telerik:EventBinding Command="{Binding DeleteIndicatorCommand}" EventName="Deleting" />
+            </telerik:EventToCommandBehavior.EventBindings>
             <telerik:RadTreeListView.Columns>
-                <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"/>
+                <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"  IsReadOnly="True"/>
             </telerik:RadTreeListView.Columns>
             <telerik:RadTreeListView.ChildTableDefinitions>
                 <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}" />

@@ -107,21 +107,6 @@ public partial class MainWindow : Window
         e.CanExecute = this.MainTabControl.SelectedItem != null;
     }
 
-    private void AddEmaCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-        if (this.MainTabControl.SelectedItem != null)
-        {
-            IIndicator indicator = new StockIndicator_TrailATR();
-
-            this.viewModel.CurrentChartView.PriceIndicators.Add(indicator);
-
-            this.viewModel.CurrentChartView.AddIndicator();
-        }
-    }
-    private void AddEmaCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-    {
-        e.CanExecute = this.MainTabControl.SelectedItem != null;
-    }
     #endregion
 
     private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

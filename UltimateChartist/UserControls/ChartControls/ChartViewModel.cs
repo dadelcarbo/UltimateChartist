@@ -26,12 +26,6 @@ public class ChartViewModel : ViewModelBase
     #region THEME & INDICATORS
     public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
-    public void AddIndicator()
-    {
-        var indicatorChartViewModel = new IndicatorChartViewModel(this, new StockIndicator_STOCK());
-        Indicators.Add(indicatorChartViewModel);
-    }
-
     public void RemoveIndicator(IndicatorChartViewModel indicatorViewModel)
     {
         Indicators.Remove(indicatorViewModel);
@@ -48,31 +42,55 @@ public class ChartViewModel : ViewModelBase
                 theme = value;
                 this.Indicators.Clear();
                 this.PriceIndicators.Clear();
-                if (theme!=null)
+                if (theme != null)
                 {
                     foreach (var indicator in theme.Indicators)
                     {
-                        switch (indicator.DisplayType)
-                        {
-                            case DisplayType.Price:
-                            case DisplayType.TrailStop:
-                                PriceIndicators.Add(indicator);
-                                break;
-                            case DisplayType.Ranged:
-                            case DisplayType.NonRanged:
-                                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
-                                break;
-                            case DisplayType.Volume:
-                                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
-                                break;
-                            default:
-                                break;
-                        }
+                        AddIndicator(indicator);
                     }
                 }
 
                 RaisePropertyChanged();
             }
+        }
+    }
+
+    public void AddIndicator(IIndicator indicator)
+    {
+        switch (indicator.DisplayType)
+        {
+            case DisplayType.Price:
+            case DisplayType.TrailStop:
+                PriceIndicators.Add(indicator);
+                break;
+            case DisplayType.Ranged:
+            case DisplayType.NonRanged:
+                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                break;
+            case DisplayType.Volume:
+                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                break;
+            default:
+                break;
+        }
+    }
+    public void RemoveIndicator(IIndicator indicator)
+    {
+        switch (indicator.DisplayType)
+        {
+            case DisplayType.Price:
+            case DisplayType.TrailStop:
+                PriceIndicators.Remove(indicator);
+                break;
+            case DisplayType.Ranged:
+            case DisplayType.NonRanged:
+                this.Indicators.RemoveAll(i => i.Indicator?.Indicator == indicator);
+                break;
+            case DisplayType.Volume:
+                this.Indicators.RemoveAll(i => i.Indicator == indicator);
+                break;
+            default:
+                break;
         }
     }
     #endregion

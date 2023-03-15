@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        mc:Ignorable="d" d:Width="400" d:Height="200">
+        mc:Ignorable="d" d:Width="400" d:Height="200" d:Background="Beige">
     <UserControl.Resources>
         <telerik:BrushToColorConverter x:Key="brushToColorConverter" />
         <telerik:ColorToBrushConverter x:Key="colorToBrushConverter" />
@@ -15,13 +15,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.75*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <GroupBox Grid.Column="0" Header="Parameters" Margin="2">
             <StackPanel x:Name="parameterPanel"/>
         </GroupBox>
-
         <GroupBox Grid.Column="1" Header="Display" Margin="2">
             <StackPanel x:Name="curvePanel"/>
         </GroupBox>

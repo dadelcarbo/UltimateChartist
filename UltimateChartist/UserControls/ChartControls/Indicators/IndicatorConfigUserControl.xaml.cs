@@ -102,7 +102,7 @@ public partial class IndicatorConfigUserControl : UserControl
     private void CreateBoolParameter(IIndicatorParameterViewModel parameter)
     {
         var boolParameter = parameter.Parameter as IndicatorParameterBoolAttribute;
-        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 80, Margin = new Thickness(2) };
+        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 90, Margin = new Thickness(2) };
         var upDown = new CheckBox() { VerticalAlignment = VerticalAlignment.Center };
 
         var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay };
@@ -117,13 +117,14 @@ public partial class IndicatorConfigUserControl : UserControl
     private void CreateIntParameter(IIndicatorParameterViewModel parameter)
     {
         var intParameter = parameter.Parameter as IndicatorParameterIntAttribute;
-        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 80, Margin = new Thickness(2) };
+        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 90, Margin = new Thickness(2) };
         var upDown = new RadNumericUpDown()
         {
             Minimum = intParameter.Min,
             Maximum = intParameter.Max,
             Margin = new Thickness(2),
-            NumberDecimalDigits= 0
+            NumberDecimalDigits= 0,
+            Width = 80
         };
 
         var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay };
@@ -137,7 +138,7 @@ public partial class IndicatorConfigUserControl : UserControl
     private void CreateDecimalParameter(IIndicatorParameterViewModel parameter)
     {
         var doubleParameter = parameter.Parameter as IndicatorParameterDecimalAttribute;
-        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 80, Margin = new Thickness(2) };
+        var label = new System.Windows.Controls.Label() { Content = parameter.Parameter.Name, Width = 90, Margin = new Thickness(2) };
         var upDown = new RadNumericUpDown()
         {
             Minimum = (double) doubleParameter.Min,
@@ -145,7 +146,8 @@ public partial class IndicatorConfigUserControl : UserControl
             SmallChange = (double)doubleParameter.Step,
             LargeChange =  (double) doubleParameter.Step * 10,
             Margin = new Thickness(2),
-            NumberDecimalDigits = -(int)Math.Round((Math.Log10((double) doubleParameter.Step)))
+            NumberDecimalDigits = -(int)Math.Round(Math.Log10((double) doubleParameter.Step)),
+            Width = 80
         };
 
         var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay, StringFormat = doubleParameter.Format };

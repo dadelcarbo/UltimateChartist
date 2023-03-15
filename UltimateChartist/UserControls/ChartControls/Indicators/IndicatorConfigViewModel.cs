@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Controls.Data.CardView;
-using UltimateChartist.Helpers;
+using UltimateChartist.Indicators;
 using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
@@ -43,7 +43,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             var root = new ObservableCollection<IndicatorTreeViewModel>
             {
                 new IndicatorTreeViewModel {
-                    Name = "Price",
+                    Name = "Price Chart",
                     Items = priceTreeViewModel
                 }
             };
@@ -52,19 +52,19 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             {
                 switch (indicator.DisplayType)
                 {
-                    case UltimateChartist.Indicators.DisplayType.Price:
-                    case UltimateChartist.Indicators.DisplayType.TrailStop:
+                    case DisplayType.Price:
+                    case DisplayType.TrailStop:
                         priceTreeViewModel.Add(new IndicatorTreeViewModel
                         {
                             Name = indicator.DisplayName,
                             Indicator = indicator
                         });
                         break;
-                    case UltimateChartist.Indicators.DisplayType.Ranged:
-                    case UltimateChartist.Indicators.DisplayType.NonRanged:
+                    case DisplayType.Ranged:
+                    case DisplayType.NonRanged:
                         var indicatorTreeViewModel = new IndicatorTreeViewModel
                         {
-                            Name = $"Indicator{count++}"
+                            Name = $"Indicator{count++} Graph"
                         };
                         indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel
                         {
@@ -72,6 +72,9 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                             Indicator = indicator
                         });
                         root.Add(indicatorTreeViewModel);
+                        break;
+                    case DisplayType.Volume:
+                        throw new NotImplementedException();
                         break;
                 }
             }
@@ -82,9 +85,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
 
         public ObservableCollection<StockTheme> Themes => MainWindowViewModel.Instance.Themes;
 
-
         private IndicatorTreeViewModel selectedItem;
-
         public IndicatorTreeViewModel SelectedItem
         {
             get => selectedItem; set
@@ -95,6 +96,44 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                     this.indicatorConfigWindow.DisplayConfigItem(selectedItem);
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        private DelegateCommand dropDownClosedCommand;
+        public ICommand DropDownClosedCommand => dropDownClosedCommand ??= new DelegateCommand(DropDownClosed);
+
+        private void DropDownClosed(object commandParameter)
+        {
+            if (NewIndicator != null)
+            {
+                this.ChartViewModel.Theme.Indicators.Add(NewIndicator);
+                this.SetTheme(this.ChartViewModel.Theme);
+                this.ChartViewModel.AddIndicator(NewIndicator);
+                this.SelectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault(i => i.Indicator == NewIndicator);
+            }
+        }
+
+        private DelegateCommand dropDownOpeningCommand;
+        public ICommand DropDownOpeningCommand => dropDownOpeningCommand ??= new DelegateCommand(DropDownOpening);
+
+        private void DropDownOpening(object commandParameter)
+        {
+            this.NewIndicator = null;
+        }
+
+        public IIndicator NewIndicator { get; set; }
+
+        private DelegateCommand deleteIndicatorCommand;
+        public ICommand DeleteIndicatorCommand => deleteIndicatorCommand ??= new DelegateCommand(DeleteIndicator);
+
+        private void DeleteIndicator(object commandParameter)
+        {
+            if (this.SelectedItem?.Indicator != null)
+            {
+                this.ChartViewModel.Theme.Indicators.Remove(this.SelectedItem.Indicator);
+                this.ChartViewModel.RemoveIndicator(this.SelectedItem.Indicator);
+                this.SetTheme(this.ChartViewModel.Theme);
+                this.SelectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault();
             }
         }
     }

@@ -30,11 +30,6 @@
                 <KeyGesture>CTRL+F4</KeyGesture>
             </RoutedUICommand.InputGestures>
         </RoutedUICommand>
-        <RoutedUICommand x:Key="AddEmaCommand" Text="Add EMA" >
-            <RoutedUICommand.InputGestures>
-                <KeyGesture>CTRL+E</KeyGesture>
-            </RoutedUICommand.InputGestures>
-        </RoutedUICommand>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource InstrumentBrowseCommand}" Executed="InstrumentBrowseCommand_Executed" CanExecute="InstrumentBrowseCommand_CanExecute"/>
@@ -43,7 +38,6 @@
         <CommandBinding Command="{StaticResource NewChartViewCommand}" Executed="NewChartCommand_Executed"/>
         <CommandBinding Command="{StaticResource NewChartViewCommand}" Executed="NewChartCommand_Executed"/>
         <CommandBinding Command="{StaticResource CloseChartViewCommand}" Executed="CloseChartCommand_Executed" CanExecute="CloseChartCommand_CanExecute"/>
-        <CommandBinding Command="{StaticResource AddEmaCommand}" Executed="AddEmaCommand_Executed" CanExecute="AddEmaCommand_CanExecute"/>
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -62,7 +56,6 @@
             <telerik:RadMenuItem Header="View">
                 <telerik:RadMenuItem Command="{StaticResource NewChartViewCommand}"></telerik:RadMenuItem>
                 <telerik:RadMenuItem Command="{StaticResource CloseChartViewCommand}"></telerik:RadMenuItem>
-                <telerik:RadMenuItem Command="{StaticResource AddEmaCommand}"></telerik:RadMenuItem>
             </telerik:RadMenuItem>
         </telerik:RadMenu>
 
