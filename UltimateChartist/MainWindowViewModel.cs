@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Persistence.Core;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
 using UltimateChartist.Helpers;
@@ -19,6 +20,13 @@ public class MainWindowViewModel : ViewModelBase
     {
         this.Instruments = new ObservableCollection<Instrument>();
     }
+
+    private MainWindow mainWindow;
+    public void SetMainWindow(MainWindow mainWindow)
+    {
+        this.mainWindow = mainWindow;
+    }
+
     static private MainWindowViewModel instance = null;
     static public MainWindowViewModel Instance => instance ??= new MainWindowViewModel();
     #endregion
@@ -28,6 +36,19 @@ public class MainWindowViewModel : ViewModelBase
     public ChartViewModel CurrentChartView { get => currentChartView; set { if (currentChartView != value) { currentChartView = value; RaisePropertyChanged(); } } }
     #endregion
 
+    private Instrument instrument;
+    public Instrument Instrument
+    {
+        get => instrument;
+        set
+        {
+            if (value != null && instrument != value)
+            {
+                instrument = value;
+                this.mainWindow.AddChart(instrument, Themes.FirstOrDefault());
+            }
+        }
+    }
     public ObservableCollection<Instrument> Instruments { get; }
 
     public ObservableCollection<StockTheme> Themes { get; private set; }

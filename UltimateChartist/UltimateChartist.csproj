@@ -158,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Telerik.UI.for.Wpf.70.Xaml">
-      <Version>2023.1.117</Version>
+      <Version>2023.1.315</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

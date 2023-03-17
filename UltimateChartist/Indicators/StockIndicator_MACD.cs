@@ -14,14 +14,13 @@ public class StockIndicator_MACD : IndicatorBase
     public override string Description => "Moving average convergence divergence";
     public override DisplayType DisplayType => DisplayType.NonRanged;
 
-    public override string DisplayName => $"{ShortName}({SlowPeriod},{FastPeriod})";
-
+    public override string DisplayName => $"{ShortName}({FastPeriod},{SlowPeriod})";
 
     private int fastPeriod = 12;
     [IndicatorParameterInt("Fast", 1, 500)]
     public int FastPeriod { get => fastPeriod; set { if (fastPeriod != value) { fastPeriod = value; RaiseParameterChanged(); } } }
 
-    private int slowPeriod = 16;
+    private int slowPeriod = 26;
     [IndicatorParameterInt("Slow", 1, 500)]
     public int SlowPeriod { get => slowPeriod; set { if (slowPeriod != value) { slowPeriod = value; RaiseParameterChanged(); } } }
 

@@ -6,6 +6,10 @@ using Telerik.Windows.Controls;
 using UltimateChartist.UserControls.ChartControls;
 using UltimateChartist.Indicators;
 using UltimateChartist.UserControls.InstrumentControls;
+using System.Linq;
+using Telerik.Windows.Documents.Model.Themes;
+using UltimateChartist.DataModels;
+using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist;
 
@@ -23,8 +27,7 @@ public partial class MainWindow : Window
 
         this.viewModel = MainWindowViewModel.Instance;
         this.viewModel.PropertyChanged += ViewModel_PropertyChanged;
-        this.DataContext = viewModel;
-
+        this.viewModel.SetMainWindow(this);
         this.viewModel.StartUp();
 
         this.NewChartCommand_Executed(null, null);
@@ -78,9 +81,10 @@ public partial class MainWindow : Window
         e.CanExecute = instrumentScreenerWindow == null;
     }
     #endregion
-    private void NewChartCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+
+    public void AddChart(Instrument instrument, StockTheme theme)
     {
-        var chartViewModel = new ChartViewModel();
+        var chartViewModel = new ChartViewModel(instrument, theme);
         var tabItem = new RadTabItem()
         {
             DataContext = chartViewModel,
@@ -93,6 +97,11 @@ public partial class MainWindow : Window
         tabItem.Content = new PriceChartUserControl(chartViewModel);
         this.MainTabControl.Items.Add(tabItem);
         this.MainTabControl.SelectedItem = tabItem;
+    }
+
+    private void NewChartCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        this.AddChart(MainWindowViewModel.Instance.Instruments.FirstOrDefault(), MainWindowViewModel.Instance.Themes.FirstOrDefault());
     }
     private void CloseChartCommand_Executed(object sender, ExecutedRoutedEventArgs e)
     {

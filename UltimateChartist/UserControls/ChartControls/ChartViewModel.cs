@@ -14,14 +14,13 @@ public class ChartViewModel : ViewModelBase
 {
     const double ZOOM_MARGIN = 0.025; // %
     static int count = 1;
-    public ChartViewModel()
+    public ChartViewModel(Instrument instrument, StockTheme theme)
     {
-        name = "Chart" + count++;
-        Instrument = MainWindowViewModel.Instance.Instruments.FirstOrDefault();
-        Theme = MainWindowViewModel.Instance.Themes.FirstOrDefault();
+        Instrument = instrument;
+        Theme = theme;
     }
     private string name;
-    public string Name { get => name; set { if (name != value) { name = value; RaisePropertyChanged(); } } }
+    public string Name => this.Instrument?.Name;
 
     #region THEME & INDICATORS
     public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
@@ -176,7 +175,6 @@ public class ChartViewModel : ViewModelBase
                 {
                     max = data.Max(d => d.High);
 
-                    Name = instrument.Name;
                     foreach (var indicator in PriceIndicators)
                     {
                         indicator.Initialize(StockSerie);

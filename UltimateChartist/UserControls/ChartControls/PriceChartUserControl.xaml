@@ -46,13 +46,6 @@
             <RowDefinition Height="*" MinHeight="100"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <telerik:RadAutoCompleteBox Width="250" WatermarkContent="Search instrument..." VerticalContentAlignment="Center" VerticalAlignment="Top" FontSize="11"
-                                        DisplayMemberPath="Name"
-                                        TextSearchPath="Name"
-                                        TextSearchMode="Contains"
-                                        ItemsSource="{Binding Instruments, Source={x:Static main:MainWindowViewModel.Instance}}"
-                                        SelectedItem="{Binding Instrument, Mode=TwoWay}"
-                                        SelectionMode="Single"/>
             <Button Name="indicatorSettings" BorderThickness="0" Background="Transparent" Margin="1" Width="16" Height="16" Command="{StaticResource AddIndicatorCommand}">
                 <Image Source="{Binding Source={StaticResource settingsImg}}"></Image>
             </Button>
@@ -80,14 +73,14 @@
                 </RadioButton>
             </StackPanel>
             <TextBlock><Run Text="Date:" FontFamily="Segoe UI" FontSize="10" /><Run Text=" "/><Run x:Name="date" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC"/></TextBlock>
-            <TextBlock Margin="10,0,0,0"><Run Text="Price:" FontFamily="Segoe UI" FontSize="10" /><Run Text=" "/><Run x:Name="price" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC" /></TextBlock>
+            <TextBlock Margin="10,0,0,0"><Run Text="Close:" FontFamily="Segoe UI" FontSize="10" /><Run Text=" "/><Run x:Name="price" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC" /></TextBlock>
         </StackPanel>
         <Grid x:Name="LayoutRoot" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <telerik:RadCartesianChart x:Name="priceChart" Grid.Row="1" Margin="10,0,10,30" MaxZoom="{Binding MaxZoom}" MinZoom="1,1"
+            <telerik:RadCartesianChart x:Name="priceChart" Grid.Row="1" Margin="5,5,50,5" MaxZoom="{Binding MaxZoom}" MinZoom="1,1" BorderBrush="Black" BorderThickness="1"
                                    HorizontalZoomRangeStart="{Binding HorizontalZoomRangeStart, Mode=TwoWay}"
                                    HorizontalZoomRangeEnd="{Binding HorizontalZoomRangeEnd, Mode=TwoWay}"
                                    VerticalZoomRangeStart="{Binding VerticalZoomRangeStart}" 

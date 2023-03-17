@@ -1,10 +1,6 @@
 ﻿Objective: Use Ultimate Chartist daily
-	Data (ABC daily)
-	Indicator selection
-		Make IndicationConfig dialog unique per chart
-		Indicator picker
-		Indicator config
-		Theme Management
+	Data (ABC daily) ==> OK
+		Add All euronext landscape
 	Event implementation
 		Implementation in Indicators
 	Screener
@@ -27,3 +23,9 @@ Objective: Intraday entry
 	Intraday screener (on daily candidates stock)
 Objective: Improve Config dialog UI
 	Opacity management: Check with RadDropDownButton demo (Bind to color transparency or Area opacity ?)
+
+Bug:
+	Non Ranged indicator Min,Max calculation (MACD)
+	Theme name in combobox after saveas
+
+

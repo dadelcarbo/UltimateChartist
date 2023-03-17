@@ -16,10 +16,6 @@ public class IndicatorChartViewModel : ViewModelBase
         Indicator = new IndicatorViewModel(indicator, chartViewModel.StockSerie);
     }
 
-    private string name;
-    public string Name { get => name; set { if (name != value) { name = value; RaisePropertyChanged(); } } }
-
-
     #region Commands
 
     private DelegateCommand deleteIndicatorCommand;

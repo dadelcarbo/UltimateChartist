@@ -45,12 +45,12 @@ public partial class PriceChartUserControl : UserControl
                     IndicatorChartViewModel indicatorChartViewModel = e.NewItems[0] as IndicatorChartViewModel;
 
                     this.ChartGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                    var splitter = new GridSplitter() { Height = 4, SnapsToDevicePixels = true, HorizontalAlignment = HorizontalAlignment.Stretch };
+                    var splitter = new GridSplitter() { Height = 4, SnapsToDevicePixels = true, HorizontalAlignment = HorizontalAlignment.Stretch, BorderBrush = Brushes.DarkGray, BorderThickness = new Thickness(1) };
                     Grid.SetRow(splitter, this.ChartGrid.RowDefinitions.Count - 1);
                     this.ChartGrid.Children.Add(splitter);
 
                     var indicatorPriceChartUserControl = new IndicatorChartUserControl(indicatorChartViewModel);
-                    this.ChartGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0.5, GridUnitType.Star), MinHeight = 100 });
+                    this.ChartGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0.25, GridUnitType.Star), MinHeight = 50 });
                     Grid.SetRow(indicatorPriceChartUserControl, this.ChartGrid.RowDefinitions.Count - 1);
                     this.ChartGrid.Children.Add(indicatorPriceChartUserControl);
                 }
@@ -104,7 +104,7 @@ public partial class PriceChartUserControl : UserControl
             case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                 {
                     var indicator = e.OldItems[0] as IIndicator;
-                    this.priceChart.Series.RemoveAll(s=>s.DataContext == indicator);
+                    this.priceChart.Series.RemoveAll(s => s.DataContext == indicator);
                 }
                 break;
             case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
@@ -251,10 +251,6 @@ public partial class PriceChartUserControl : UserControl
     private void AddIndicatorCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
     {
         var indicatorSelectorWindow = new IndicatorConfigWindow(this.viewModel);
-        indicatorSelectorWindow.Show();
-
-        //if (this.CurrentChartView == null)
-        //    return;
-        //this.currentChartView.AddIndicator();
+        indicatorSelectorWindow.ShowDialog();
     }
 }

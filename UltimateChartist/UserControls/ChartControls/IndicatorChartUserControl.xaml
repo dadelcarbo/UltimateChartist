@@ -19,10 +19,7 @@
             </Button>
             <TextBlock Text="{Binding Indicator.Indicator.DisplayName}" FontSize="10" VerticalAlignment="Center" Margin="1" />
         </StackPanel>
-
-        <TextBlock Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-5,40,0"
-                   Text="{Binding Name}" Foreground="#767676" FontFamily="Segoe UI" FontSize="11" />
-        <telerik:RadCartesianChart Name="indicatorChart" Grid.Row="1" Margin="10,11,10,0"
+        <telerik:RadCartesianChart Name="indicatorChart" Grid.Row="1" Margin="5,0,50,5" BorderBrush="Black" BorderThickness="1" MinHeight="25"
                                    HorizontalZoomRangeStart="{Binding ChartViewModel.HorizontalZoomRangeStart}" 
                                    HorizontalZoomRangeEnd="{Binding ChartViewModel.HorizontalZoomRangeEnd}"
                                    PlotAreaStyle="{StaticResource plotAreaStyle}">
