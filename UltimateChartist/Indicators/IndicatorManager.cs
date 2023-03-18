@@ -1,14 +1,41 @@
 ﻿using System.Collections.Generic;
 using System;
+using UltimateChartist.Indicators.Display;
+using System.ComponentModel;
+using UltimateChartist.DataModels;
+using System.Security.Policy;
 
 namespace UltimateChartist.Indicators;
 
+public class IndicatorDescriptor
+{
+    private IIndicator instance;
+
+    public IndicatorDescriptor(IIndicator instance)
+    {
+        this.instance = instance;
+    }
+
+    public Type Type => instance.GetType();
+    public string ShortName => instance.ShortName;
+
+    public string DisplayName => instance.DisplayName;
+
+    public string Description => instance.Description;
+
+    public DisplayType DisplayType => instance.DisplayType;
+
+    internal IIndicator CreateInstance()
+    {
+        return IndicatorManager.CreateIndicator(this);
+    }
+}
 public static class IndicatorManager
 {
-    static private List<IndicatorBase> indicatorList = null;
-    static private List<IndicatorBase> GetIndicatorList()
+    static private List<IndicatorDescriptor> indicatorList = null;
+    static private List<IndicatorDescriptor> GetIndicatorList()
     {
-        indicatorList = new List<IndicatorBase>();
+        indicatorList = new List<IndicatorDescriptor>();
         var assembly = typeof(IndicatorManager).Assembly;
         foreach (Type t in assembly.GetTypes())
         {
@@ -18,13 +45,19 @@ public static class IndicatorManager
                 if (!(t.Name.EndsWith("Base") || t.Name.Contains("StockTrail")))
                 {
                     var instance = assembly.CreateInstance(t.FullName);
-                    indicatorList.Add(instance as IndicatorBase);
+                    indicatorList.Add(new(instance as IIndicator));
                 }
             }
         }
         return indicatorList;
     }
-    static public List<IndicatorBase> Indicators => indicatorList ??= GetIndicatorList();
+    static public List<IndicatorDescriptor> Indicators => indicatorList ??= GetIndicatorList();
+
+    static public IIndicator CreateIndicator(IndicatorDescriptor indicatorDescriptor)
+    {
+        var assembly = typeof(IndicatorManager).Assembly;
+        return (IIndicator)Activator.CreateInstance(indicatorDescriptor.Type);
+    }
 
     //static public IIndicator CreateIndicator(string fullName)
     //{

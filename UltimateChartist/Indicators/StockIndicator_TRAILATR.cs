@@ -44,9 +44,7 @@ public class StockIndicator_TrailATR : TrailStopBase
                 High = longStop[i] == null ? null: bar.Close,
                 Low = shortStop[i] == null ? null : bar.Close,
                 Long = longStop[i],
-                Short = shortStop[i],
-                LongReentry = null,
-                ShortReentry = null
+                Short = shortStop[i]
             };
             i++;
         }

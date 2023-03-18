@@ -22,7 +22,7 @@
             <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Background="Transparent" BorderBrush="Transparent" >
                 <telerik:EventToCommandBehavior.EventBindings>
                     <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
-                    <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" EventName="DropDownOpening" />
+                    <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" PassEventArgsToCommand="True" EventName="DropDownOpening" />
                 </telerik:EventToCommandBehavior.EventBindings>
                 <telerik:RadDropDownButton.Content>
                     <Image Source="{Binding Source={StaticResource indicatorImg}}" Height="16" Width="16"></Image>
@@ -31,7 +31,7 @@
                     <telerik:RadGridView ItemsSource="{Binding Source={x:Static indicator:IndicatorManager.Indicators}}" RowIndicatorVisibility="Collapsed"
                                          AutoGenerateColumns="False" ShowGroupPanel="False" CanUserDeleteRows="False" FrozenColumnsSplitterVisibility="Collapsed" 
                                          SelectionMode="Single" SelectionUnit="FullRow"
-                                         SelectedItem="{Binding NewIndicator}">
+                                         SelectedItem="{Binding NewIndicator, Mode=TwoWay}">
                         <telerik:RadGridView.Columns>
                             <telerik:GridViewDataColumn Header="Name" MinWidth="100" DataMemberBinding="{Binding ShortName}"/>
                             <telerik:GridViewDataColumn Header="Type" MinWidth="80" DataMemberBinding="{Binding DisplayType}"/>

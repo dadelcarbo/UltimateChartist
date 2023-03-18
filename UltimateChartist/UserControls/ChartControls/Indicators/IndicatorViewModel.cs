@@ -39,47 +39,6 @@ public class IndicatorViewModel : ViewModelBase
         if (indicator.Series.Values == null)
             indicator.Initialize(stockSerie);
 
-        // Get Parameters from instrospection
-        foreach (PropertyInfo prop in indicator.GetType().GetProperties())
-        {
-            var attribute = prop.GetCustomAttributes(typeof(IndicatorParameterAttribute), true).FirstOrDefault() as IndicatorParameterAttribute;
-            if (attribute == null)
-                continue;
-            switch (attribute.Type.Name)
-            {
-                case "Decimal":
-                    Parameters.Add(new IndicatorParameterViewModel<decimal>(prop.Name)
-                    {
-                        Value = (decimal)prop.GetValue(indicator),
-                        Parameter = attribute
-                    });
-                    break;
-                case "Double":
-                    Parameters.Add(new IndicatorParameterViewModel<double>(prop.Name)
-                    {
-                        Value = (double)prop.GetValue(indicator),
-                        Parameter = attribute
-                    });
-                    break;
-                case "Int32":
-                    Parameters.Add(new IndicatorParameterViewModel<int>(prop.Name)
-                    {
-                        Value = (int)prop.GetValue(indicator),
-                        Parameter = attribute
-                    });
-                    break;
-                case "Boolean":
-                    Parameters.Add(new IndicatorParameterViewModel<bool>(prop.Name)
-                    {
-                        Value = (bool)prop.GetValue(indicator),
-                        Parameter = attribute
-                    });
-                    break;
-                default:
-                    throw new NotImplementedException($"Attribute type not implemented {attribute.Type.Name} in IndicatorViewModel");
-            }
-        }
-
         // Create GraphSeries from instrospection
         var indicatorSeries = indicator.GetType().GetProperty("Series")?.GetValue(indicator);
         if (indicatorSeries != null)
@@ -294,6 +253,6 @@ public class IndicatorViewModel : ViewModelBase
         }
     }
 
-    public List<IIndicatorParameterViewModel> Parameters { get; } = new List<IIndicatorParameterViewModel>();
     public List<CartesianSeries> CartesianSeries { get; } = new List<CartesianSeries>();
+
 }

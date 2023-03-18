@@ -38,16 +38,11 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
 
         private void SetTheme(StockTheme theme)
         {
-            var priceTreeViewModel = new ObservableCollection<IndicatorTreeViewModel>
-            {
-            };
             var root = new ObservableCollection<IndicatorTreeViewModel>
             {
-                new IndicatorTreeViewModel {
-                    Name = "Price Chart",
-                    Items = priceTreeViewModel
-                }
+                new IndicatorTreeViewModel("Price Chart")
             };
+            var priceTreeViewModel = root.First().Items;
             int count = 1;
             if (theme != null)
             {
@@ -57,23 +52,12 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                     {
                         case DisplayType.Price:
                         case DisplayType.TrailStop:
-                            priceTreeViewModel.Add(new IndicatorTreeViewModel
-                            {
-                                Name = indicator.DisplayName,
-                                Indicator = indicator
-                            });
+                            priceTreeViewModel.Add(new IndicatorTreeViewModel(indicator));
                             break;
                         case DisplayType.Ranged:
                         case DisplayType.NonRanged:
-                            var indicatorTreeViewModel = new IndicatorTreeViewModel
-                            {
-                                Name = $"Indicator{count++} Graph"
-                            };
-                            indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel
-                            {
-                                Name = indicator.DisplayName,
-                                Indicator = indicator
-                            });
+                            var indicatorTreeViewModel = new IndicatorTreeViewModel ($"Indicator{count++} Graph");
+                            indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel(indicator));
                             root.Add(indicatorTreeViewModel);
                             break;
                         case DisplayType.Volume:
@@ -110,10 +94,12 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
         {
             if (NewIndicator != null)
             {
-                this.ChartViewModel.Theme.Indicators.Add(NewIndicator);
+                var indicator = NewIndicator.CreateInstance();
+                this.ChartViewModel.Theme.Indicators.Add(indicator);
                 this.SetTheme(this.ChartViewModel.Theme);
-                this.ChartViewModel.AddIndicator(NewIndicator);
-                this.SelectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault(i => i.Indicator == NewIndicator);
+                this.ChartViewModel.AddIndicator(indicator);
+                this.SelectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault(i => i.Indicator == indicator);
+                this.NewIndicator = null;
             }
         }
 
@@ -125,7 +111,8 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             this.NewIndicator = null;
         }
 
-        public IIndicator NewIndicator { get; set; }
+        private IndicatorDescriptor newIndicator;
+        public IndicatorDescriptor NewIndicator { get => newIndicator; set { if (newIndicator != value) { newIndicator = value; RaisePropertyChanged(); } } }
 
         private DelegateCommand deleteIndicatorCommand;
         public ICommand DeleteIndicatorCommand => deleteIndicatorCommand ??= new DelegateCommand(DeleteIndicator);
@@ -174,7 +161,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                     });
                     return;
                 }
-                var existingTheme = this.Themes.FirstOrDefault(t=>t.Name == e.PromptResult);
+                var existingTheme = this.Themes.FirstOrDefault(t => t.Name == e.PromptResult);
                 if (existingTheme != null && existingTheme == this.ChartViewModel.Theme)
                 {
                     RadWindow.Alert(new DialogParameters()
@@ -207,6 +194,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
         }
 
         private DelegateCommand deleteThemeCommand;
+
         public ICommand DeleteThemeCommand => deleteThemeCommand ??= new DelegateCommand(DeleteTheme);
 
         private void DeleteTheme(object commandParameter)

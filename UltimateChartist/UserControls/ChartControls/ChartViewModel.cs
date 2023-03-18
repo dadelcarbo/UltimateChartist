@@ -13,13 +13,12 @@ namespace UltimateChartist.UserControls.ChartControls;
 public class ChartViewModel : ViewModelBase
 {
     const double ZOOM_MARGIN = 0.025; // %
-    static int count = 1;
+
     public ChartViewModel(Instrument instrument, StockTheme theme)
     {
         Instrument = instrument;
         Theme = theme;
     }
-    private string name;
     public string Name => this.Instrument?.Name;
 
     #region THEME & INDICATORS

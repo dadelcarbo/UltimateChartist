@@ -26,7 +26,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
 
             if (itemViewModel.Indicator != null)
             {
-                this.IndicatorConfigPanel.Children.Add(new IndicatorConfigUserControl(new IndicatorViewModel(itemViewModel.Indicator, chartViewModel.StockSerie)));
+                this.IndicatorConfigPanel.Children.Add(new IndicatorConfigUserControl(itemViewModel.Indicator));
             }
         }
     }

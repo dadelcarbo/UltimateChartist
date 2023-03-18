@@ -59,7 +59,7 @@
                 <telerik:RadMenuItem Command="{StaticResource NewChartViewCommand}"></telerik:RadMenuItem>
                 <telerik:RadMenuItem Command="{StaticResource CloseChartViewCommand}"></telerik:RadMenuItem>
             </telerik:RadMenuItem>
-            <ComboBox ItemsSource="{Binding ApplicationThemes}" SelectedItem="{Binding ApplicationTheme}"></ComboBox>
+            
             <telerik:RadAutoCompleteBox Width="250" WatermarkContent="Search instrument..." VerticalContentAlignment="Center" VerticalAlignment="Top" FontSize="11"
                                         DisplayMemberPath="Name"
                                         TextSearchPath="Name"
