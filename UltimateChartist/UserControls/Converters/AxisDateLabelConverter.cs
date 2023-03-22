@@ -3,7 +3,6 @@ using System.Windows.Data;
 using UltimateChartist.Helpers;
 
 namespace UltimateChartist.UserControls.Converters;
-
 public class AxisDateLabelConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

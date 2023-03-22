@@ -14,13 +14,16 @@
         <BitmapImage x:Key="trashImg" UriSource="Resources/trash.png" />
         <BitmapImage x:Key="nextImg" UriSource="Resources/next.png" />
         <BitmapImage x:Key="preferenceImg" UriSource="Resources/preference.png" />
-        <BitmapImage x:Key="reloadImg" UriSource="Resources/reload.png" />
+        <BitmapImage x:Key="refreshImg" UriSource="Resources/refresh.png" />
         <BitmapImage x:Key="starImg" UriSource="Resources/star.png" />
         <BitmapImage x:Key="settingsImg" UriSource="Resources/settings.png" />
         <BitmapImage x:Key="indicatorImg" UriSource="Resources/indicator.png" />
         <BitmapImage x:Key="newImg" UriSource="Resources/new.png" />
         <BitmapImage x:Key="diskImg" UriSource="Resources/disk.png" />
         <BitmapImage x:Key="checkImg" UriSource="Resources/check.png" />
+        <BitmapImage x:Key="crossImg" UriSource="Resources/cross.png" />
+        <BitmapImage x:Key="rulerImg" UriSource="Resources/ruler.png" />
+        <BitmapImage x:Key="reloadImg" UriSource="Resources/reload.png" />
 
         <BitmapImage x:Key="candleImg" UriSource="Resources/candlestick.png" />
         <BitmapImage x:Key="barchartImg" UriSource="Resources/barchart.png" />

@@ -11,6 +11,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ChartControls\Indicators\ChartConfigUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -59,6 +62,8 @@
     <Compile Include="Indicators\Theme\ParameterValue.cs" />
     <Compile Include="Indicators\Theme\StockTheme.cs" />
     <Compile Include="Indicators\TrailStopBase.cs" />
+    <Compile Include="UserControls\ChartControls\ChartProperties.cs" />
+    <Compile Include="UserControls\ChartControls\Indicators\ChartConfigUserControl.xaml.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigViewModel.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorConfigWindow.xaml.cs" />
     <Compile Include="UserControls\ChartControls\Indicators\IndicatorTreeViewModel.cs" />
@@ -116,12 +121,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Converters\ThicknessToStringConverter.cs" />
     <Compile Include="UserControls\InstrumentControls\InstrumentWindow.xaml.cs" />
     <Compile Include="UserControls\InstrumentControls\PalmaresWindow.xaml.cs" />
     <Compile Include="UserControls\InstrumentControls\ScreenerWindow.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backlog.txt" />
+    <Resource Include="Resources\reload.png" />
+    <Resource Include="Resources\cross.png" />
+    <Resource Include="Resources\ruler.png" />
     <Resource Include="Resources\disk.png" />
     <Resource Include="Resources\trash.png" />
     <Resource Include="Resources\check.png" />
@@ -141,7 +150,7 @@
     <Resource Include="Resources\copy.png" />
     <Resource Include="Resources\next.png" />
     <Resource Include="Resources\preference.png" />
-    <Resource Include="Resources\reload.png" />
+    <Resource Include="Resources\refresh.png" />
     <Resource Include="Resources\settings.png" />
     <Resource Include="Resources\star.png" />
   </ItemGroup>

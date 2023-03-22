@@ -161,6 +161,37 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorTrailSeries":
                     {
+
+                        var lineSeries = new LineSeries()
+                        {
+                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
+                            ValueBinding = new PropertyNameDataPointBinding("LongReentry")
+                        };
+                        var binding = new Binding($"Series.LongReentry.Stroke");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
+                        binding = new Binding($"Series.LongReentry.Thickness");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Values");
+                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
+                        lineSeries.DataContext = indicator;
+
+                        CartesianSeries.Add(lineSeries);
+
+                        lineSeries = new LineSeries()
+                        {
+                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
+                            ValueBinding = new PropertyNameDataPointBinding("ShortReentry")
+                        };
+                        binding = new Binding($"Series.ShortReentry.Stroke");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
+                        binding = new Binding($"Series.ShortReentry.Thickness");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Values");
+                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
+                        lineSeries.DataContext = indicator;
+
+                        CartesianSeries.Add(lineSeries);
+
                         var rangeSeries = new RangeSeries()
                         {
                             CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
@@ -169,7 +200,7 @@ public class IndicatorViewModel : ViewModelBase
                             StrokeMode = RangeSeriesStrokeMode.LowPoints
                         };
 
-                        var binding = new Binding($"Series.Long.Fill");
+                        binding = new Binding($"Series.Long.Fill");
                         rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
                         binding = new Binding($"Series.Long.Thickness");
                         rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
@@ -203,35 +234,6 @@ public class IndicatorViewModel : ViewModelBase
 
                         CartesianSeries.Add(rangeSeries);
 
-                        var lineSeries = new LineSeries()
-                        {
-                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                            ValueBinding = new PropertyNameDataPointBinding("LongReentry")
-                        };
-                        binding = new Binding($"Series.LongReentry.Stroke");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                        binding = new Binding($"Series.LongReentry.Thickness");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                        binding = new Binding($"Series.Values");
-                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                        lineSeries.DataContext = indicator;
-
-                        CartesianSeries.Add(lineSeries);
-
-                        lineSeries = new LineSeries()
-                        {
-                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                            ValueBinding = new PropertyNameDataPointBinding("ShortReentry")
-                        };
-                        binding = new Binding($"Series.ShortReentry.Stroke");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                        binding = new Binding($"Series.ShortReentry.Thickness");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                        binding = new Binding($"Series.Values");
-                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                        lineSeries.DataContext = indicator;
-
-                        CartesianSeries.Add(lineSeries);
                     }
                     break;
                 default:

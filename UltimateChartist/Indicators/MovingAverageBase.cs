@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Linq;
+using System.Windows.Media;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators.Display;
 using UltimateChartist.Indicators.Events;
@@ -29,9 +30,11 @@ public abstract class MovingAverageBase : IndicatorBase
         this.InitializeMA(stockSerie);
         var close = stockSerie.CloseValues;
         bool isAbove, previousIsAbove = false;
+
+        var series = this.Series.Values.Cast<IndicatorLineValue>().ToArray();
         for (int i = this.Period; i < stockSerie.CloseValues.Length; i++)
         {
-            var value = this.Series.Values[i] as IndicatorLineValue;
+            var value = series[i];
             isAbove = close[i] > value.Value;
             value.Events = new StockEvent_MA { IsAbove = isAbove, CrossAbove = !previousIsAbove && isAbove, CrossBelow = previousIsAbove && !isAbove };
             previousIsAbove = isAbove;

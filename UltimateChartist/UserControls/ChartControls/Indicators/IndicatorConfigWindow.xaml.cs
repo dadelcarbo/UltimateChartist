@@ -1,5 +1,7 @@
 ﻿using System.Windows;
-using Telerik.Windows.Controls.Data.CardView;
+using System.Windows.Controls;
+using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.TreeListView;
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
 {
@@ -13,7 +15,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
         public IndicatorConfigWindow(ChartViewModel chartViewModel)
         {
             this.chartViewModel = chartViewModel;
-            this.indicatorConfigViewModel = new IndicatorConfigViewModel(chartViewModel, this);
+            this.indicatorConfigViewModel = IndicatorConfigViewModel.GetInstance(chartViewModel, this);
             this.DataContext = indicatorConfigViewModel;
             InitializeComponent();
         }
@@ -28,6 +30,19 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             {
                 this.IndicatorConfigPanel.Children.Add(new IndicatorConfigUserControl(itemViewModel.Indicator));
             }
+            else
+            {
+                this.IndicatorConfigPanel.Children.Add(new ChartConfigUserControl(chartViewModel));
+            }
+        }
+
+        private void deleteIndicatorButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = e.Source as Button;
+            var item = btn?.ParentOfType<TreeListViewRow>()?.Item as IndicatorTreeViewModel;
+            if (item == null)
+                return;
+            this.indicatorConfigViewModel.DeleteItem(item);
         }
     }
 }

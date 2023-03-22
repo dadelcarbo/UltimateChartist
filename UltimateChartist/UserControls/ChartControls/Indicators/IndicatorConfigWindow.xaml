@@ -10,6 +10,19 @@
         mc:Ignorable="d" WindowStyle="ToolWindow"
         Title="Indicator Configuration" Height="450" Width="750">
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <DataTemplate x:Key="indicatorCellTemplate" >
+                <Grid HorizontalAlignment="Stretch">
+                    <TextBlock Text="{Binding Name}" FontSize="11" HorizontalAlignment="Left" />
+                    <Button Name="deleteIndicatorButton" HorizontalAlignment="Right" Width="16" Height="16" BorderThickness="0"
+                            Visibility="{Binding IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type telerik:TreeListViewRow}}}"
+                            Click="deleteIndicatorButton_Click">
+                        <Image Source="{StaticResource crossImg}"/>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -19,6 +32,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="2">
+            <telerik:RadComboBox Width="200" Background="Transparent" Margin="0" DisplayMemberPath="Name"
+                                  ItemsSource="{Binding Themes}" SelectedItem="{Binding ChartViewModel.Theme}"></telerik:RadComboBox>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding ReloadThemeCommand}">
+                <Image Source="{Binding Source={StaticResource reloadImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding SaveThemeCommand}">
+                <Image Source="{Binding Source={StaticResource diskImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent"  Command="{Binding NewThemeCommand}">
+                <Image Source="{Binding Source={StaticResource newImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding DeleteThemeCommand}">
+                <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Background="Transparent" BorderBrush="Transparent" >
                 <telerik:EventToCommandBehavior.EventBindings>
                     <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
@@ -42,30 +70,21 @@
                     </telerik:RadGridView>
                 </telerik:RadDropDownButton.DropDownContent>
             </telerik:RadDropDownButton>
-            <telerik:RadComboBox Width="200" Background="Transparent" Margin="0" DisplayMemberPath="Name"
-                                  ItemsSource="{Binding Themes}" SelectedItem="{Binding ChartViewModel.Theme}"></telerik:RadComboBox>
-            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding SaveThemeCommand}">
-                <Image Source="{Binding Source={StaticResource diskImg}}" Height="16" Width="16"></Image>
-            </Button>
-            <Button Margin="0" Background="Transparent" BorderBrush="Transparent"  Command="{Binding NewThemeCommand}">
-                <Image Source="{Binding Source={StaticResource newImg}}" Height="16" Width="16"></Image>
-            </Button>
-            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding DeleteThemeCommand}">
-                <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
-            </Button>
+
         </StackPanel>
         <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False"
-                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed" SelectedItem="{Binding SelectedItem}" >
+                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed"
+                                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <telerik:EventToCommandBehavior.EventBindings>
                 <telerik:EventBinding Command="{Binding DeleteIndicatorCommand}" EventName="Deleting" />
             </telerik:EventToCommandBehavior.EventBindings>
             <telerik:RadTreeListView.Columns>
-                <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"  IsReadOnly="True"/>
+                <telerik:GridViewColumn Header="Name" CellTemplate="{StaticResource indicatorCellTemplate}" Width="*"/>
             </telerik:RadTreeListView.Columns>
             <telerik:RadTreeListView.ChildTableDefinitions>
                 <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}" />
             </telerik:RadTreeListView.ChildTableDefinitions>
         </telerik:RadTreeListView>
-        <StackPanel Grid.Row="1" Grid.Column="1" Name="IndicatorConfigPanel"></StackPanel>
+        <Grid Grid.Row="1" Grid.Column="1" Name="IndicatorConfigPanel"></Grid>
     </Grid>
 </Window>

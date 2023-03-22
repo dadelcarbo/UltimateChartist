@@ -158,7 +158,7 @@ namespace UltimateChartist.DataModels.DataProviders.SaxoTurbo
                             Name = row[1],
                             Symbol = row[0],
                             ISIN = row[0],
-                            Country = row[0].Substring(0, 2),
+                            Country = row[0][..2],
                             Group = StockGroup.TURBO,
                             DataProvider = this,
                             RealTimeDataProvider = this

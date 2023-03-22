@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
@@ -11,13 +10,31 @@ using UltimateChartist.Indicators.Theme;
 
 namespace UltimateChartist.UserControls.ChartControls.Indicators
 {
-    public class IndicatorConfigViewModel : ViewModelBase
+    public class IndicatorConfigViewModel : ViewModelBase, IDisposable
     {
         private ObservableCollection<IndicatorTreeViewModel> root;
         private readonly IndicatorConfigWindow indicatorConfigWindow;
 
+        public static IndicatorConfigViewModel Instance { get; private set; }
+
+        public static IndicatorConfigViewModel GetInstance(ChartViewModel chartViewModel, IndicatorConfigWindow indicatorConfigWindow)
+        {
+            if (Instance != null)
+            {
+                Instance.Dispose();
+            }
+            Instance = new IndicatorConfigViewModel(chartViewModel, indicatorConfigWindow);
+            return Instance;
+        }
+
+        protected new void Dispose()
+        {
+            this.ChartViewModel.PropertyChanged -= ChartViewModel_PropertyChanged;
+            base.Dispose();
+        }
+
         public ChartViewModel ChartViewModel { get; }
-        public IndicatorConfigViewModel(ChartViewModel chartViewModel, IndicatorConfigWindow indicatorConfigWindow)
+        private IndicatorConfigViewModel(ChartViewModel chartViewModel, IndicatorConfigWindow indicatorConfigWindow)
         {
             this.ChartViewModel = chartViewModel;
             this.indicatorConfigWindow = indicatorConfigWindow;
@@ -26,7 +43,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             this.ChartViewModel.PropertyChanged += ChartViewModel_PropertyChanged;
         }
 
-        private void ChartViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ChartViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -56,13 +73,12 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
                             break;
                         case DisplayType.Ranged:
                         case DisplayType.NonRanged:
-                            var indicatorTreeViewModel = new IndicatorTreeViewModel ($"Indicator{count++} Graph");
+                            var indicatorTreeViewModel = new IndicatorTreeViewModel($"Indicator{count++} Graph");
                             indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel(indicator));
                             root.Add(indicatorTreeViewModel);
                             break;
                         case DisplayType.Volume:
                             throw new NotImplementedException();
-                            break;
                     }
                 }
             }
@@ -128,7 +144,36 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             }
         }
 
+        internal void DeleteItem(IndicatorTreeViewModel treeItem)
+        {
+            if (treeItem.Indicator != null)
+            {
+                this.ChartViewModel.Theme.Indicators.Remove(treeItem.Indicator);
+                this.ChartViewModel.RemoveIndicator(treeItem.Indicator);
+            }
+            else
+            {
+                foreach (var item in treeItem.Items)
+                {
+                    this.ChartViewModel.Theme.Indicators.Remove(item.Indicator);
+                    this.ChartViewModel.RemoveIndicator(item.Indicator);
+                }
+            }
+            this.SetTheme(this.ChartViewModel.Theme);
+            var selectedItem = this.Root.SelectMany(i => i.Items).FirstOrDefault();
+            this.SelectedItem = selectedItem != null ? selectedItem : this.Root.FirstOrDefault();
+        }
+
         #region THEME COMMANDS
+
+        private DelegateCommand reloadThemeCommand;
+        public ICommand ReloadThemeCommand => reloadThemeCommand ??= new DelegateCommand(ReloadTheme);
+        private void ReloadTheme(object commandParameter)
+        {
+            this.ChartViewModel.Theme.Reload();
+            this.SetTheme(ChartViewModel.Theme);
+        }
+
         private DelegateCommand saveThemeCommand;
         public ICommand SaveThemeCommand => saveThemeCommand ??= new DelegateCommand(SaveTheme);
 
@@ -193,8 +238,8 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
             this.ChartViewModel.Theme = newTheme;
         }
 
-        private DelegateCommand deleteThemeCommand;
 
+        private DelegateCommand deleteThemeCommand;
         public ICommand DeleteThemeCommand => deleteThemeCommand ??= new DelegateCommand(DeleteTheme);
 
         private void DeleteTheme(object commandParameter)

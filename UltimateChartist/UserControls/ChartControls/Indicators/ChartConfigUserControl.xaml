@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="UltimateChartist.UserControls.ChartControls.Indicators.ChartConfigUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateChartist.UserControls.ChartControls.Indicators"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+             xmlns:converters="clr-namespace:UltimateChartist.UserControls.Converters" 
+             d:DataContext="{d:DesignInstance Type=local:IndicatorViewModel}"
+             mc:Ignorable="d" d:Width="400" d:Height="200" d:Background="Beige">
+    <UserControl.Resources>
+        <telerik:ColorToBrushConverter x:Key="colorToBrush" />
+        <converters:ThicknessToStringConverter x:Key="thicknessToString" />
+        <DataTemplate x:Key="borderThicknessTemplate">
+            <TextBox Text="{Binding BorderThickness, Converter={StaticResource thicknessToString}, Mode=TwoWay}" />
+        </DataTemplate>
+        <DataTemplate x:Key="borderBrushTemplate">
+            <telerik:RadColorPicker SelectedColor="{Binding BorderBrush, Converter={StaticResource colorToBrush}, Mode=TwoWay}" />
+        </DataTemplate>
+        <DataTemplate x:Key="foregroundTemplate">
+            <telerik:RadColorPicker SelectedColor="{Binding Foreground, Converter={StaticResource colorToBrush}, Mode=TwoWay}" />
+        </DataTemplate>
+        <DataTemplate x:Key="backgroundTemplate">
+            <telerik:RadColorPicker SelectedColor="{Binding Background, Converter={StaticResource colorToBrush}, Mode=TwoWay}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <telerik:RadPropertyGrid Name="propertyGrid"
+                                 DescriptionPanelVisibility="Collapsed"
+                                 SortAndGroupButtonsVisibility="Collapsed"
+                                 SearchBoxVisibility="Collapsed"
+                                 FieldIndicatorVisibility="Collapsed"
+                                 AutoGeneratePropertyDefinitions="True" >
+        </telerik:RadPropertyGrid>
+    </Grid>
+</UserControl>

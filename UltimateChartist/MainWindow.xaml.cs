@@ -21,7 +21,7 @@ public partial class MainWindow : Window
     private MainWindowViewModel viewModel;
     public MainWindow()
     {
-        StyleManager.ApplicationTheme = new VisualStudio2019Theme();
+        StyleManager.ApplicationTheme = new VisualStudio2013Theme();
 
         InitializeComponent();
 
@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 
     public void AddChart(Instrument instrument, StockTheme theme)
     {
-        var chartViewModel = new ChartViewModel(instrument, theme);
+        var chartViewModel = new ChartViewModel(instrument, null);
         var tabItem = new RadTabItem()
         {
             DataContext = chartViewModel,
@@ -95,6 +95,7 @@ public partial class MainWindow : Window
         BindingOperations.SetBinding(tabItem, RadTabItem.HeaderProperty, binding);
 
         tabItem.Content = new PriceChartUserControl(chartViewModel);
+        chartViewModel.Theme = theme;
         this.MainTabControl.Items.Add(tabItem);
         this.MainTabControl.SelectedItem = tabItem;
     }

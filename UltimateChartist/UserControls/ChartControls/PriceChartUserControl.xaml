@@ -45,7 +45,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" MinHeight="100"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="2">
             <Button Name="indicatorSettings" BorderThickness="0" Background="Transparent" Margin="1" Width="16" Height="16" Command="{StaticResource AddIndicatorCommand}">
                 <Image Source="{Binding Source={StaticResource settingsImg}}"></Image>
             </Button>
@@ -62,33 +62,38 @@
                 <RadioButton Style="{StaticResource radioButtonStyle}" Content="M" Tag="{x:Static dataModels:BarDuration.Monthly}" Visibility="{Binding Instrument.SupportedBarDurations, Converter={StaticResource barDurationsToVisibilityConverter},ConverterParameter={x:Static dataModels:BarDuration.Monthly}}"/>
             </StackPanel>
             <StackPanel Margin="2,0,0,2" Orientation="Horizontal">
-                <RadioButton Style="{StaticResource radioButtonStyle}" Tag="{x:Static local:SeriesType.Candle}">
-                    <Image Source="{Binding Source={StaticResource candleImg}}" Height="14" Width="14"></Image>
+                <RadioButton Style="{StaticResource radioButtonStyle}" Tag="{x:Static local:SeriesType.Candle}" >
+                    <Image Source="{Binding Source={StaticResource candleImg}}" Height="16" Width="16"></Image>
                 </RadioButton>
                 <RadioButton Style="{StaticResource radioButtonStyle}" Tag="{x:Static local:SeriesType.BarChart}">
-                    <Image Source="{Binding Source={StaticResource barchartImg}}" Height="14" Width="14"></Image>
+                    <Image Source="{Binding Source={StaticResource barchartImg}}" Height="16" Width="16"></Image>
                 </RadioButton>
                 <RadioButton Style="{StaticResource radioButtonStyle}" Tag="{x:Static local:SeriesType.Line}">
-                    <Image Source="{Binding Source={StaticResource curveImg}}" Height="14" Width="14"></Image>
+                    <Image Source="{Binding Source={StaticResource curveImg}}" Height="16" Width="16"></Image>
                 </RadioButton>
             </StackPanel>
-            <TextBlock><Run Text="Date:" FontFamily="Segoe UI" FontSize="10" /><Run Text=" "/><Run x:Name="date" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC"/></TextBlock>
-            <TextBlock Margin="10,0,0,0"><Run Text="Close:" FontFamily="Segoe UI" FontSize="10" /><Run Text=" "/><Run x:Name="price" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC" /></TextBlock>
+            <StackPanel Margin="2,0,0,2" >
+                <TextBlock><Run Text="Date:  " FontFamily="Segoe UI" FontSize="10" FontWeight="DemiBold"/><Run x:Name="date" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC"/></TextBlock>
+                <TextBlock><Run Text="Close: " FontFamily="Segoe UI" FontSize="10" FontWeight="DemiBold"/><Run x:Name="price" FontFamily="Segoe UI" FontSize="10" Foreground="#FF0099BC" /></TextBlock>
+            </StackPanel>
         </StackPanel>
         <Grid x:Name="LayoutRoot" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <telerik:RadCartesianChart x:Name="priceChart" Grid.Row="1" Margin="5,5,50,5" MaxZoom="{Binding MaxZoom}" MinZoom="1,1" BorderBrush="Black" BorderThickness="1"
-                                   HorizontalZoomRangeStart="{Binding HorizontalZoomRangeStart, Mode=TwoWay}"
-                                   HorizontalZoomRangeEnd="{Binding HorizontalZoomRangeEnd, Mode=TwoWay}"
-                                   VerticalZoomRangeStart="{Binding VerticalZoomRangeStart}" 
-                                   VerticalZoomRangeEnd="{Binding VerticalZoomRangeEnd}"
-                                   TrackBallLineStyle="{StaticResource trackBallLineStyle}"
-                                   TrackBallInfoStyle="{StaticResource trackBallInfoStyle}"
-                                   PlotAreaStyle="{StaticResource plotAreaStyle}">
-
+            <telerik:RadCartesianChart x:Name="priceChart" Grid.Row="1" Margin="5,5,50,5" 
+                                       BorderBrush="Black" BorderThickness="1"
+                                       Background="{Binding ChartProperties.Background}"
+                                       MaxZoom="{Binding MaxZoom}" MinZoom="1,1" 
+                                       HorizontalZoomRangeStart="{Binding HorizontalZoomRangeStart, Mode=TwoWay}"
+                                       HorizontalZoomRangeEnd="{Binding HorizontalZoomRangeEnd, Mode=TwoWay}"
+                                       VerticalZoomRangeStart="{Binding VerticalZoomRangeStart}" 
+                                       VerticalZoomRangeEnd="{Binding VerticalZoomRangeEnd}"
+                                       TrackBallLineStyle="{StaticResource trackBallLineStyle}"
+                                       TrackBallInfoStyle="{StaticResource trackBallInfoStyle}"
+                                       PlotAreaStyle="{StaticResource plotAreaStyle}"
+                                       >
                 <telerik:RadCartesianChart.Behaviors>
                     <telerik:ChartPanAndZoomBehavior ZoomMode="Horizontal" DragMode="Pan" PanMode="Horizontal"/>
                     <telerik:ChartTrackBallBehavior ShowIntersectionPoints="True" TrackInfoUpdated="ChartTrackBallBehavior_TrackInfoUpdated" />
@@ -105,11 +110,19 @@
                                         LabelStyle="{StaticResource leftLabelStyle}" MajorTickStyle="{StaticResource tickStyle}" SmartLabelsMode="SmartStepAndRange"/>
                 </telerik:RadCartesianChart.VerticalAxis>
                 <telerik:RadCartesianChart.Grid>
-                    <telerik:CartesianChartGrid StripLinesVisibility="None" MajorLinesVisibility="XY">
-                        <telerik:CartesianChartGrid.YStripeBrushes>
-                            <SolidColorBrush Color="#FFD7D7D7" Opacity="0.3" />
-                            <SolidColorBrush Color="Transparent" />
-                        </telerik:CartesianChartGrid.YStripeBrushes>
+                    <telerik:CartesianChartGrid MajorLinesVisibility="XY"
+                                                MajorXLineInterval="5"
+                                                MajorYLineInterval="5">
+                        <telerik:CartesianChartGrid.MajorXLineStyle>
+                            <Style TargetType="Line">
+                                <Setter Property="Stroke" Value="{Binding ChartProperties.GridLineBrush}"/>
+                            </Style>
+                        </telerik:CartesianChartGrid.MajorXLineStyle>
+                        <telerik:CartesianChartGrid.MajorYLineStyle>
+                            <Style TargetType="Line">
+                                <Setter Property="Stroke" Value="{Binding ChartProperties.GridLineBrush}"/>
+                            </Style>
+                        </telerik:CartesianChartGrid.MajorYLineStyle>
                     </telerik:CartesianChartGrid>
                 </telerik:RadCartesianChart.Grid>
             </telerik:RadCartesianChart>

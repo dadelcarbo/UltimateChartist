@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using Telerik.Windows.Controls;
 using UltimateChartist.DataModels;
 using UltimateChartist.Indicators;
 using UltimateChartist.Indicators.Theme;
+using UltimateChartist.UserControls.ChartControls.Indicators;
 
 namespace UltimateChartist.UserControls.ChartControls;
 
+
+[DebuggerDisplay("Name={Instrument?.Name} Duration={BarDuration} Theme={Theme?.Name}")]
 public class ChartViewModel : ViewModelBase
 {
     const double ZOOM_MARGIN = 0.025; // %
@@ -255,4 +260,7 @@ public class ChartViewModel : ViewModelBase
 
     public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ObservableCollection<IIndicator>();
     #endregion
+
+    public ChartProperties ChartProperties => new ChartProperties();
+
 }

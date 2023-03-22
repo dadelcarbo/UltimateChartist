@@ -4,9 +4,11 @@ using UltimateChartist.Indicators.Display;
 using System.ComponentModel;
 using UltimateChartist.DataModels;
 using System.Security.Policy;
+using System.Diagnostics;
 
 namespace UltimateChartist.Indicators;
 
+[DebuggerDisplay("Name={Name}")]
 public class IndicatorDescriptor
 {
     private IIndicator instance;
