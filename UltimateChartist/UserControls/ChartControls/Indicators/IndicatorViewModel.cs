@@ -40,7 +40,7 @@ public class IndicatorViewModel : ViewModelBase
             indicator.Initialize(stockSerie);
 
         // Create GraphSeries from instrospection
-        var indicatorSeries = indicator.GetType().GetProperty("Series")?.GetValue(indicator);
+        var indicatorSeries = indicator.Series;
         if (indicatorSeries != null)
         {
             switch (indicatorSeries.GetType().Name)

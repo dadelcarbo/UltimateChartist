@@ -8,6 +8,7 @@
     <Application.Resources>
 
         <!--Image Resources-->
+        <BitmapImage x:Key="appImg" UriSource="Resources/app.png" />
         <BitmapImage x:Key="backImg" UriSource="Resources/back.png" />
         <BitmapImage x:Key="cancelImg" UriSource="Resources/cancel.png" />
         <BitmapImage x:Key="copyImg" UriSource="Resources/copy.png" />

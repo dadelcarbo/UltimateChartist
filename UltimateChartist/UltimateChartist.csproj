@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Backlog.txt" />
+    <Resource Include="Resources\app.png" />
     <Resource Include="Resources\reload.png" />
     <Resource Include="Resources\cross.png" />
     <Resource Include="Resources\ruler.png" />

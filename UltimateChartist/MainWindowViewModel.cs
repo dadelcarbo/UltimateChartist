@@ -8,6 +8,7 @@ using Telerik.Windows.Persistence.Core;
 using UltimateChartist.DataModels;
 using UltimateChartist.DataModels.DataProviders;
 using UltimateChartist.Helpers;
+using UltimateChartist.Indicators;
 using UltimateChartist.Indicators.Theme;
 using UltimateChartist.UserControls.ChartControls;
 
@@ -55,6 +56,9 @@ public class MainWindowViewModel : ViewModelBase
 
     public void StartUp()
     {
+        this.InitFolders();
+        _ = IndicatorManager.Indicators;
+
         this.Instruments.AddRange(StockDataProviderBase.InitStockDictionary());
 
         this.Themes = new ObservableCollection<StockTheme>(Directory.EnumerateFiles(Folders.Theme, "*.thm").Select(f => StockTheme.Load(f)).Where(t => t != null).OrderBy(t => t.Name));
@@ -96,6 +100,22 @@ public class MainWindowViewModel : ViewModelBase
         //        }
         //    }
         //}
+    }
+
+    private void InitFolders()
+    {
+        if (!Directory.Exists(Folders.Theme))
+        {
+            Directory.CreateDirectory(Folders.Theme);
+        }
+        if (!Directory.Exists(Folders.Portfolio))
+        {
+            Directory.CreateDirectory(Folders.Portfolio);
+        }
+        if (!Directory.Exists(Folders.AlertDef))
+        {
+            Directory.CreateDirectory(Folders.AlertDef);
+        }
     }
 
     public IEnumerable<Theme> ApplicationThemes { get; set; }

@@ -19,10 +19,9 @@ public class ChartViewModel : ViewModelBase
 {
     const double ZOOM_MARGIN = 0.025; // %
 
-    public ChartViewModel(Instrument instrument, StockTheme theme)
+    public ChartViewModel(Instrument instrument)
     {
         Instrument = instrument;
-        Theme = theme;
     }
     public string Name => this.Instrument?.Name;
 

@@ -55,6 +55,13 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
 
         private void SetTheme(StockTheme theme)
         {
+            if (this.Root != null)
+            {
+                foreach (var item in this.Root)
+                {
+                    item.Dispose();
+                }
+            }
             var root = new ObservableCollection<IndicatorTreeViewModel>
             {
                 new IndicatorTreeViewModel("Price Chart")
@@ -253,7 +260,7 @@ namespace UltimateChartist.UserControls.ChartControls.Indicators
         }
         private void OnConfirmDeleteClosed(object sender, WindowClosedEventArgs e)
         {
-            if (e.DialogResult == true)
+            if (e.DialogResult == true && this.ChartViewModel.Theme != null)
             {
                 var oldTheme = this.ChartViewModel.Theme;
                 oldTheme.Delete();

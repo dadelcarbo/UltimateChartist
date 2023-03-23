@@ -5,7 +5,7 @@
         xmlns:main="clr-namespace:UltimateChartist"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         DataContext="{Binding ., Source={x:Static main:MainWindowViewModel.Instance}}"
-        Height="600" Width="1000">
+        Height="600" Width="1000" Icon="{StaticResource appImg}">
     <Window.Resources>
         <RoutedUICommand x:Key="InstrumentBrowseCommand" Text="View" >
             <RoutedUICommand.InputGestures>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
+using UltimateChartist.Helpers;
 using UltimateChartist.Indicators.Display;
 
 namespace UltimateChartist.Indicators.Theme
@@ -59,10 +60,17 @@ namespace UltimateChartist.Indicators.Theme
             }
             foreach (var settings in this.DisplaySettings)
             {
-                var seriesType = indicator.Series.GetType();
-                var prop = seriesType.GetProperty(settings.Name);
-                var displayItem = prop.GetValue(indicator.Series) as IDisplayItem;
-                displayItem.FromJson(settings.Json);
+                try
+                {
+                    var seriesType = indicator.Series.GetType();
+                    var prop = seriesType.GetProperty(settings.Name);
+                    var displayItem = prop.GetValue(indicator.Series) as IDisplayItem;
+                    displayItem.FromJson(settings.Json);
+                }
+                catch (Exception ex)
+                {
+                    StockLog.Write(ex);
+                }
             }
             return indicator;
         }

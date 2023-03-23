@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 
     public void AddChart(Instrument instrument, StockTheme theme)
     {
-        var chartViewModel = new ChartViewModel(instrument, null);
+        var chartViewModel = new ChartViewModel(instrument);
         var tabItem = new RadTabItem()
         {
             DataContext = chartViewModel,
