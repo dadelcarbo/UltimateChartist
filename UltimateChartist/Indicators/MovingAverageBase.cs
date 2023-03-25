@@ -27,21 +27,21 @@ public abstract class MovingAverageBase : IndicatorBase
 
     public override void Initialize(StockSerie stockSerie)
     {
-        this.InitializeMA(stockSerie);
+        var values = this.InitializeMA(stockSerie);
         var close = stockSerie.CloseValues;
         bool isAbove, previousIsAbove = false;
 
-        var series = this.Series.Values.Cast<IndicatorLineValue>().ToArray();
         for (int i = this.Period; i < stockSerie.CloseValues.Length; i++)
         {
-            var value = series[i];
+            var value = values[i];
             isAbove = close[i] > value.Value;
             value.Events = new StockEvent_MA { IsAbove = isAbove, CrossAbove = !previousIsAbove && isAbove, CrossBelow = previousIsAbove && !isAbove };
             previousIsAbove = isAbove;
         }
+        this.Series.Values = values;
     }
 
-    protected abstract void InitializeMA(StockSerie stockSerie);
+    protected abstract IndicatorLineValue[] InitializeMA(StockSerie stockSerie);
 
     public override DisplayType DisplayType => DisplayType.Price;
     public override string DisplayName => $"{ShortName}({Period})";

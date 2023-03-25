@@ -7,7 +7,7 @@ namespace UltimateChartist.Indicators;
 public class StockIndicator_EMA : MovingAverageBase
 {
     public override string Description => "Exponential moving average";
-    protected override void InitializeMA(StockSerie stockSerie)
+    protected override IndicatorLineValue[] InitializeMA(StockSerie stockSerie)
     {
         var values = new IndicatorLineValue[stockSerie.Bars.Count];
 
@@ -23,6 +23,6 @@ public class StockIndicator_EMA : MovingAverageBase
             values[i++] = new IndicatorLineValue() { Date = bar.Date, Value = ema };
         }
 
-        this.Series.Values = values;
+        return values;
     }
 }

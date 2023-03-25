@@ -25,7 +25,7 @@ public class StockIndicator_TrailATR : TrailStopBase
     [IndicatorParameterDecimal("Down Width", 0, 50, 0.1, "{0:F2}")]
     public decimal DownWidth { get => downWidth; set { if (downWidth != value) { downWidth = value; RaiseParameterChanged(); } } }
 
-    protected override void InitializeTrailStop(StockSerie stockSerie)
+    protected override IndicatorTrailValue[] InitializeTrailStop(StockSerie stockSerie)
     {
         var values = new IndicatorTrailValue[stockSerie.Bars.Count];
         var atrSerie = stockSerie.Bars.CalculateATR().CalculateEMA(AtrPeriod).Mult(upWidth);
@@ -49,6 +49,6 @@ public class StockIndicator_TrailATR : TrailStopBase
             i++;
         }
 
-        this.Series.Values = values;
+        return values;
     }
 }

@@ -15,9 +15,8 @@ public abstract class TrailStopBase : IndicatorBase
 
     public override void Initialize(StockSerie stockSerie)
     {
-        this.InitializeTrailStop(stockSerie);
+        var values = this.InitializeTrailStop(stockSerie);
         var previousEvent = new StockEvent_TrailStop();
-        var series = this.Series.Values.Cast<IndicatorTrailValue>().ToArray();
 
         var highValues = stockSerie.HighValues;
         var lowValues = stockSerie.LowValues;
@@ -30,7 +29,7 @@ public abstract class TrailStopBase : IndicatorBase
         bool firstShortReentry = true;
         for (int i = this.ReentryPeriod; i < stockSerie.CloseValues.Length; i++)
         {
-            var value = series[i];
+            var value = values[i];
             var events = new StockEvent_TrailStop
             {
                 Bullish = value.Long != null,
@@ -102,9 +101,10 @@ public abstract class TrailStopBase : IndicatorBase
 
             value.Events = events;
         }
+        this.Series.Values = values;
     }
 
-    protected abstract void InitializeTrailStop(StockSerie stockSerie);
+    protected abstract IndicatorTrailValue[] InitializeTrailStop(StockSerie stockSerie);
 
     private int reentryPeriod = 20;
     [IndicatorParameterInt("ReentryPeriod", 1, 500)]
