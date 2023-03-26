@@ -12,7 +12,7 @@ public class AxisDateLabelConverter : IValueConverter
             var date = (DateTime)value;
             if (parameter.ToString() == "Daily")
             {
-                return date.ToString("d");
+                return date.ToString("dd/MM") + Environment.NewLine + date.ToString("yyyy");
             }
             else
             {

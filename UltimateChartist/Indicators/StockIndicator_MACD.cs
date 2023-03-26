@@ -47,7 +47,6 @@ public class StockIndicator_MACD : IndicatorBase
             slowEma += slowAlpha * (bar.Close - slowEma);
             macd = fastEma - slowEma;
             signal += signalAlpha * (macd - signal);
-            Max = Math.Max(Max, macd);
             values[i++] = new IndicatorLineSignalValue() { Date = bar.Date, Value = macd, Signal = signal };
         }
 

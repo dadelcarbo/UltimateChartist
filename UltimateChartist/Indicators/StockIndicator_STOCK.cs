@@ -11,9 +11,9 @@ public class StockIndicator_STOCK : IndicatorBase, IRangedIndicator
     }
 
     public override string Description => "A stochastic oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time";
+
     public override DisplayType DisplayType => DisplayType.Ranged;
     public decimal Minimum => 0;
-
     public decimal Maximum => 100;
 
     public override string DisplayName => $"{ShortName}({Period},{SignalPeriod})";

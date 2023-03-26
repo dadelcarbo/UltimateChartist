@@ -177,11 +177,9 @@ public class ChartViewModel : ViewModelBase
                 if (data != null && data.Count > 0)
                 {
                     max = data.Max(d => d.High);
-
                     foreach (var indicator in PriceIndicators)
                     {
                         indicator.Initialize(StockSerie);
-                        max = Math.Max(max, indicator.Max);
                     }
                 }
                 this.Maximum = (1 + ZOOM_MARGIN) * (double)max;

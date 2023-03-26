@@ -39,7 +39,7 @@
         </DataTemplate>
 
         <Style x:Key="trackBallLineStyle" TargetType="Polyline">
-            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Visibility" Value="Visible" />
         </Style>
         <Style x:Key="trackBallInfoStyle" TargetType="telerik:TrackBallInfoControl">
             <Setter Property="Template">
@@ -49,20 +49,20 @@
             </Setter>
         </Style>
         <DataTemplate x:Key="trackBallTemplate">
-            <Ellipse Height="8" Width="8" Stroke="White" StrokeThickness="1" Fill="#FF0099BC" />
+            <Ellipse Height="8" Width="8" Stroke="Red" StrokeThickness="2" Fill="#FF0099BC" />
         </DataTemplate>
         <Style x:Key="tickStyle" TargetType="FrameworkElement">
-            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Visibility" Value="Visible" />
         </Style>
         <Style x:Key="labelFontStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="10" />
         </Style>
         <Style x:Key="labelStyle" TargetType="TextBlock" BasedOn="{StaticResource labelFontStyle}">
-            <Setter Property="Width" Value="20" />
+            <Setter Property="Width" Value="50" />
         </Style>
         <Style x:Key="leftLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource labelStyle}">
             <Setter Property="TextAlignment" Value="Right" />
-            <Setter Property="Margin" Value="0,0,3,0" />
         </Style>
         <Style x:Key="rightLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource labelStyle}">
             <Setter Property="TextAlignment" Value="Left" />
