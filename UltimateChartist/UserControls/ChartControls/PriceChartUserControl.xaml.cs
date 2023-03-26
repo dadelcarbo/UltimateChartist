@@ -50,7 +50,7 @@ public partial class PriceChartUserControl : UserControl
                     this.ChartGrid.Children.Add(splitter);
 
                     var indicatorPriceChartUserControl = new IndicatorChartUserControl(indicatorChartViewModel);
-                    this.ChartGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0.25, GridUnitType.Star), MinHeight = 50 });
+                    this.ChartGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(0.20, GridUnitType.Star), MinHeight = 125 });
                     Grid.SetRow(indicatorPriceChartUserControl, this.ChartGrid.RowDefinitions.Count - 1);
                     this.ChartGrid.Children.Add(indicatorPriceChartUserControl);
                 }

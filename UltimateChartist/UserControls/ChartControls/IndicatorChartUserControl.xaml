@@ -34,7 +34,6 @@
             </telerik:RadCartesianChart.HorizontalAxis>
             <telerik:RadCartesianChart.VerticalAxis>
                 <telerik:LinearAxis Name="verticalAxis"
-                                    Minimum="{Binding Indicator.Indicator.Min}" Maximum="{Binding Indicator.Indicator.Max}"
                                     LabelStyle="{StaticResource leftLabelStyle}" MajorTickStyle="{StaticResource tickStyle}" />
             </telerik:RadCartesianChart.VerticalAxis>
             <telerik:RadCartesianChart.Grid>

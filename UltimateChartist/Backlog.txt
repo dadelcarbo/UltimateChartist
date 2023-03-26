@@ -1,4 +1,4 @@
-﻿Objective: Use Ultimate Chartist daily
+﻿Objective: Use new Ultimate Chartist daily
 	Data (ABC daily) ==> OK
 		Add All euronext landscape
 	Event implementation
@@ -11,6 +11,9 @@
 		Portfolio sync
 		Display orders/position on graph
 		Order execution
+	Theme:
+		Theme combo in menu
+		Dirty Management
 Objective: Main chart usability
 		Zooming
 		Axis

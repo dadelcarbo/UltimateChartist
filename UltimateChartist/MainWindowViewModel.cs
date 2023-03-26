@@ -52,7 +52,8 @@ public class MainWindowViewModel : ViewModelBase
     }
     public ObservableCollection<Instrument> Instruments { get; }
 
-    public ObservableCollection<StockTheme> Themes { get; private set; }
+    ObservableCollection<StockTheme> themes;
+    public ObservableCollection<StockTheme> Themes { get { return themes; } private set { if (themes != value) { themes = value; RaisePropertyChanged(); } } }
 
     public void StartUp()
     {

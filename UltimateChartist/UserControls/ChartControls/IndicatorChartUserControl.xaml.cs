@@ -15,11 +15,6 @@ public partial class IndicatorChartUserControl : UserControl
         this.DataContext = viewModel;
         this.viewModel = viewModel;
 
-        this.Loaded += IndicatorChartUserControl_Loaded;
-    }
-
-    private void IndicatorChartUserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
-    {
         foreach (var series in viewModel.Indicator.CartesianSeries)
         {
             this.indicatorChart.Series.Insert(0, series);

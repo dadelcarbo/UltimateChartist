@@ -59,7 +59,7 @@
                 <telerik:RadMenuItem Command="{StaticResource NewChartViewCommand}"></telerik:RadMenuItem>
                 <telerik:RadMenuItem Command="{StaticResource CloseChartViewCommand}"></telerik:RadMenuItem>
             </telerik:RadMenuItem>
-            
+
             <telerik:RadAutoCompleteBox Width="250" WatermarkContent="Search instrument..." VerticalContentAlignment="Center" VerticalAlignment="Top" FontSize="11"
                                         DisplayMemberPath="Name"
                                         TextSearchPath="Name"
@@ -67,7 +67,11 @@
                                         ItemsSource="{Binding Instruments}"
                                         SelectedItem="{Binding Instrument, Mode=TwoWay}"
                                         SelectionMode="Single"/>
-
+            <Button Margin="0" Background="Transparent" BorderBrush="Transparent" Command="{Binding ReloadThemeCommand}">
+                <Image Source="{Binding Source={StaticResource refreshImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <telerik:RadComboBox Width="200" Background="Transparent" Margin="0" DisplayMemberPath="Name"
+                                  ItemsSource="{Binding Themes}" SelectedItem="{Binding CurrentChartView.Theme}"></telerik:RadComboBox>
         </telerik:RadMenu>
 
         <telerik:RadTabControl Name="MainTabControl" Grid.Row="1" SelectionChanged="MainTabControl_SelectionChanged">
