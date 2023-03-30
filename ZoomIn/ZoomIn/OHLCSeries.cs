@@ -90,6 +90,8 @@ namespace ZoomIn
 
         private void TransformGeometry()
         {
+            if (canvas == null)
+                return;
             var canvasWidth = canvas.ActualWidth;
             var canvasHeight = canvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
@@ -131,7 +133,6 @@ namespace ZoomIn
             {
                 canvas = (Canvas)this.Parent;
                 canvas.SizeChanged += Curve_SizeChanged;
-                canvas.MouseMove += Canvas_MouseMove;
             }
         }
 

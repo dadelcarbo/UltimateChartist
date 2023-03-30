@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -94,6 +93,8 @@ namespace ZoomIn.StockControl
 
         private void TransformGeometry()
         {
+            if (canvas == null)
+                return;
             var canvasWidth = canvas.ActualWidth;
             var canvasHeight = canvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)

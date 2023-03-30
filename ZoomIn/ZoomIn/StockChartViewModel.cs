@@ -10,8 +10,9 @@ namespace ZoomIn
     {
         public StockChartViewModel()
         {
-            this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").Skip(20).Take(25).ToArray();
-            this.Values = Bars.Select(b=>b.Close).ToArray();
+            this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").Skip(20).Take(125).ToArray();
+            this.Values = Bars.Select(b => b.Close).ToArray();
+            this.Values = Bars.Select(b => b.Close).Reverse().ToArray();
             this.startIndex = 0;
             this.endIndex = Values.Length - 1;
             this.maxIndex = Values.Length - 1;
@@ -50,9 +51,9 @@ namespace ZoomIn
         }
 
         public double[] Values { get; set; }
+        public double[] Values2 { get; set; }
 
         public StockBar[] Bars { get; set; }
-
 
         private Point mousePoint;
         public Point MousePoint
