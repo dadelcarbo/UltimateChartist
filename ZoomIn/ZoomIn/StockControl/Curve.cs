@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ZoomIn
+namespace ZoomIn.StockControl
 {
     public class Curve : Shape
     {
@@ -63,7 +63,7 @@ namespace ZoomIn
 
         private void CreateGeometry()
         {
-            if (Values == null || this.Values.Length < 2)
+            if (Values == null || Values.Length < 2)
             {
                 var text = new FormattedText("No Data To Display", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Black, 1);
                 geometry = text.BuildGeometry(new Point(5, 5));
@@ -75,7 +75,7 @@ namespace ZoomIn
                 var streamGeometry = new StreamGeometry();
 
                 double x = 0;
-                var values = this.Values;
+                var values = Values;
                 using (StreamGeometryContext ctx = streamGeometry.Open())
                 {
                     ctx.BeginFigure(new Point(x, values[0]), false, false);
@@ -87,8 +87,8 @@ namespace ZoomIn
                     }
                 }
                 geometryGroup.Children.Add(streamGeometry);
-                this.geometry = geometryGroup;
-                this.TransformGeometry();
+                geometry = geometryGroup;
+                TransformGeometry();
             }
         }
 
@@ -98,10 +98,10 @@ namespace ZoomIn
             var canvasHeight = canvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            var curveWidth = (this.EndIndex - this.StartIndex) * width;
+            var curveWidth = (EndIndex - StartIndex) * width;
             if (curveWidth == 0)
                 return;
-            var values = this.Values;
+            var values = Values;
             if (values == null)
                 return;
 
@@ -116,40 +116,30 @@ namespace ZoomIn
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-this.StartIndex * width, -min));
+            tg.Children.Add(new TranslateTransform(-StartIndex * width, -min));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
             geometry.Transform = tg;
         }
 
         double width = 1;
-        double gap = 5;
 
         public Curve()
         {
-            this.CreateGeometry();
+            CreateGeometry();
         }
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
-            if (this.Parent != null && oldParent == null)
+            if (Parent != null && oldParent == null)
             {
-                canvas = (Canvas)this.Parent;
+                canvas = (Canvas)Parent;
                 canvas.SizeChanged += Curve_SizeChanged;
-                canvas.MouseMove += Canvas_MouseMove;
             }
-        }
-
-        private void Canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            var viewModel = this.DataContext as ChartViewModel;
-            var position = Mouse.GetPosition(canvas);
-            var inverseTransform = geometry.Transform.Inverse;
-            viewModel.MousePoint = inverseTransform.Transform(position);
         }
 
         private void Curve_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.TransformGeometry();
+            TransformGeometry();
         }
 
         private Geometry geometry;

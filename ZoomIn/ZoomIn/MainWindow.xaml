@@ -3,15 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ZoomIn"
+        xmlns:local="clr-namespace:ZoomIn" xmlns:stockcontrol="clr-namespace:ZoomIn.StockControl"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <local:ChartViewModel x:Key="viewModel"/>
+        <local:ChartViewModel x:Key="chartViewModel"/>
+        <local:StockChartViewModel x:Key="stockChartViewModel"/>
     </Window.Resources>
-    <Grid DataContext="{StaticResource viewModel}">
+    <Grid >
         <TabControl>
-            <TabItem Header="Graph">
+            <TabItem Header="StockGraph" DataContext="{StaticResource stockChartViewModel}">
+                <Grid>
+                    <Grid.RowDefinitions >
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>StartIndex:</Label>
+                                <TextBlock Text="{Binding StartIndex}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>EndIndex:</Label>
+                                <TextBlock Text="{Binding EndIndex}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Mouse X:</Label>
+                                <TextBlock Text="{Binding MousePoint.X}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Mouse Y:</Label>
+                                <TextBlock Text="{Binding MousePoint.Y}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>C Mouse X:</Label>
+                                <TextBlock Text="{Binding CanvasMousePoint.X}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>C Mouse Y:</Label>
+                                <TextBlock Text="{Binding CanvasMousePoint.Y}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                        <stockcontrol:StockChart></stockcontrol:StockChart>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="CurveGraph" DataContext="{StaticResource chartViewModel}">
                 <Grid>
                     <Grid.RowDefinitions >
                         <RowDefinition Height="70"></RowDefinition>
