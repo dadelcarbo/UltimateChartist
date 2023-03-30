@@ -1,0 +1,155 @@
+﻿<Window x:Class="ZoomIn.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZoomIn"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:ChartViewModel x:Key="viewModel"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource viewModel}">
+        <TabControl>
+            <TabItem Header="Graph">
+                <Grid>
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="70"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.RowSpan="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>StartIndex:</Label>
+                                <TextBlock Text="{Binding StartIndex}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>EndIndex:</Label>
+                                <TextBlock Text="{Binding EndIndex}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Mouse X:</Label>
+                                <TextBlock Text="{Binding MousePoint.X}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Mouse Y:</Label>
+                                <TextBlock Text="{Binding MousePoint.Y}"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Label>C Mouse X:</Label>
+                                <TextBlock Text="{Binding CanvasMousePoint.X}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>C Mouse Y:</Label>
+                                <TextBlock Text="{Binding CanvasMousePoint.Y}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Name="zoomGraph" Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Slider Grid.Row="0" Name="minSlider" SmallChange="1" LargeChange="1" Minimum="0" Maximum="{Binding ElementName=maxSlider,Path=Value}" Value="{Binding StartIndex}"/>
+                            <Slider Grid.Row="1" Name="maxSlider" SmallChange="1" LargeChange="1" Minimum="{Binding ElementName=minSlider,Path=Value}" Maximum="{Binding MaxIndex}" Value="{Binding EndIndex}"/>
+                            <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1">
+                                <Canvas Name="overviewGraph" ClipToBounds="True" LayoutTransform="1 0 0 -1 0 0">
+                                    <local:Curve Values="{Binding Values}" StartIndex="0" EndIndex="{Binding MaxIndex}" Stroke="DarkGreen" StrokeThickness="2"/>
+                                </Canvas>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                        <Border Grid.Row="1" Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="50,10,50,10">
+                            <Canvas Name="mainGraph" ClipToBounds="True" LayoutTransform="1 0 0 -1 0 0">
+                                <local:OHLCSeries Values="{Binding Bars}" StartIndex="{Binding StartIndex}" EndIndex="{Binding EndIndex}" Stroke="DarkGreen" StrokeThickness="2"/>
+                            </Canvas>
+                        </Border>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Candle">
+                <Grid>
+                    <TextBlock Text="{Binding ElementName=slider3, Path=Value}" Margin="40"/>
+                    <TextBlock Text="Radius: " Margin="0"/>
+                    <Slider x:Name="slider3" Minimum="1" Maximum="5" Value="1" SmallChange="0.1" Orientation="Vertical" Margin="50"/>
+                    <Border Width="200" Height="200" BorderThickness="1" BorderBrush="Black">
+                        <Canvas ClipToBounds="True">
+                            <local:Candle StrokeThickness="1" Stroke="DarkRed" Fill="Bisque" Scale="{Binding ElementName=slider3, Path=Value}"/>
+                            <local:Candle StrokeThickness="1" Stroke="DarkRed" Fill="Bisque" Scale="{Binding ElementName=slider3, Path=Value}"/>
+                            <local:Candle StrokeThickness="1" Stroke="DarkRed" Fill="Bisque" Scale="{Binding ElementName=slider3, Path=Value}"/>
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Line Zoom">
+                <Grid>
+                    <TextBlock Text="{Binding ElementName=slider1, Path=Value}" Margin="40"/>
+                    <Slider x:Name="slider1" Minimum="0.2" Maximum="2" Value="1" SmallChange="0.1" Orientation="Vertical" Margin="50"/>
+                    <Border Width="100" Height="100" BorderThickness="2" BorderBrush="Black">
+                        <Canvas>
+                            <Path Stroke="DarkRed" StrokeThickness="1" ClipToBounds="True">
+                                <Path.Data>
+                                    <LineGeometry StartPoint="10,10" EndPoint="90,90">
+                                        <LineGeometry.Transform>
+                                            <ScaleTransform ScaleX="{Binding ElementName=slider1, Path=Value}" ScaleY="{Binding ElementName=slider1, Path=Value}" CenterX="50" CenterY="50"/>
+                                        </LineGeometry.Transform>
+                                    </LineGeometry>
+                                </Path.Data>
+                            </Path>
+                            <Line X1="10" Y1="90" X2="90" Y2="10" Stroke="DarkGreen" StrokeThickness="1">
+                                <Line.LayoutTransform>
+                                    <ScaleTransform ScaleX="{Binding ElementName=slider1, Path=Value}" ScaleY="{Binding ElementName=slider1, Path=Value}" CenterX="50" CenterY="50"/>
+                                </Line.LayoutTransform>
+                            </Line>
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="BarChart">
+                <Grid>
+                    <TextBlock Text="{Binding ElementName=slider2, Path=Value}" Margin="40"/>
+                    <Slider x:Name="slider2" Minimum="0.2" Maximum="5" Value="1" SmallChange="0.1" Orientation="Vertical" Margin="50"/>
+                    <Border Width="100" Height="100" BorderThickness="2" BorderBrush="Black">
+                        <Canvas>
+                            <Path Stroke="DarkRed" StrokeThickness="1" Fill="Bisque" ClipToBounds="True">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathGeometry.Transform>
+                                            <TransformGroup>
+                                                <TranslateTransform X="25" Y="25"/>
+                                                <ScaleTransform ScaleX="{Binding ElementName=slider2, Path=Value}" ScaleY="{Binding ElementName=slider2, Path=Value}" CenterX="50" CenterY="50"/>
+                                            </TransformGroup>
+                                        </PathGeometry.Transform>
+                                        <PathGeometry.Figures>
+                                            <PathFigureCollection>
+                                                <PathFigure StartPoint="10,50" IsClosed="True" IsFilled="True">
+                                                    <LineSegment Point="10,10"/>
+                                                    <LineSegment Point="30,10"/>
+                                                    <LineSegment Point="30,50"/>
+                                                </PathFigure>
+                                                <PathFigure StartPoint="20,50">
+                                                    <LineSegment Point="20,60"/>
+                                                </PathFigure>
+                                                <PathFigure StartPoint="20,00">
+                                                    <LineSegment Point="20,10"/>
+                                                </PathFigure>
+                                            </PathFigureCollection>
+                                        </PathGeometry.Figures>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
