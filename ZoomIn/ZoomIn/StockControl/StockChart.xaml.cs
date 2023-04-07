@@ -72,6 +72,11 @@ namespace ZoomIn.StockControl
         }
         #endregion
 
+        private void TransformGeometry()
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnStockBarsChanged(StockBar[] stockBars)
         {
             var closeSerie = stockBars?.Select(b => b.Close)?.ToArray();
@@ -85,10 +90,10 @@ namespace ZoomIn.StockControl
             {
                 Values = closeSerie,
                 Stroke = Brushes.DarkGreen,
-                StrokeThickness = 2
+                StrokeThickness = 2,
+                StartIndex = 0
             };
-            curve.SetBinding(Curve.StartIndexProperty, new Binding("StartIndex") { Mode = BindingMode.TwoWay });
-            curve.SetBinding(Curve.EndIndexProperty, new Binding("EndIndex") { Mode = BindingMode.TwoWay });
+            curve.SetBinding(Curve.EndIndexProperty, new Binding("MaxIndex") { Mode = BindingMode.OneWay });
 
             this.overviewGraph.Children.Clear();
             this.overviewGraph.Children.Add(curve); 

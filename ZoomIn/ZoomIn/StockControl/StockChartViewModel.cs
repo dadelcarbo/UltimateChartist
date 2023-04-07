@@ -10,6 +10,19 @@ namespace ZoomIn.StockControl
 {
     class StockChartViewModel : INotifyPropertyChanged
     {
+        private int minRange = 50;
+        public int MinRange
+        {
+            get { return minRange; }
+            set { if (minRange != value) { minRange = value; RaisePropertyChanged(); } }
+        }
+        private int maxRange = 100;
+        public int MaxRange
+        {
+            get { return maxRange; }
+            set { if (maxRange != value) { maxRange = value; RaisePropertyChanged(); } }
+        }
+
         private int startIndex;
         public int StartIndex
         {

@@ -49,9 +49,8 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Red" BorderThickness="1">
-                        <stockcontrol:StockChart StockBars="{Binding Bars}">
-                        </stockcontrol:StockChart>
+                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="DarkGreen" BorderThickness="3">
+                        <stockcontrol:StockChart StockBars="{Binding Bars}" BorderThickness="3" BorderBrush="DarkRed"/>
                     </Border>
                 </Grid>
             </TabItem>
