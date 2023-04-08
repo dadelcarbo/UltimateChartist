@@ -77,7 +77,7 @@ namespace ZoomIn.StockControl
             var canvasHeight = mainGraph.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            if (EndIndex == 0) 
+            if (EndIndex == 0)
                 return;
             var curveWidth = (this.EndIndex - this.StartIndex + 1) * (2 * width + gap) + gap;
             if (curveWidth == 0)
@@ -98,7 +98,7 @@ namespace ZoomIn.StockControl
             tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, -min));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
 
-            foreach (var shape in shapes.OfType<ChartShapeBase>())
+            foreach (var shape in shapes)
             {
                 shape.ApplyTranform(tg);
             }
@@ -107,7 +107,7 @@ namespace ZoomIn.StockControl
         int width = 2;
 
         private StockSerie stockSerie = null;
-        private List<Shape> shapes = new List<Shape>();
+        private List<StockShapeBase> shapes = new List<StockShapeBase>();
         private double[] lowSerie;
         private double[] highSerie;
         private void OnStockSerieChanged(StockSerie stockSerie)
@@ -130,7 +130,7 @@ namespace ZoomIn.StockControl
 
 
             #region Create overview
-            var curve = new OverviewCurve()
+            var overviewCurve = new OverviewCurve()
             {
                 Values = closeSerie,
                 Stroke = Brushes.DarkGreen,
@@ -138,12 +138,13 @@ namespace ZoomIn.StockControl
             };
 
             this.overviewGraph.Children.Clear();
-            this.overviewGraph.Children.Add(curve);
+            this.overviewGraph.Children.Add(overviewCurve);
             #endregion
 
             this.mainGraph.Children.Clear();
             shapes.Clear();
 
+            #region Price Candle/Barchart...
             int offset = gap;
             for (int i = 0; i < stockSerie.Bars.Length; i++)
             {
@@ -163,8 +164,19 @@ namespace ZoomIn.StockControl
                 }
                 shapes.Add(shape);
             }
-            this.mainGraph.Children.AddRange(shapes);
+            #endregion
 
+            #region Price Indicators (EMA, Cloud, Trail...)
+            var curve = new Curve()
+            {
+                StrokeThickness = 1,
+                Stroke = Brushes.Blue
+            };
+            curve.CreateGeometry(closeSerie, gap, width);
+            this.shapes.Add(curve);
+            #endregion
+
+            this.mainGraph.Children.AddRange(shapes);
             this.TransformGeometry();
         }
 

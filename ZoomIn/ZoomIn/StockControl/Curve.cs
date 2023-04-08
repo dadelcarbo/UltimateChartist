@@ -1,152 +1,31 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace ZoomIn.StockControl
 {
-    public class Curve : Shape
+    public class Curve : StockShapeBase
     {
-        private Canvas canvas;
-        public int StartIndex
+        public void CreateGeometry(double[] values, int gap, int width)
         {
-            get { return (int)GetValue(StartIndexProperty); }
-            set { SetValue(StartIndexProperty, value); }
-        }
+            var geometryGroup = new GeometryGroup();
+            var streamGeometry = new StreamGeometry();
 
-        // Using a DependencyProperty as the backing store for StartIndex.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StartIndexProperty =
-            DependencyProperty.Register("StartIndex", typeof(int), typeof(Curve),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, StartIndexPropertyChanged));
-
-        private static void StartIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var curve = (Curve)d;
-            curve.TransformGeometry();
-        }
-        public int EndIndex
-        {
-            get { return (int)GetValue(EndIndexProperty); }
-            set { SetValue(EndIndexProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for EndIndex.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EndIndexProperty =
-            DependencyProperty.Register("EndIndex", typeof(int), typeof(Curve),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, EndIndexPropertyChanged));
-
-        private static void EndIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var curve = (Curve)d;
-            curve.TransformGeometry();
-        }
-
-        public double[] Values
-        {
-            get { return (double[])GetValue(ValuesProperty); }
-            set { SetValue(ValuesProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Values.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ValuesProperty =
-            DependencyProperty.Register("Values", typeof(double[]), typeof(Curve),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, ValuesPropertyChanged));
-
-        private static void ValuesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var curve = (Curve)d;
-            curve.CreateGeometry();
-        }
-
-        private void CreateGeometry()
-        {
-            if (Values == null || Values.Length < 2)
+            double x = gap;
+            double step = 2 * width + gap;
+            using (StreamGeometryContext ctx = streamGeometry.Open())
             {
-                var text = new FormattedText("No Data To Display", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Black, 1);
-                geometry = text.BuildGeometry(new Point(5, 5));
-                geometry.Transform = new MatrixTransform(1, 0, 0, -1, 0, 0);
-            }
-            else
-            {
-                var geometryGroup = new GeometryGroup();
-                var streamGeometry = new StreamGeometry();
+                ctx.BeginFigure(new Point(x, values[0]), false, false);
 
-                double x = 0;
-                var values = Values;
-                using (StreamGeometryContext ctx = streamGeometry.Open())
+                for (int i = 1; i < values.Length; i++)
                 {
-                    ctx.BeginFigure(new Point(x, values[0]), false, false);
-
-                    for (int i = 1; i < values.Length; i++)
-                    {
-                        x += width;
-                        ctx.LineTo(new Point(x, values[i]), true /* is stroked */, false /* is smooth join */);
-                    }
+                    x += step;
+                    ctx.LineTo(new Point(x, values[i]), true /* is stroked */, false /* is smooth join */);
                 }
-                geometryGroup.Children.Add(streamGeometry);
-                geometry = geometryGroup;
-                TransformGeometry();
             }
+            geometryGroup.Children.Add(streamGeometry);
+            geometry = geometryGroup;
         }
-
-        private void TransformGeometry()
-        {
-            if (canvas == null)
-                return;
-            var canvasWidth = canvas.ActualWidth;
-            var canvasHeight = canvas.ActualHeight;
-            if (canvasWidth == 0 || canvasHeight == 0)
-                return;
-            var curveWidth = (EndIndex - StartIndex) * width;
-            if (curveWidth == 0)
-                return;
-            var values = Values;
-            if (values == null)
-                return;
-
-            double min = double.MaxValue;
-            double max = double.MinValue;
-
-            for (int i = StartIndex; i <= EndIndex; i++)
-            {
-                min = Math.Min(values[i], min);
-                max = Math.Max(values[i], max);
-            }
-            var curveHeight = max - min;
-
-            TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-StartIndex * width, -min));
-            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
-            geometry.Transform = tg;
-        }
-
-        double width = 1;
-
-        protected override void OnVisualParentChanged(DependencyObject oldParent)
-        {
-            base.OnVisualParentChanged(oldParent);
-            if (Parent != null && oldParent == null)
-            {
-                canvas = (Canvas)Parent;
-                TransformGeometry();
-                canvas.SizeChanged += Curve_SizeChanged;
-            }
-            else
-            {
-                var oldCanvas = (Canvas)oldParent;
-                if (oldCanvas != null)
-                    oldCanvas.SizeChanged -= Curve_SizeChanged;
-            }
-        }
-
-        private void Curve_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            TransformGeometry();
-        }
-
-        private Geometry geometry;
-        protected override Geometry DefiningGeometry => geometry;
     }
+
 }

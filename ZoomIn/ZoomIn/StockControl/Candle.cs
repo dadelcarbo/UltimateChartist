@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace ZoomIn.StockControl
 {
-    public class Candle : ChartShapeBase
+    public class Candle : StockBarShapeBase
     {
         public override void CreateGeometry(StockBar bar, int index, int gap, int width)
         {
