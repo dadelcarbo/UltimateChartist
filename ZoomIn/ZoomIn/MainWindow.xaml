@@ -21,37 +21,24 @@
                         <ColumnDefinition Width="0.25*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                    <Border Name="Debug" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
+                                <Label>StockSerie:</Label>
+                                <ComboBox Name="SeriesComboBox" ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <Label>StartIndex:</Label>
-                                <TextBlock Text="{Binding StartIndex}"></TextBlock>
+                                <TextBlock Text="{Binding StartIndex,ElementName=stockChart}"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>EndIndex:</Label>
-                                <TextBlock Text="{Binding EndIndex}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Mouse X:</Label>
-                                <TextBlock Text="{Binding MousePoint.X}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Mouse Y:</Label>
-                                <TextBlock Text="{Binding MousePoint.Y}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>C Mouse X:</Label>
-                                <TextBlock Text="{Binding CanvasMousePoint.X}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>C Mouse Y:</Label>
-                                <TextBlock Text="{Binding CanvasMousePoint.Y}"></TextBlock>
+                                <TextBlock Text="{Binding EndIndex,ElementName=stockChart}"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="DarkGreen" BorderThickness="3">
-                        <stockcontrol:StockChart StockBars="{Binding Bars}" BorderThickness="3" BorderBrush="DarkRed"/>
-                    </Border>
+                    <stockcontrol:StockChart x:Name="stockChart" Grid.Row="0" Grid.Column="1" 
+                        StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="CurveGraph" DataContext="{StaticResource chartViewModel}">

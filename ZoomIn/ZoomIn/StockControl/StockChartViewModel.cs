@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZoomIn.StockControl
 {
@@ -41,9 +37,17 @@ namespace ZoomIn.StockControl
 
 
         private StockBar[] bars;
-        public StockBar[] Bars { get => bars; set { bars = value; this.StartIndex = 0; this.EndIndex = this.Bars == null ? 0 : this.Bars.Length - 1; RaisePropertyChanged("MaxIndex"); } }
-
-
+        public StockBar[] Bars
+        {
+            get => bars; set
+            {
+                if (bars == value) return;
+                bars = value;
+                this.EndIndex = this.Bars == null ? 0 : this.Bars.Length - 1;
+                this.StartIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
+                RaisePropertyChanged("MaxIndex");
+            }
+        }
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;

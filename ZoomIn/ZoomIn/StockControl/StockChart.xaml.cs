@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using Telerik.Windows.Controls;
 
 namespace ZoomIn.StockControl
 {
@@ -16,27 +18,24 @@ namespace ZoomIn.StockControl
         private ObservableCollection<ChartSeries> series = new ObservableCollection<ChartSeries>();
         public ObservableCollection<ChartSeries> Series { get => series; set { if (series != value) { if (series != null) { series.CollectionChanged -= Series_CollectionChanged; } series = value; series.CollectionChanged += Series_CollectionChanged; } } }
 
-        private ChartSeries mainSeries;
-
         #region StockBars DependencyProperty
-        public StockBar[] StockBars
+        public StockSerie StockSerie
         {
-            get { return (StockBar[])GetValue(StockBarsProperty); }
+            get { return (StockSerie)GetValue(StockBarsProperty); }
             set { SetValue(StockBarsProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for StockBars.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StockBarsProperty =
-            DependencyProperty.Register("StockBars", typeof(StockBar[]), typeof(StockChart), new PropertyMetadata(null, OnStockBarsChanged));
+        public static readonly DependencyProperty StockBarsProperty = DependencyProperty.Register("StockSerie", typeof(StockSerie), typeof(StockChart), new PropertyMetadata(null, OnStockSerieChanged));
 
-        private static void OnStockBarsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnStockSerieChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var stockChart = (StockChart)d;
-            stockChart.OnStockBarsChanged((StockBar[])e.NewValue);
+            stockChart.OnStockSerieChanged((StockSerie)e.NewValue);
         }
         #endregion
 
-        #region
+        #region StartIndex & EndIndex 
 
         public int StartIndex
         {
@@ -47,7 +46,7 @@ namespace ZoomIn.StockControl
         // Using a DependencyProperty as the backing store for StartIndex.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StartIndexProperty =
             DependencyProperty.Register("StartIndex", typeof(int), typeof(StockChart),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, StartIndexPropertyChanged));
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, StartIndexPropertyChanged));
 
         private static void StartIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -63,7 +62,7 @@ namespace ZoomIn.StockControl
         // Using a DependencyProperty as the backing store for EndIndex.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EndIndexProperty =
             DependencyProperty.Register("EndIndex", typeof(int), typeof(StockChart),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, EndIndexPropertyChanged));
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, EndIndexPropertyChanged));
 
         private static void EndIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -74,57 +73,112 @@ namespace ZoomIn.StockControl
 
         private void TransformGeometry()
         {
-            throw new NotImplementedException();
-        }
-
-        private void OnStockBarsChanged(StockBar[] stockBars)
-        {
-            var closeSerie = stockBars?.Select(b => b.Close)?.ToArray();
-            if (closeSerie == null)
+            var canvasWidth = mainGraph.ActualWidth;
+            var canvasHeight = mainGraph.ActualHeight;
+            if (canvasWidth == 0 || canvasHeight == 0)
+                return;
+            if (EndIndex == 0) 
+                return;
+            var curveWidth = (this.EndIndex - this.StartIndex + 1) * (2 * width + gap) + gap;
+            if (curveWidth == 0)
+                return;
+            if (this.StockSerie?.Bars == null)
                 return;
 
-            var viewModel = (StockChartViewModel)this.Resources["viewModel"];
-            viewModel.Bars = stockBars;
+            double min = double.MaxValue;
+            double max = double.MinValue;
+            for (int i = StartIndex; i <= EndIndex; i++)
+            {
+                min = Math.Min(lowSerie[i], min);
+                max = Math.Max(highSerie[i], max);
+            }
+            var curveHeight = max - min;
 
-            var curve = new Curve()
+            TransformGroup tg = new();
+            tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, -min));
+            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
+
+            foreach (var shape in shapes.OfType<ChartShapeBase>())
+            {
+                shape.ApplyTranform(tg);
+            }
+        }
+        int gap = 2;
+        int width = 2;
+
+        private StockSerie stockSerie = null;
+        private List<Shape> shapes = new List<Shape>();
+        private double[] lowSerie;
+        private double[] highSerie;
+        private void OnStockSerieChanged(StockSerie stockSerie)
+        {
+            if (this.stockSerie == stockSerie)
+                return;
+            this.stockSerie = stockSerie;
+
+            var closeSerie = stockSerie?.CloseValues;
+            if (closeSerie == null)
+                return;
+            lowSerie = stockSerie?.LowValues;
+            highSerie = stockSerie?.HighValues;
+
+            var viewModel = (StockChartViewModel)this.Resources["viewModel"];
+            viewModel.Bars = stockSerie.Bars;
+
+            this.EndIndex = viewModel.EndIndex;
+            this.StartIndex = viewModel.StartIndex;
+
+
+            #region Create overview
+            var curve = new OverviewCurve()
             {
                 Values = closeSerie,
                 Stroke = Brushes.DarkGreen,
-                StrokeThickness = 2,
-                StartIndex = 0
+                StrokeThickness = 2
             };
-            curve.SetBinding(Curve.EndIndexProperty, new Binding("MaxIndex") { Mode = BindingMode.OneWay });
 
             this.overviewGraph.Children.Clear();
-            this.overviewGraph.Children.Add(curve); 
-            
-            curve = new Curve()
-            {
-                Values = closeSerie,
-                Stroke = Brushes.DarkRed,
-                StrokeThickness = 2
-            };
-            curve.SetBinding(Curve.StartIndexProperty, new Binding("StartIndex") { Mode = BindingMode.OneWay });
-            curve.SetBinding(Curve.EndIndexProperty, new Binding("EndIndex") { Mode = BindingMode.OneWay });
+            this.overviewGraph.Children.Add(curve);
+            #endregion
+
             this.mainGraph.Children.Clear();
-            this.mainGraph.Children.Add(curve);
+            shapes.Clear();
 
-
-            var ohlc = new OHLCSeries()
+            int offset = gap;
+            for (int i = 0; i < stockSerie.Bars.Length; i++)
             {
-                Values = stockBars,
-                Stroke = Brushes.DarkGreen,
-                StrokeThickness = 2
-            };
-            ohlc.SetBinding(OHLCSeries.StartIndexProperty, new Binding("StartIndex") { Mode = BindingMode.OneWay });
-            ohlc.SetBinding(OHLCSeries.EndIndexProperty, new Binding("EndIndex") { Mode = BindingMode.OneWay });
-            this.mainGraph.Children.Add(ohlc);
+                var bar = stockSerie.Bars[i];
+                var shape = new Candle() { StrokeThickness = 1 };
+                shape.CreateGeometry(bar, i, gap, width);
+
+                if (bar.Close >= bar.Open)
+                {
+                    shape.Stroke = Brushes.DarkGreen;
+                    shape.Fill = Brushes.Green;
+                }
+                else
+                {
+                    shape.Stroke = Brushes.DarkRed;
+                    shape.Fill = Brushes.Red;
+                }
+                shapes.Add(shape);
+            }
+            this.mainGraph.Children.AddRange(shapes);
+
+            this.TransformGeometry();
         }
 
         public StockChart()
         {
             series.CollectionChanged += Series_CollectionChanged;
             InitializeComponent();
+
+            this.SizeChanged += StockChart_SizeChanged; ;
+        }
+
+        private void StockChart_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.TransformGeometry();
         }
 
         private void Series_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

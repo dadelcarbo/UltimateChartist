@@ -7,42 +7,9 @@ using System.Windows.Shapes;
 
 namespace ZoomIn.StockControl
 {
-    public class Curve : Shape
+    public class OverviewCurve : Shape
     {
         private Canvas canvas;
-        public int StartIndex
-        {
-            get { return (int)GetValue(StartIndexProperty); }
-            set { SetValue(StartIndexProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for StartIndex.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StartIndexProperty =
-            DependencyProperty.Register("StartIndex", typeof(int), typeof(Curve),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, StartIndexPropertyChanged));
-
-        private static void StartIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var curve = (Curve)d;
-            curve.TransformGeometry();
-        }
-        public int EndIndex
-        {
-            get { return (int)GetValue(EndIndexProperty); }
-            set { SetValue(EndIndexProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for EndIndex.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty EndIndexProperty =
-            DependencyProperty.Register("EndIndex", typeof(int), typeof(Curve),
-                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, EndIndexPropertyChanged));
-
-        private static void EndIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var curve = (Curve)d;
-            curve.TransformGeometry();
-        }
-
         public double[] Values
         {
             get { return (double[])GetValue(ValuesProperty); }
@@ -51,15 +18,16 @@ namespace ZoomIn.StockControl
 
         // Using a DependencyProperty as the backing store for Values.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ValuesProperty =
-            DependencyProperty.Register("Values", typeof(double[]), typeof(Curve),
+            DependencyProperty.Register("Values", typeof(double[]), typeof(OverviewCurve),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, ValuesPropertyChanged));
 
         private static void ValuesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var curve = (Curve)d;
+            var curve = (OverviewCurve)d;
             curve.CreateGeometry();
         }
 
+        double min, max;
         private void CreateGeometry()
         {
             if (Values == null || Values.Length < 2)
@@ -73,16 +41,18 @@ namespace ZoomIn.StockControl
                 var geometryGroup = new GeometryGroup();
                 var streamGeometry = new StreamGeometry();
 
-                double x = 0;
                 var values = Values;
                 using (StreamGeometryContext ctx = streamGeometry.Open())
                 {
-                    ctx.BeginFigure(new Point(x, values[0]), false, false);
+                    min = values[0];
+                    max = values[0];
+                    ctx.BeginFigure(new Point(0, values[0]), false, false);
 
                     for (int i = 1; i < values.Length; i++)
                     {
-                        x += width;
-                        ctx.LineTo(new Point(x, values[i]), true /* is stroked */, false /* is smooth join */);
+                        min = Math.Min(values[i], min);
+                        max = Math.Max(values[i], max);
+                        ctx.LineTo(new Point(i, values[i]), true /* is stroked */, false /* is smooth join */);
                     }
                 }
                 geometryGroup.Children.Add(streamGeometry);
@@ -93,41 +63,31 @@ namespace ZoomIn.StockControl
 
         private void TransformGeometry()
         {
-            if (canvas == null)
+            if (canvas == null || this.Values == null)
                 return;
             var canvasWidth = canvas.ActualWidth;
             var canvasHeight = canvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            var curveWidth = (EndIndex - StartIndex) * width;
+            var curveWidth = (this.Values.Length - 1);
             if (curveWidth == 0)
                 return;
             var values = Values;
             if (values == null)
                 return;
 
-            double min = double.MaxValue;
-            double max = double.MinValue;
-
-            for (int i = StartIndex; i <= EndIndex; i++)
-            {
-                min = Math.Min(values[i], min);
-                max = Math.Max(values[i], max);
-            }
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-StartIndex * width, -min));
+            tg.Children.Add(new TranslateTransform(0, -min));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
             geometry.Transform = tg;
         }
 
-        double width = 1;
-
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
-            if (Parent != null && oldParent == null)
+            if (Parent != null)
             {
                 canvas = (Canvas)Parent;
                 TransformGeometry();

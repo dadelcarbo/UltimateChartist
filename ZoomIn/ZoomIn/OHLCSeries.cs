@@ -14,6 +14,7 @@ namespace ZoomIn
 {
     class OHLCSeries : Shape
     {
+        private bool bull;
         private Canvas canvas;
         public int StartIndex
         {
@@ -80,7 +81,16 @@ namespace ZoomIn
                 double offset = gap;
                 for (int i = 0; i < values.Length; i++)
                 {
-                    geometryGroup.Children.Add(CreateCandleGeometry(values[i], offset, width));
+                    if (bull)
+                    {
+                        if (values[i].Close >= values[i].Open)
+                            geometryGroup.Children.Add(CreateCandleGeometry(values[i], offset, width));
+                    }
+                    else
+                    {
+                        if (values[i].Close < values[i].Open)
+                            geometryGroup.Children.Add(CreateCandleGeometry(values[i], offset, width));
+                    }
                     offset += 2 * width + gap;
                 }
                 this.geometry = geometryGroup;
@@ -96,7 +106,7 @@ namespace ZoomIn
             var canvasHeight = canvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            var curveWidth = (this.EndIndex - this.StartIndex +1) * (2 * width + gap) + gap;
+            var curveWidth = (this.EndIndex - this.StartIndex + 1) * (2 * width + gap) + gap;
             if (curveWidth == 0)
                 return;
             var values = this.Values;
@@ -124,24 +134,28 @@ namespace ZoomIn
 
         public OHLCSeries()
         {
-            this.CreateGeometry();
+            this.bull = true;
         }
+        public OHLCSeries(bool bull)
+        {
+            this.bull = bull;
+        }
+
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
-            if (this.Parent != null && oldParent == null)
+            if (Parent != null)
             {
-                canvas = (Canvas)this.Parent;
+                canvas = (Canvas)Parent;
+                TransformGeometry();
                 canvas.SizeChanged += Curve_SizeChanged;
             }
-        }
-
-        private void Canvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            var viewModel = this.DataContext as ChartViewModel;
-            var position = Mouse.GetPosition(canvas);
-            var inverseTransform = geometry.Transform.Inverse;
-            viewModel.MousePoint = inverseTransform.Transform(position);
+            else
+            {
+                var oldCanvas = (Canvas)oldParent;
+                if (oldCanvas != null)
+                    oldCanvas.SizeChanged -= Curve_SizeChanged;
+            }
         }
 
         private void Curve_SizeChanged(object sender, SizeChangedEventArgs e)

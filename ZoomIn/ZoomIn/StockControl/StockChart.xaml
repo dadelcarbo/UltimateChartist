@@ -237,7 +237,8 @@
                 <telerik:RadSlider Grid.Row="1" Height="30" 
                                    Minimum="0" Maximum="{Binding MaxIndex}" MiddleThumbClickMode="DecreaseNearestThumb"
                                    MinimumRangeSpan="{Binding MinRange}" MaximumRangeSpan="{Binding MaxRange}"
-                                   SelectionStart="{Binding StartIndex,Mode=TwoWay}" SelectionEnd="{Binding EndIndex,Mode=TwoWay}"
+                                   SelectionStart="{Binding StartIndex,Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:StockChart}}}"
+                                   SelectionEnd="{Binding EndIndex,Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type local:StockChart}}}"
                                    IsSelectionRangeEnabled="True" RepeatInterval="1"
                                    SelectionMiddleThumbStyle="{StaticResource SelectionMiddleThumbStyle}"
                                    Template="{StaticResource SliderControlTemplate}"/>
