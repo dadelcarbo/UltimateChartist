@@ -92,6 +92,8 @@ namespace ZoomIn.StockControl
                 min = Math.Min(lowSerie[i], min);
                 max = Math.Max(highSerie[i], max);
             }
+            min *= 0.98;
+            max *= 1.02;
             var curveHeight = max - min;
 
             TransformGroup tg = new();
@@ -107,7 +109,7 @@ namespace ZoomIn.StockControl
         int width = 2;
 
         private StockSerie stockSerie = null;
-        private List<StockShapeBase> shapes = new List<StockShapeBase>();
+        private List<IStockShapeBase> shapes = new ();
         private double[] lowSerie;
         private double[] highSerie;
         private void OnStockSerieChanged(StockSerie stockSerie)
@@ -144,6 +146,31 @@ namespace ZoomIn.StockControl
             this.mainGraph.Children.Clear();
             shapes.Clear();
 
+            #region Price Indicators (EMA, Cloud, Trail...)
+
+            var fill = new Fill() { };
+            fill.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
+            this.shapes.Add(fill);
+
+            //var range = new Range()
+            //{
+            //    StrokeThickness = 1,
+            //    Stroke = Brushes.Blue,
+            //    Fill = Brushes.LightBlue
+            //};
+
+            //range.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
+            //this.shapes.Add(range);
+
+            //var curve = new Curve()
+            //{
+            //    StrokeThickness = 1,
+            //    Stroke = Brushes.DarkOliveGreen
+            //};
+            //curve.CreateGeometry(closeSerie.CalculateEMA(20), gap, width);
+            //this.shapes.Add(curve);
+            #endregion
+
             #region Price Candle/Barchart...
             int offset = gap;
             for (int i = 0; i < stockSerie.Bars.Length; i++)
@@ -166,17 +193,7 @@ namespace ZoomIn.StockControl
             }
             #endregion
 
-            #region Price Indicators (EMA, Cloud, Trail...)
-            var curve = new Curve()
-            {
-                StrokeThickness = 1,
-                Stroke = Brushes.Blue
-            };
-            curve.CreateGeometry(closeSerie, gap, width);
-            this.shapes.Add(curve);
-            #endregion
-
-            this.mainGraph.Children.AddRange(shapes);
+            this.mainGraph.Children.AddRange(shapes.SelectMany(s=>s.Shapes));
             this.TransformGeometry();
         }
 

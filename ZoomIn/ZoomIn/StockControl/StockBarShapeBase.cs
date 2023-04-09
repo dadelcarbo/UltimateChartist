@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Globalization;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace ZoomIn.StockControl
 {
@@ -12,15 +11,28 @@ namespace ZoomIn.StockControl
 
         public abstract void CreateGeometry(StockBar bar, int index, int gap, int width);
     }
-    public abstract class StockShapeBase : Shape
+    public abstract class StockShapeBase : Shape, IStockShapeBase
     {
+        IEnumerable<Shape> shapes;
+        public StockShapeBase()
+        {
+            this.shapes = new List<Shape>() { this };
+        }
         public void ApplyTranform(Transform transform)
         {
             if (this.geometry == null) return;
             this.geometry.Transform = transform;
         }
 
+        public IEnumerable<Shape> Shapes => this.shapes;
+
         protected Geometry geometry;
         protected override Geometry DefiningGeometry => geometry;
+    }
+
+    public interface IStockShapeBase
+    {
+        public void ApplyTranform(Transform transform);
+        public IEnumerable<Shape> Shapes { get; }
     }
 }

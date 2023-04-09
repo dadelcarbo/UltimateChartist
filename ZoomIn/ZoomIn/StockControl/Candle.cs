@@ -8,9 +8,11 @@ namespace ZoomIn.StockControl
     {
         public override void CreateGeometry(StockBar bar, int index, int gap, int width)
         {
+            RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
+
             var pathGeometry = new PathGeometry();
             PathFigureCollection pathFigureCollection = new PathFigureCollection();
-
+            
             var offset = gap + index * (2 * width + gap);
             PathFigure pathFigure1 = new PathFigure();
             pathFigure1.StartPoint = new Point(offset - width, bar.Open);
