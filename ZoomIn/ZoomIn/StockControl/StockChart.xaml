@@ -244,11 +244,15 @@
                                    Template="{StaticResource SliderControlTemplate}"/>
             </Grid>
         </Border>
-        <Border Name="chartBorder" Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <Border Grid.Row="1" Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="50,10,50,10">
-                <Canvas Name="mainGraph" ClipToBounds="True" LayoutTransform="1 0 0 -1 0 0">
-                </Canvas>
-            </Border>
+        <Border Name="chartBorder" Grid.Row="1" Grid.Column="1" BorderBrush="DarkRed" BorderThickness="2">
+            <Grid>
+                <Border BorderBrush="LightGray" BorderThickness="1" Margin="50,10,50,25">
+                    <Canvas Name="gridCanvas" ClipToBounds="False" LayoutTransform="1 0 0 1 0 0"/>
+                </Border>
+                <Border BorderBrush="LightGray" BorderThickness="1" Margin="50,10,50,25">
+                    <Canvas Name="mainCanvas" ClipToBounds="True" LayoutTransform="1 0 0 -1 0 0"/>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

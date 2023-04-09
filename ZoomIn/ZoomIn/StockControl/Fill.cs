@@ -193,8 +193,8 @@ namespace ZoomIn.StockControl
             this.bearGeometry = geometryGroup;
             this.BearShape = new Path { Data = bearGeometry };
             this.BearShape.SetBinding(Path.FillProperty, new Binding("BearFill") { Source = this });
-            this.BullShape.SetBinding(Path.StrokeProperty, new Binding("BearStroke") { Source = this });
-            this.BullShape.SetBinding(Path.StrokeThicknessProperty, new Binding("BearStrokeThickness") { Source = this });
+            this.BearShape.SetBinding(Path.StrokeProperty, new Binding("BearStroke") { Source = this });
+            this.BearShape.SetBinding(Path.StrokeThicknessProperty, new Binding("BearStrokeThickness") { Source = this });
         }
 
         public void ApplyTranform(Transform transform)

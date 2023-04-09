@@ -38,12 +38,8 @@
                                 <TextBlock Text="{Binding EndIndex,ElementName=stockChart}"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Width="70">BullColor:</Label>
-                                <telerik:RadColorPicker SelectedColor="{Binding FillShape.BullFill,Mode=TwoWay, Converter={StaticResource brushToColorConverter}, ElementName=stockChart}"></telerik:RadColorPicker>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Width="70">BearColor:</Label>
-                                <telerik:RadColorPicker SelectedColor="{Binding FillShape.BearFill,Mode=TwoWay, Converter={StaticResource brushToColorConverter}, ElementName=stockChart}"></telerik:RadColorPicker>
+                                <Label Width="70">GridStroke:</Label>
+                                <telerik:RadColorPicker SelectedColor="{Binding GridStroke,Mode=TwoWay, Converter={StaticResource brushToColorConverter}, ElementName=stockChart}"></telerik:RadColorPicker>
                             </StackPanel>
                         </StackPanel>
                     </Border>

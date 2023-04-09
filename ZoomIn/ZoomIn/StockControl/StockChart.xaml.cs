@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
@@ -16,18 +17,15 @@ namespace ZoomIn.StockControl
     /// </summary>
     public partial class StockChart : UserControl
     {
-        public Fill FillShape
+        public Brush GridStroke
         {
-            get { return (Fill)GetValue(FillShapeProperty); }
+            get { return (Brush)GetValue(FillShapeProperty); }
             set { SetValue(FillShapeProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for FillShape.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FillShapeProperty =
-            DependencyProperty.Register("FillShape", typeof(Fill), typeof(StockChart), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender ));
-
-
-
+            DependencyProperty.Register("GridStroke", typeof(Brush), typeof(StockChart), new FrameworkPropertyMetadata(Brushes.LightGray, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         private ObservableCollection<ChartSeries> series = new ObservableCollection<ChartSeries>();
@@ -41,7 +39,8 @@ namespace ZoomIn.StockControl
         }
 
         // Using a DependencyProperty as the backing store for StockBars.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StockBarsProperty = DependencyProperty.Register("StockSerie", typeof(StockSerie), typeof(StockChart), new PropertyMetadata(null, OnStockSerieChanged));
+        public static readonly DependencyProperty StockBarsProperty =
+            DependencyProperty.Register("StockSerie", typeof(StockSerie), typeof(StockChart), new PropertyMetadata(null, OnStockSerieChanged));
 
         private static void OnStockSerieChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -66,7 +65,7 @@ namespace ZoomIn.StockControl
         private static void StartIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var stockChart = (StockChart)d;
-            stockChart.TransformGeometry();
+            stockChart.OnResize();
         }
         public int EndIndex
         {
@@ -82,14 +81,14 @@ namespace ZoomIn.StockControl
         private static void EndIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var stockChart = (StockChart)d;
-            stockChart.TransformGeometry();
+            stockChart.OnResize();
         }
         #endregion
 
-        private void TransformGeometry()
+        private void OnResize()
         {
-            var canvasWidth = mainGraph.ActualWidth;
-            var canvasHeight = mainGraph.ActualHeight;
+            var canvasWidth = mainCanvas.ActualWidth;
+            var canvasHeight = mainCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
             if (EndIndex == 0)
@@ -119,12 +118,38 @@ namespace ZoomIn.StockControl
             {
                 shape.ApplyTranform(tg);
             }
+
+            #region Gridgrid
+            #region Horizontal Grid
+
+            #endregion
+            #region Vertical Grid
+            tg = new();
+            tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, 0));
+            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
+            var grid = new Grid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            grid.CreateGeometry(stockSerie, gap, width, StartIndex, EndIndex, gridCanvas.ActualHeight);
+            grid.ApplyTranform(tg);
+            this.gridCanvas.Children.Clear();
+            this.gridCanvas.Children.Add(grid);
+
+            foreach (var legend in grid.Legends)
+            {
+                var location = tg.Transform(legend.Location);
+                var label = new System.Windows.Controls.Label() { Content = legend.Text };
+                Canvas.SetTop(label, 200);
+                Canvas.SetLeft(label, location.X);
+                this.gridCanvas.Children.Add(label);
+            }
+
+            #endregion
+            #endregion
         }
         int gap = 2;
         int width = 2;
 
         private StockSerie stockSerie = null;
-        private List<IStockShapeBase> shapes = new ();
+        private List<IStockShapeBase> shapes = new();
         private double[] lowSerie;
         private double[] highSerie;
         private void OnStockSerieChanged(StockSerie stockSerie)
@@ -158,7 +183,7 @@ namespace ZoomIn.StockControl
             this.overviewGraph.Children.Add(overviewCurve);
             #endregion
 
-            this.mainGraph.Children.Clear();
+            this.mainCanvas.Children.Clear();
             shapes.Clear();
 
             #region Price Indicators (EMA, Cloud, Trail...)
@@ -166,7 +191,6 @@ namespace ZoomIn.StockControl
             var fill = new Fill() { };
             fill.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
             this.shapes.Add(fill);
-            this.FillShape = fill;
 
             //var range = new Range()
             //{
@@ -216,8 +240,8 @@ namespace ZoomIn.StockControl
             }
             #endregion
 
-            this.mainGraph.Children.AddRange(shapes.SelectMany(s=>s.Shapes));
-            this.TransformGeometry();
+            this.mainCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
+            this.OnResize();
         }
 
 
@@ -231,7 +255,7 @@ namespace ZoomIn.StockControl
 
         private void StockChart_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.TransformGeometry();
+            this.OnResize();
         }
 
         private void Series_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -243,7 +267,7 @@ namespace ZoomIn.StockControl
                     {
                         foreach (var shape in series.Shapes)
                         {
-                            this.mainGraph.Children.Add(shape);
+                            this.mainCanvas.Children.Add(shape);
                         }
                     }
                     break;
@@ -252,7 +276,7 @@ namespace ZoomIn.StockControl
                     {
                         foreach (var shape in series.Shapes)
                         {
-                            this.mainGraph.Children.Remove(shape);
+                            this.mainCanvas.Children.Remove(shape);
                         }
                     }
                     break;
@@ -261,7 +285,7 @@ namespace ZoomIn.StockControl
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    this.mainGraph.Children.Clear();
+                    this.mainCanvas.Children.Clear();
                     break;
                 default:
                     break;
