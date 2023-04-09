@@ -119,30 +119,45 @@ namespace ZoomIn.StockControl
                 shape.ApplyTranform(tg);
             }
 
-            #region Gridgrid
+            #region Grid
+            this.gridCanvas.Children.Clear();
             #region Horizontal Grid
+            tg = new();
+            tg.Children.Add(new TranslateTransform(0, -min));
+            tg.Children.Add(new ScaleTransform(1, canvasHeight / curveHeight));
+            var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            horizontalGrid.CreateGeometry(stockSerie, min, max, gridCanvas.ActualWidth);
+            horizontalGrid.ApplyTranform(tg);
+            this.gridCanvas.Children.Add(horizontalGrid);
 
+            foreach (var legend in horizontalGrid.Legends)
+            {
+                var location = tg.Transform(legend.Location);
+                var label = new System.Windows.Controls.Label() { Content = legend.Text };
+                label.Measure(gridCanvas.RenderSize);
+                Canvas.SetTop(label, location.Y - label.DesiredSize.Height / 2);
+                Canvas.SetLeft(label, -label.DesiredSize.Width);
+                this.gridCanvas.Children.Add(label);
+            }
             #endregion
             #region Vertical Grid
             tg = new();
             tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
-            var grid = new Grid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
-            grid.CreateGeometry(stockSerie, gap, width, StartIndex, EndIndex, gridCanvas.ActualHeight);
-            grid.ApplyTranform(tg);
-            this.gridCanvas.Children.Clear();
-            this.gridCanvas.Children.Add(grid);
+            var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            verticalGrid.CreateGeometry(stockSerie, gap, width, StartIndex, EndIndex, gridCanvas.ActualHeight);
+            verticalGrid.ApplyTranform(tg);
+            this.gridCanvas.Children.Add(verticalGrid);
 
-            foreach (var legend in grid.Legends)
+            foreach (var legend in verticalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
                 var label = new System.Windows.Controls.Label() { Content = legend.Text };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, gridCanvas.ActualHeight);
-                Canvas.SetLeft(label, location.X - label.DesiredSize.Width/2);
+                Canvas.SetLeft(label, location.X - label.DesiredSize.Width / 2);
                 this.gridCanvas.Children.Add(label);
             }
-
             #endregion
             #endregion
         }
