@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml;
 
 namespace ZoomIn.StockControl
 {

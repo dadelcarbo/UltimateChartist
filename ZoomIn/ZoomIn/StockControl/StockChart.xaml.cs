@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,6 +16,20 @@ namespace ZoomIn.StockControl
     /// </summary>
     public partial class StockChart : UserControl
     {
+        public Fill FillShape
+        {
+            get { return (Fill)GetValue(FillShapeProperty); }
+            set { SetValue(FillShapeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FillShape.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FillShapeProperty =
+            DependencyProperty.Register("FillShape", typeof(Fill), typeof(StockChart), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender ));
+
+
+
+
+
         private ObservableCollection<ChartSeries> series = new ObservableCollection<ChartSeries>();
         public ObservableCollection<ChartSeries> Series { get => series; set { if (series != value) { if (series != null) { series.CollectionChanged -= Series_CollectionChanged; } series = value; series.CollectionChanged += Series_CollectionChanged; } } }
 
@@ -92,8 +107,8 @@ namespace ZoomIn.StockControl
                 min = Math.Min(lowSerie[i], min);
                 max = Math.Max(highSerie[i], max);
             }
-            min *= 0.98;
-            max *= 1.02;
+            //min *= 0.98;
+            //max *= 1.02;
             var curveHeight = max - min;
 
             TransformGroup tg = new();
@@ -151,6 +166,7 @@ namespace ZoomIn.StockControl
             var fill = new Fill() { };
             fill.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
             this.shapes.Add(fill);
+            this.FillShape = fill;
 
             //var range = new Range()
             //{
@@ -162,13 +178,20 @@ namespace ZoomIn.StockControl
             //range.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
             //this.shapes.Add(range);
 
-            //var curve = new Curve()
-            //{
-            //    StrokeThickness = 1,
-            //    Stroke = Brushes.DarkOliveGreen
-            //};
-            //curve.CreateGeometry(closeSerie.CalculateEMA(20), gap, width);
-            //this.shapes.Add(curve);
+            var curve = new Curve()
+            {
+                StrokeThickness = 1,
+                Stroke = Brushes.DarkOliveGreen
+            };
+            curve.CreateGeometry(closeSerie.CalculateEMA(10), gap, width);
+            this.shapes.Add(curve);
+            curve = new Curve()
+            {
+                StrokeThickness = 1,
+                Stroke = Brushes.DarkRed
+            };
+            curve.CreateGeometry(closeSerie.CalculateEMA(20), gap, width);
+            this.shapes.Add(curve);
             #endregion
 
             #region Price Candle/Barchart...
@@ -196,6 +219,7 @@ namespace ZoomIn.StockControl
             this.mainGraph.Children.AddRange(shapes.SelectMany(s=>s.Shapes));
             this.TransformGeometry();
         }
+
 
         public StockChart()
         {

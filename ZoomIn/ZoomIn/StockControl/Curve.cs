@@ -27,5 +27,4 @@ namespace ZoomIn.StockControl
             geometry = geometryGroup;
         }
     }
-
 }

@@ -4,13 +4,14 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using ZoomIn.StockDrawing;
 
 namespace ZoomIn.StockControl
 {
     public class Fill : DependencyObject, IStockShapeBase
     {
-        static public Brush DefaultBullFillBrush = new SolidColorBrush(Colors.LightGreen) { Opacity = 0.25 };
-        static public Brush DefaultBearFillBrush = new SolidColorBrush(Colors.Red) { Opacity = 0.25 };
+        static public Brush DefaultBullFillBrush = new SolidColorBrush(Colors.Green) { Opacity = 1 };
+        static public Brush DefaultBearFillBrush = new SolidColorBrush(Colors.Red) { Opacity = 1 };
 
         public Brush BullFill
         {
@@ -19,7 +20,7 @@ namespace ZoomIn.StockControl
         }
 
         // Using a DependencyProperty as the backing store for BullFill.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BullFillProperty = DependencyProperty.Register("BullFill", typeof(Brush), typeof(Fill), new PropertyMetadata(DefaultBullFillBrush));
+        public static readonly DependencyProperty BullFillProperty = DependencyProperty.Register("BullFill", typeof(Brush), typeof(Fill), new FrameworkPropertyMetadata(DefaultBullFillBrush, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public Brush BearFill
         {
@@ -29,6 +30,7 @@ namespace ZoomIn.StockControl
 
         // Using a DependencyProperty as the backing store for BearFill.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BearFillProperty = DependencyProperty.Register("BearFill", typeof(Brush), typeof(Fill), new PropertyMetadata(DefaultBearFillBrush));
+
 
 
         private Geometry bullGeometry = null, bearGeometry = null;
@@ -57,7 +59,7 @@ namespace ZoomIn.StockControl
                     {
                         if (i < fast.Length - 1)
                         {
-                            var pivot = new Point(x + step / 2, (fast[i] + fast[i + 1]) / 2);
+                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(x, fast[i]), slowPoints.Last(), new Point(x, slow[i]));
                             fastPoints.Add(pivot);
                             slowPoints.Reverse();
                             fastPoints.AddRange(slowPoints);
@@ -79,12 +81,13 @@ namespace ZoomIn.StockControl
                     {
                         fastPoints.Add(new Point(x, fast[i]));
                         slowPoints.Add(new Point(x, slow[i]));
+
                     }
                     else
                     {
                         if (i < fast.Length - 1)
                         {
-                            var pivot = new Point(x + step / 2, (fast[i] + fast[i + 1]) / 2);
+                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(x, fast[i]), slowPoints.Last(), new Point(x, slow[i]));
                             fastPoints.Add(pivot);
                             slowPoints.Reverse();
                             fastPoints.AddRange(slowPoints);
