@@ -137,8 +137,9 @@ namespace ZoomIn.StockControl
             {
                 var location = tg.Transform(legend.Location);
                 var label = new System.Windows.Controls.Label() { Content = legend.Text };
-                Canvas.SetTop(label, 200);
-                Canvas.SetLeft(label, location.X);
+                label.Measure(gridCanvas.RenderSize);
+                Canvas.SetTop(label, gridCanvas.ActualHeight);
+                Canvas.SetLeft(label, location.X - label.DesiredSize.Width/2);
                 this.gridCanvas.Children.Add(label);
             }
 
