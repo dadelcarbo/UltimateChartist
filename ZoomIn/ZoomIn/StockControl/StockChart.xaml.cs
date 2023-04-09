@@ -178,20 +178,20 @@ namespace ZoomIn.StockControl
             //range.CreateGeometry(closeSerie.CalculateEMA(10), closeSerie.CalculateEMA(20), gap, width);
             //this.shapes.Add(range);
 
-            var curve = new Curve()
-            {
-                StrokeThickness = 1,
-                Stroke = Brushes.DarkOliveGreen
-            };
-            curve.CreateGeometry(closeSerie.CalculateEMA(10), gap, width);
-            this.shapes.Add(curve);
-            curve = new Curve()
-            {
-                StrokeThickness = 1,
-                Stroke = Brushes.DarkRed
-            };
-            curve.CreateGeometry(closeSerie.CalculateEMA(20), gap, width);
-            this.shapes.Add(curve);
+            //var curve = new Curve()
+            //{
+            //    StrokeThickness = 1,
+            //    Stroke = Brushes.DarkOliveGreen
+            //};
+            //curve.CreateGeometry(closeSerie.CalculateEMA(10), gap, width);
+            //this.shapes.Add(curve);
+            //curve = new Curve()
+            //{
+            //    StrokeThickness = 1,
+            //    Stroke = Brushes.DarkRed
+            //};
+            //curve.CreateGeometry(closeSerie.CalculateEMA(20), gap, width);
+            //this.shapes.Add(curve);
             #endregion
 
             #region Price Candle/Barchart...
