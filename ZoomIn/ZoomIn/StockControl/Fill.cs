@@ -73,7 +73,7 @@ namespace ZoomIn.StockControl
 
 
         private Geometry? bullGeometry = null, bearGeometry = null;
-        public void CreateGeometry(double[] fast, double[] slow, int gap, int width)
+        public void CreateGeometry(double[] fast, double[] slow, double gap, double width)
         {
             List<List<Point>> bullPoints = new List<List<Point>>();
             List<List<Point>> bearPoints = new List<List<Point>>();

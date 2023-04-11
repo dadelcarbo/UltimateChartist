@@ -23,7 +23,7 @@
                         <ColumnDefinition Width="0.25*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border Name="Debug" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                    <Border Name="Debug" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Background="White">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>StockSerie:</Label>
@@ -38,8 +38,28 @@
                                 <TextBlock Text="{Binding EndIndex,ElementName=stockChart}"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
+                                <Label>Mouse.X:</Label>
+                                <TextBlock Text="{Binding MousePos.X,ElementName=stockChart, StringFormat={}{0:#.0}}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Mouse.Y:</Label>
+                                <TextBlock Text="{Binding MousePos.Y,ElementName=stockChart, StringFormat={}{0:#.0}}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>MouseValue.X:</Label>
+                                <TextBlock Text="{Binding MouseValue.X,ElementName=stockChart, StringFormat={}{0:#.0}}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>MouseValue.Y:</Label>
+                                <TextBlock Text="{Binding MouseValue.Y,ElementName=stockChart, StringFormat={}{0:#.0}}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
                                 <Label Width="70">GridStroke:</Label>
                                 <telerik:RadColorPicker SelectedColor="{Binding GridStroke,Mode=TwoWay, Converter={StaticResource brushToColorConverter}, ElementName=stockChart}"></telerik:RadColorPicker>
+                            </StackPanel>
+                            <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                                <Label Content="2023&#x0a;01/22" FontFamily="Calibri" FontSize="10"/>
+                                <Label Content="2023&#x0a;01/22" />
                             </StackPanel>
                         </StackPanel>
                     </Border>

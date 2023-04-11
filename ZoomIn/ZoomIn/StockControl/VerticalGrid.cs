@@ -13,7 +13,7 @@ namespace ZoomIn.StockControl
     public class VerticalGrid : StockShapeBase
     {
         public List<Legend> Legends { get; } = new List<Legend>();
-        public void CreateGeometry(StockSerie serie, int gap, int width, int startIndex, int endIndex, double height)
+        public void CreateGeometry(StockSerie serie, double gap, double width, int startIndex, int endIndex, double height)
         {
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
             var geometryGroup = new GeometryGroup();
@@ -25,6 +25,7 @@ namespace ZoomIn.StockControl
             for (int i = startIndex; i <= endIndex; i++)
             {
                 var bar = serie.Bars[i];
+
                 if (bar.Date.Month != previousMonth)
                 {
                     previousMonth = bar.Date.Month;
@@ -32,7 +33,7 @@ namespace ZoomIn.StockControl
                     geometryGroup.Children.Add(line);
                     if (previousYear != bar.Date.Year)
                     {
-                        this.Legends.Add(new Legend { Location = new Point(x, 0), Text = bar.Date.ToString("yyyy") + Environment.NewLine + bar.Date.ToString("dd/MM") });
+                        this.Legends.Add(new Legend { Location = new Point(x, 0), Text = bar.Date.ToString("dd/MM") + Environment.NewLine + bar.Date.ToString("yyyy") });
                         previousYear = bar.Date.Year;
                     }
                     else

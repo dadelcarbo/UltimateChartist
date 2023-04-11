@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace ZoomIn
 {
-    public class StockSerie 
+    public class StockSerie
     {
         public StockBar[] Bars { get; set; }
         public string Name { get; set; }
@@ -24,11 +24,11 @@ namespace ZoomIn
     {
         public StockChartViewModel()
         {
-            this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").Take(500).ToArray();
+            this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").ToArray();
             this.Series = new StockSerie[]
             {
-                new StockSerie { Name = "Test1", Bars = Bars.Take(250).ToArray()},
-                new StockSerie { Name = "Test2", Bars = Bars.Skip(10).Take(250).ToArray()}
+                new StockSerie { Name = "Test1", Bars = Bars},
+                new StockSerie { Name = "Test2", Bars = Bars.Reverse().ToArray()}
             };
             this.Serie = this.Series[0];
 

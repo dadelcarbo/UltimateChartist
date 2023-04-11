@@ -6,7 +6,7 @@ namespace ZoomIn.StockControl
 {
     public class Range : StockShapeBase
     {
-        public void CreateGeometry(double[] lows, double[] highs, int gap, int width)
+        public void CreateGeometry(double[] lows, double[] highs, double gap, double width)
         {
             var geometryGroup = new GeometryGroup();
             var streamGeometry = new StreamGeometry();

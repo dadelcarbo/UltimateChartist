@@ -138,7 +138,6 @@ namespace ZoomIn
         }
 
         double width = 1;
-        double gap = 5;
 
         public Range()
         {

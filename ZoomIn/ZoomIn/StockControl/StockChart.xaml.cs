@@ -9,6 +9,8 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.RichTextBoxUI;
+using Telerik.Windows.Documents.Model.Drawing.Charts;
 
 namespace ZoomIn.StockControl
 {
@@ -85,6 +87,7 @@ namespace ZoomIn.StockControl
         }
         #endregion
 
+        private Transform chartToPixelTransform;
         private void OnResize()
         {
             var canvasWidth = mainCanvas.ActualWidth;
@@ -93,7 +96,7 @@ namespace ZoomIn.StockControl
                 return;
             if (EndIndex == 0)
                 return;
-            var curveWidth = (this.EndIndex - this.StartIndex + 1) * (2 * width + gap) + gap;
+            var curveWidth = (this.EndIndex - this.StartIndex + 1) * (2 * width + gap);
             if (curveWidth == 0)
                 return;
             if (this.StockSerie?.Bars == null)
@@ -111,20 +114,21 @@ namespace ZoomIn.StockControl
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, -min));
-            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
+            tg.Children.Add(new TranslateTransform(-this.StartIndex * (2 * width + gap) + gap, -max));
+            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, -canvasHeight / curveHeight));
 
             foreach (var shape in shapes)
             {
                 shape.ApplyTranform(tg);
             }
+            chartToPixelTransform = tg;
 
             #region Grid
             this.gridCanvas.Children.Clear();
             #region Horizontal Grid
             tg = new();
-            tg.Children.Add(new TranslateTransform(0, -min));
-            tg.Children.Add(new ScaleTransform(1, canvasHeight / curveHeight));
+            tg.Children.Add(new TranslateTransform(gap, -max));
+            tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
             horizontalGrid.CreateGeometry(stockSerie, min, max, gridCanvas.ActualWidth);
             horizontalGrid.ApplyTranform(tg);
@@ -133,7 +137,7 @@ namespace ZoomIn.StockControl
             foreach (var legend in horizontalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text };
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, location.Y - label.DesiredSize.Height / 2);
                 Canvas.SetLeft(label, -label.DesiredSize.Width);
@@ -152,17 +156,18 @@ namespace ZoomIn.StockControl
             foreach (var legend in verticalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text };
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
                 label.Measure(gridCanvas.RenderSize);
-                Canvas.SetTop(label, gridCanvas.ActualHeight);
+                Canvas.SetTop(label, gridCanvas.ActualHeight - 5);
                 Canvas.SetLeft(label, location.X - label.DesiredSize.Width / 2);
                 this.gridCanvas.Children.Add(label);
             }
             #endregion
             #endregion
         }
-        int gap = 2;
-        int width = 2;
+
+        double gap = 0.2;
+        double width = 0.4;
 
         private StockSerie stockSerie = null;
         private List<IStockShapeBase> shapes = new();
@@ -235,11 +240,12 @@ namespace ZoomIn.StockControl
             #endregion
 
             #region Price Candle/Barchart...
-            int offset = gap;
+
+            double offset = gap;
             for (int i = 0; i < stockSerie.Bars.Length; i++)
             {
                 var bar = stockSerie.Bars[i];
-                var shape = new Candle() { StrokeThickness = 1 };
+                var shape = new Candle() { StrokeThickness = 1, Style = Resources["barStyle"] as Style };
                 shape.CreateGeometry(bar, i, gap, width);
 
                 if (bar.Close >= bar.Open)
@@ -307,5 +313,75 @@ namespace ZoomIn.StockControl
                     break;
             }
         }
+
+        #region Mouse Events
+        FontFamily labelFontFamily = new FontFamily("Calibri");
+        private void mouseCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var point = e.GetPosition(sender as IInputElement);
+            var p2 = this.chartToPixelTransform.Inverse.Transform(point);
+            p2.X = Math.Round(p2.X - gap);
+            this.MousePos = point;
+            this.MouseValue = p2;
+
+            mouseCanvas.Children.Clear();
+            var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
+            mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
+            mouseCanvas.Children.Add(mouseCross);
+
+            var label = new System.Windows.Controls.TextBox()
+            {
+                Text = p2.Y.ToString("0.##"),
+                BorderBrush = Brushes.Gray,
+                BorderThickness = new Thickness(1),
+                Background = Brushes.Goldenrod,
+                FontFamily = labelFontFamily,
+                FontSize = 10
+            };
+            label.Measure(mouseCanvas.RenderSize);
+            Canvas.SetTop(label, point.Y - label.DesiredSize.Height / 2);
+            Canvas.SetLeft(label, -label.DesiredSize.Width);
+            this.mouseCanvas.Children.Add(label);
+        }
+
+        private void mouseCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            mouseCanvas.Children.Clear();
+        }
+
+        private void mouseCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void mouseCanvas_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+        #endregion
+
+
+
+        public Point MousePos
+        {
+            get { return (Point)GetValue(MousePosProperty); }
+            set { SetValue(MousePosProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MousePos.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MousePosProperty =
+            DependencyProperty.Register("MousePos", typeof(Point), typeof(StockChart), new PropertyMetadata(new Point()));
+
+        public Point MouseValue
+        {
+            get { return (Point)GetValue(MouseValueProperty); }
+            set { SetValue(MouseValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MouseValue.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MouseValueProperty =
+            DependencyProperty.Register("MouseValue", typeof(Point), typeof(StockChart), new PropertyMetadata(new Point()));
+
+
     }
 }

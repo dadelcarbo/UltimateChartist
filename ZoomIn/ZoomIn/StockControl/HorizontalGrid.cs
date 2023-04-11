@@ -21,7 +21,6 @@ namespace ZoomIn.StockControl
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
             var geometryGroup = new GeometryGroup();
 
-
             var step = Math.Pow(10, Math.Floor(Math.Log10((max - min))));
             if ((max - min) / step < 3)
             {

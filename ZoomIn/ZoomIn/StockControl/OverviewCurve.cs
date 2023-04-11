@@ -34,7 +34,7 @@ namespace ZoomIn.StockControl
             {
                 var text = new FormattedText("No Data To Display", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 16, Brushes.Black, 1);
                 geometry = text.BuildGeometry(new Point(5, 5));
-                geometry.Transform = new MatrixTransform(1, 0, 0, -1, 0, 0);
+                geometry.Transform = new MatrixTransform(1, 0, 0, 1, 0, 0);
             }
             else
             {
@@ -79,8 +79,8 @@ namespace ZoomIn.StockControl
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(0, -min));
-            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, canvasHeight / curveHeight));
+            tg.Children.Add(new TranslateTransform(0, -max));
+            tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, -canvasHeight / curveHeight));
             geometry.Transform = tg;
         }
 

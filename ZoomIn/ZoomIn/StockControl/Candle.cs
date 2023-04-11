@@ -6,7 +6,7 @@ namespace ZoomIn.StockControl
 {
     public class Candle : StockBarShapeBase
     {
-        public override void CreateGeometry(StockBar bar, int index, int gap, int width)
+        public override void CreateGeometry(StockBar bar, int index, double gap, double width)
         {
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
 

@@ -8,7 +8,7 @@ namespace ZoomIn.StockControl
     {
         public StockBar StockBar { get; private set; }
 
-        public abstract void CreateGeometry(StockBar bar, int index, int gap, int width);
+        public abstract void CreateGeometry(StockBar bar, int index, double gap, double width);
     }
     public abstract class StockShapeBase : Shape, IStockShapeBase
     {
