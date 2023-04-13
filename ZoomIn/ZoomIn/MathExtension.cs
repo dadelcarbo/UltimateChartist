@@ -1,13 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace ZoomIn
 {
     static class MathExtension
     {
+        public static double[] CalculateMACD(this double[] values, int fastPeriod, int slowPeriod)
+        {
+            var macd = new double[values.Length];
+            double fastEma = values[0];
+            double slowEma = values[0];
+            double fastAlpha = 2.0 / (fastPeriod + 1);
+            double slowAlpha = 2.0 / (slowPeriod + 1);
+
+            macd[0] = 0;
+            for (int i = 1; i < values.Count(); i++)
+            {
+                fastEma = fastEma + fastAlpha * (values[i] - fastEma);
+                slowEma = slowEma + slowAlpha * (values[i] - slowEma);
+                macd[i] = fastEma - slowEma;
+            }
+            return macd;
+        }
         public static double[] CalculateEMA(this double[] values, int period)
         {
             var ema = new double[values.Length];
@@ -30,6 +43,5 @@ namespace ZoomIn
             }
             return ema;
         }
-
     }
 }

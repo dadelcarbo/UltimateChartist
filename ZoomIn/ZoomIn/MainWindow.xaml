@@ -18,12 +18,13 @@
                 <Grid>
                     <Grid.RowDefinitions >
                         <RowDefinition></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="0.25*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border Name="Debug" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Background="White">
+                    <Border Name="Debug" Grid.RowSpan="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Background="LightGoldenrodYellow">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>StockSerie:</Label>
@@ -63,8 +64,8 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <stockcontrol:StockChart x:Name="stockChart" Grid.Row="0" Grid.Column="1" 
-                        StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
+                    <stockcontrol:StockChart x:Name="stockChart" Grid.Row="0" Grid.Column="1" StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
+                    <stockcontrol:StockChart x:Name="indicatorChart" Grid.Row="1" Grid.Column="1" StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="CurveGraph" DataContext="{StaticResource chartViewModel}">
