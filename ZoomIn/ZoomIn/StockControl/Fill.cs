@@ -197,7 +197,7 @@ namespace ZoomIn.StockControl
             this.BearShape.SetBinding(Path.StrokeThicknessProperty, new Binding("BearStrokeThickness") { Source = this });
         }
 
-        public void ApplyTranform(Transform transform)
+        public void ApplyTransform(Transform transform)
         {
             if (this.bullGeometry != null)
                 this.bullGeometry.Transform = transform;

@@ -119,7 +119,7 @@ namespace ZoomIn.StockControl
 
             foreach (var shape in shapes)
             {
-                shape.ApplyTranform(tg);
+                shape.ApplyTransform(tg);
             }
             chartToPixelTransform = tg;
 
@@ -131,7 +131,7 @@ namespace ZoomIn.StockControl
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
             horizontalGrid.CreateGeometry(stockSerie, min, max, gridCanvas.ActualWidth);
-            horizontalGrid.ApplyTranform(tg);
+            horizontalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(horizontalGrid);
 
             foreach (var legend in horizontalGrid.Legends)
@@ -150,7 +150,7 @@ namespace ZoomIn.StockControl
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
             verticalGrid.CreateGeometry(stockSerie, gap, width, StartIndex, EndIndex, gridCanvas.ActualHeight);
-            verticalGrid.ApplyTranform(tg);
+            verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
 
             foreach (var legend in verticalGrid.Legends)
@@ -329,14 +329,14 @@ namespace ZoomIn.StockControl
             mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
-            var label = new System.Windows.Controls.TextBox()
+            var label = new System.Windows.Controls.Label()
             {
-                Text = p2.Y.ToString("0.##"),
+                Content = p2.Y.ToString("0.##"),
                 BorderBrush = Brushes.Gray,
                 BorderThickness = new Thickness(1),
                 Background = Brushes.Goldenrod,
                 FontFamily = labelFontFamily,
-                FontSize = 10
+                FontSize = 10, Padding = new Thickness(1)
             };
             label.Measure(mouseCanvas.RenderSize);
             Canvas.SetTop(label, point.Y - label.DesiredSize.Height / 2);

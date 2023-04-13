@@ -17,7 +17,7 @@ namespace ZoomIn.StockControl
         {
             this.shapes = new List<Shape>() { this };
         }
-        public void ApplyTranform(Transform transform)
+        public void ApplyTransform(Transform transform)
         {
             if (this.geometry == null) return;
             this.geometry.Transform = transform;
@@ -31,7 +31,7 @@ namespace ZoomIn.StockControl
 
     public interface IStockShapeBase
     {
-        public void ApplyTranform(Transform transform);
+        public void ApplyTransform(Transform transform);
         public IEnumerable<Shape> Shapes { get; }
     }
 }
