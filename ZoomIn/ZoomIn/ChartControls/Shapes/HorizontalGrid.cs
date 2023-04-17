@@ -44,7 +44,7 @@ namespace ZoomIn.ChartControls.Shapes
                 {
                     var line = new LineGeometry(new Point(0, val), new Point(width, val));
                     geometryGroup.Children.Add(line);
-                    this.Legends.Add(new Legend { Location = new Point(0, val), Text = val.ToString("0.##") });
+                    this.Legends.Add(new Legend { Location = new Point(0, val), Text = val.ToString("0.#####") });
                 }
                 val += step;
             }

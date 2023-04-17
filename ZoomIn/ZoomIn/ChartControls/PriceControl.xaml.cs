@@ -48,7 +48,6 @@ namespace ZoomIn.ChartControls
 
             var lowSerie = stockSerie?.LowValues;
             var highSerie = stockSerie?.HighValues;
-            viewModel.Bars = stockSerie.Bars;
 
             this.chartCanvas.Children.Clear();
             shapes.Clear();
@@ -97,6 +96,9 @@ namespace ZoomIn.ChartControls
                     break;
                 case "MousePos":
                     this.OnMouseIndexChanged();
+                    break;
+                case "Serie":
+                    this.OnStockSerieChanged(viewModel.Serie);
                     break;
                 default:
                     break;
@@ -164,7 +166,7 @@ namespace ZoomIn.ChartControls
             #endregion
             #region Vertical Grid
             tg = new();
-            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex, 0));
+            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
             verticalGrid.CreateGeometry(stockSerie, viewModel.StartIndex, viewModel.EndIndex, gridCanvas.ActualHeight);
@@ -204,7 +206,7 @@ namespace ZoomIn.ChartControls
             var p2 = this.chartToPixelTransform.Inverse.Transform(point);
             this.viewModel.MousePos = point;
             this.viewModel.MouseValue = p2;
-            this.viewModel.MouseIndex = (int)Math.Max(0, Math.Round(p2.X));
+            this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
             mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);

@@ -31,7 +31,7 @@ namespace ZoomIn.ChartControls.Shapes
                 if (bar.Date.Month != previousMonth)
                 {
                     previousMonth = bar.Date.Month;
-                    var line = new LineGeometry(new Point(i + 0.5, 0), new Point(i + 0.5, height));
+                    var line = new LineGeometry(new Point(i , 0), new Point(i , height));
                     geometryGroup.Children.Add(line);
                     if (previousYear != bar.Date.Year)
                     {

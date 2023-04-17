@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Controls.Charting;
 
 namespace ZoomIn.ChartControls
 {
@@ -33,21 +34,43 @@ namespace ZoomIn.ChartControls
             set { if (endIndex != value) { endIndex = value; RaisePropertyChanged(); } }
         }
 
-        public int MaxIndex => this.Bars == null ? 0 : this.Bars.Length - 1;
+        public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Length - 1;
 
 
-        private StockBar[] bars;
-        public StockBar[] Bars
+
+        private StockSerie serie;
+        public StockSerie Serie
         {
-            get => bars; set
+            get { return serie; }
+            set
             {
-                if (bars == value) return;
-                bars = value;
-                this.EndIndex = this.Bars == null ? 0 : this.Bars.Length - 1;
-                this.StartIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
-                RaisePropertyChanged("MaxIndex");
+                if (serie != value)
+                {
+                    serie = value;
+
+                    this.endIndex = serie.Bars == null ? 0 : serie.Bars.Length - 1;
+                    this.startIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
+                    RaisePropertyChanged();
+                }
             }
         }
+
+
+
+        //private StockBar[] bars;
+        //public StockBar[] Bars
+        //{
+        //    get => bars; set
+        //    {
+        //        if (bars == value) return;
+        //        bars = value;
+        //        this.endIndex = this.Bars == null ? 0 : this.Bars.Length - 1;
+        //        this.startIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
+        //        RaisePropertyChanged("MaxIndex");
+        //        RaisePropertyChanged("StartIndex");
+        //        RaisePropertyChanged("EndIndex");
+        //    }
+        //}
 
         private Point mousePos;
         public Point MousePos { get { return mousePos; } set { if (mousePos != value) { mousePos = value; RaisePropertyChanged(); } } }
@@ -56,7 +79,7 @@ namespace ZoomIn.ChartControls
         public Point MouseValue { get { return mouseValue; } set { if (mouseValue != value) { mouseValue = value; RaisePropertyChanged(); } } }
 
         private int mouseIndex;
-        public int MouseIndex { get { return mouseIndex; } set { if (mouseIndex != value) { mouseIndex = value; RaisePropertyChanged(); } } }
+        public int MouseIndex { get { return mouseIndex; } set { if (mouseIndex != value) { mouseIndex = value; this.CurrentBar = serie?.Bars[mouseIndex]; RaisePropertyChanged(); } } }
 
         private StockBar currentBar;
         public StockBar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }

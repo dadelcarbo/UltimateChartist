@@ -16,6 +16,7 @@ namespace ZoomIn.ChartControls
         StockSerie stockSerie;
         protected override void OnStockSerieChanged(StockSerie newSerie)
         {
+            this.overviewGraph.Children.Clear();
             if (this.stockSerie == newSerie)
                 return;
             this.stockSerie = newSerie;
@@ -24,11 +25,8 @@ namespace ZoomIn.ChartControls
             if (closeSerie == null)
                 return;
 
-            var lowSerie = stockSerie?.LowValues;
-            var highSerie = stockSerie?.HighValues;
-
             var viewModel = (ChartControlViewModel)this.DataContext;
-            viewModel.Bars = stockSerie.Bars;
+            viewModel.Serie = stockSerie;
 
             #region Create overview
             var overviewCurve = new OverviewCurve()
@@ -38,7 +36,6 @@ namespace ZoomIn.ChartControls
                 StrokeThickness = 2
             };
 
-            this.overviewGraph.Children.Clear();
             this.overviewGraph.Children.Add(overviewCurve);
             #endregion
         }

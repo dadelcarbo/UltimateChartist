@@ -87,6 +87,7 @@ namespace ZoomIn.ChartControls
                     highSerie[i] = macd[i];
                 }
             }
+            this.OnResize();
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -188,6 +189,7 @@ namespace ZoomIn.ChartControls
             p2.X = Math.Max(0, Math.Round(p2.X));
             this.viewModel.MousePos = point;
             this.viewModel.MouseValue = p2;
+            this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
             mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
