@@ -170,5 +170,8 @@
     <PackageReference Include="Telerik.UI.for.Wpf.70.Xaml">
       <Version>2023.1.315</Version>
     </PackageReference>
+    <PackageReference Include="Telerik.UI.for.Wpf.70.Xaml">
+      <Version>2023.1.315.0</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

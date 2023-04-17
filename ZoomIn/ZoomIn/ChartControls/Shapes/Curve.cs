@@ -1,25 +1,22 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace ZoomIn.StockControl
+namespace ZoomIn.ChartControls.Shapes
 {
     public class Curve : StockShapeBase
     {
-        public void CreateGeometry(double[] values, double gap, double width)
+        public void CreateGeometry(double[] values)
         {
             var geometryGroup = new GeometryGroup();
             var streamGeometry = new StreamGeometry();
 
-            double x = gap;
-            double step = 2 * width + gap;
             using (StreamGeometryContext ctx = streamGeometry.Open())
             {
-                ctx.BeginFigure(new Point(x, values[0]), false, false);
+                ctx.BeginFigure(new Point(0, values[0]), false, false);
 
                 for (int i = 1; i < values.Length; i++)
                 {
-                    x += step;
-                    ctx.LineTo(new Point(x, values[i]), true /* is stroked */, false /* is smooth join */);
+                    ctx.LineTo(new Point(i, values[i]), true /* is stroked */, false /* is smooth join */);
                 }
             }
             geometryGroup.Children.Add(streamGeometry);

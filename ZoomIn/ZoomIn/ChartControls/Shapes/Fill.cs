@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using ZoomIn.StockDrawing;
 
-namespace ZoomIn.StockControl
+namespace ZoomIn.ChartControls.Shapes
 {
     public class Fill : DependencyObject, IStockShapeBase
     {
@@ -72,44 +72,42 @@ namespace ZoomIn.StockControl
 
 
         private Geometry? bullGeometry = null, bearGeometry = null;
-        public void CreateGeometry(double[] fast, double[] slow, double gap, double width)
+
+        public void CreateGeometry(double[] fast, double[] slow)
         {
             List<List<Point>> bullPoints = new List<List<Point>>();
             List<List<Point>> bearPoints = new List<List<Point>>();
 
             bool bull = fast[0] > slow[0];
 
-            double x = gap;
-            double step = 2 * width + gap;
-            List<Point> fastPoints = new List<Point>() { new Point(x, fast[0]) };
-            List<Point> slowPoints = new List<Point>() { new Point(x, slow[0]) };
+            List<Point> fastPoints = new List<Point>() { new Point(0, fast[0]) };
+            List<Point> slowPoints = new List<Point>() { new Point(0, slow[0]) };
             for (int i = 1; i < fast.Length; i++)
             {
-                x += step;
                 if (bull)
                 {
                     if (fast[i] > slow[i])
                     {
-                        fastPoints.Add(new Point(x, fast[i]));
-                        slowPoints.Add(new Point(x, slow[i]));
+                        fastPoints.Add(new Point(i, fast[i]));
+                        slowPoints.Add(new Point(i, slow[i]));
                     }
                     else
                     {
                         if (i < fast.Length - 1)
                         {
-                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(x, fast[i]), slowPoints.Last(), new Point(x, slow[i]));
+                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(i, fast[i]), slowPoints.Last(), new Point(i, slow[i]));
                             fastPoints.Add(pivot);
                             slowPoints.Reverse();
                             fastPoints.AddRange(slowPoints);
                             bullPoints.Add(fastPoints);
 
-                            fastPoints = new List<Point>() { pivot, new Point(x, fast[i]) };
+                            fastPoints = new List<Point>() { pivot, new Point(i, fast[i]) };
                         }
                         else
                         {
-                            fastPoints = new List<Point>() { new Point(x, fast[i]) };
+                            fastPoints = new List<Point>() { new Point(i, fast[i]) };
                         }
-                        slowPoints = new List<Point>() { new Point(x, slow[i]) };
+                        slowPoints = new List<Point>() { new Point(i, slow[i]) };
                         bull = false;
                     }
                 }
@@ -117,27 +115,26 @@ namespace ZoomIn.StockControl
                 {
                     if (fast[i] < slow[i])
                     {
-                        fastPoints.Add(new Point(x, fast[i]));
-                        slowPoints.Add(new Point(x, slow[i]));
-
+                        fastPoints.Add(new Point(i, fast[i]));
+                        slowPoints.Add(new Point(i, slow[i]));
                     }
                     else
                     {
                         if (i < fast.Length - 1)
                         {
-                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(x, fast[i]), slowPoints.Last(), new Point(x, slow[i]));
+                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(i, fast[i]), slowPoints.Last(), new Point(i, slow[i]));
                             fastPoints.Add(pivot);
                             slowPoints.Reverse();
                             fastPoints.AddRange(slowPoints);
                             bearPoints.Add(fastPoints);
 
-                            fastPoints = new List<Point>() { pivot, new Point(x, fast[i]) };
+                            fastPoints = new List<Point>() { pivot, new Point(i, fast[i]) };
                         }
                         else
                         {
-                            fastPoints = new List<Point>() { new Point(x, fast[i]) };
+                            fastPoints = new List<Point>() { new Point(i, fast[i]) };
                         }
-                        slowPoints = new List<Point>() { new Point(x, slow[i]) };
+                        slowPoints = new List<Point>() { new Point(i, slow[i]) };
                         bull = true;
                     }
                 }

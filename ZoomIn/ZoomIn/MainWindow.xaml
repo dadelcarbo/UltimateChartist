@@ -3,18 +3,93 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ZoomIn" xmlns:stockcontrol="clr-namespace:ZoomIn.StockControl" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:local="clr-namespace:ZoomIn" 
+        xmlns:chartcontrol="clr-namespace:ZoomIn.ChartControls" 
+        xmlns:stockcontrol="clr-namespace:ZoomIn.StockControl" 
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <chartcontrol:ChartControlViewModel x:Key="chartControlViewModel"/>
         <local:ChartViewModel x:Key="chartViewModel"/>
-        <local:StockChartViewModel x:Key="stockChartViewModel"/>
+        <local:StockChartViewModel x:Key="mainViewModel"/>
         <telerik:ColorToBrushConverter x:Key="colorToBrushConverter" />
         <telerik:BrushToColorConverter x:Key="brushToColorConverter" />
     </Window.Resources>
     <Grid >
         <TabControl>
-            <TabItem Header="StockGraph" DataContext="{StaticResource stockChartViewModel}">
+            <TabItem Header="GraphControls" DataContext="{StaticResource chartControlViewModel}">
+                <Grid>
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="180"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" 
+                            BorderBrush="Black" BorderThickness="1" Background="LightGoldenrodYellow" >
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" DataContext="{StaticResource mainViewModel}">
+                                <Label>StockSerie:</Label>
+                                <ComboBox ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>StartIndex:</Label>
+                                <TextBlock Text="{Binding StartIndex}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>EndIndex:</Label>
+                                <TextBlock Text="{Binding EndIndex}"></TextBlock>
+                            </StackPanel>
+                            <GroupBox Header="MousePos">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding MousePos.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="MouseValue">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding MouseValue.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="Current Bar">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding CurrentBar.Date , StringFormat='Date:{0:0.##}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Open , StringFormat='Open:{0:0.##}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.High , StringFormat='High:{0:0.##}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Low  , StringFormat='Low:{0:0.##}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Close, StringFormat='Close:{0:0.##}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Volume, StringFormat='Volume:{0:0.##}'}"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,2">
+                        <chartcontrol:OverviewControl x:Name="overviewControl" Grid.Row="0" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,25">
+                        <chartcontrol:PriceControl x:Name="priceControl" Grid.Row="1" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,2">
+                        <chartcontrol:IndicatorControl x:Name="indicatorControl" Grid.Row="2" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="StockGraph" DataContext="{StaticResource mainViewModel}">
                 <Grid>
                     <Grid.RowDefinitions >
                         <RowDefinition></RowDefinition>
@@ -28,7 +103,7 @@
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>StockSerie:</Label>
-                                <ComboBox Name="SeriesComboBox" ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
+                                <ComboBox ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>StartIndex:</Label>
@@ -54,18 +129,9 @@
                                 <Label>MouseValue.Y:</Label>
                                 <TextBlock Text="{Binding MouseValue.Y,ElementName=stockChart, StringFormat={}{0:#.0}}"></TextBlock>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Width="70">GridStroke:</Label>
-                                <telerik:RadColorPicker SelectedColor="{Binding GridStroke,Mode=TwoWay, Converter={StaticResource brushToColorConverter}, ElementName=stockChart}"></telerik:RadColorPicker>
-                            </StackPanel>
-                            <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
-                                <Label Content="2023&#x0a;01/22" FontFamily="Calibri" FontSize="10"/>
-                                <Label Content="2023&#x0a;01/22" />
-                            </StackPanel>
                         </StackPanel>
                     </Border>
-                    <stockcontrol:StockChart x:Name="stockChart" Grid.Row="0" Grid.Column="1" StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
-                    <stockcontrol:StockChart x:Name="indicatorChart" Grid.Row="1" Grid.Column="1" StockSerie="{Binding SelectedItem,ElementName=SeriesComboBox}"/>
+                    <stockcontrol:StockChart x:Name="stockChart" Grid.Row="0" Grid.Column="1" StockSerie="{Binding Serie}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="CurveGraph" DataContext="{StaticResource chartViewModel}">

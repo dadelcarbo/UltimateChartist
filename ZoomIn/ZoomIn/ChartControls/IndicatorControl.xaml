@@ -1,0 +1,16 @@
+﻿<chartcontrols:ChartControlBase x:Class="ZoomIn.ChartControls.IndicatorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:chartcontrols="clr-namespace:ZoomIn.ChartControls" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Canvas Name="gridCanvas" ClipToBounds="True"/>
+        <Canvas Name="indicatorCanvas" ClipToBounds="True"/>
+        <Canvas Name="mouseCanvas" ClipToBounds="False" Background="Transparent" 
+                MouseMove="mouseCanvas_MouseMove" MouseLeave="mouseCanvas_MouseLeave" 
+                MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp"/>
+    </Grid>
+</chartcontrols:ChartControlBase>

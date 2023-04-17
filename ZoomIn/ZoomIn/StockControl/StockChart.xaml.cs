@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Controls.RichTextBoxUI;
-using Telerik.Windows.Documents.Model.Drawing.Charts;
 
 namespace ZoomIn.StockControl
 {
@@ -33,7 +28,7 @@ namespace ZoomIn.StockControl
         private ObservableCollection<ChartSeries> series = new ObservableCollection<ChartSeries>();
         public ObservableCollection<ChartSeries> Series { get => series; set { if (series != value) { if (series != null) { series.CollectionChanged -= Series_CollectionChanged; } series = value; series.CollectionChanged += Series_CollectionChanged; } } }
 
-        #region StockBars DependencyProperty
+        #region StockSerie DependencyProperty
         public StockSerie StockSerie
         {
             get { return (StockSerie)GetValue(StockBarsProperty); }
