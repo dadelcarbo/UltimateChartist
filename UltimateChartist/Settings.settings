@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="PersonalFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\r395930\Perso\OneDrive\UltimateChartistDev_new</Value>
+      <Value Profile="(Default)">C:\Users\David\Perso\OneDrive\UltimateChartistDev_new</Value>
     </Setting>
     <Setting Name="DataFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\ProgramData\UltimateChartist_new\Data</Value>

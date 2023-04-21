@@ -66,7 +66,7 @@
                             </GroupBox>
                             <GroupBox Header="Current Bar">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy hh:mm:ss}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
                                     <TextBlock Text="{Binding CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
                                     <TextBlock Text="{Binding CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
                                     <TextBlock Text="{Binding CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>

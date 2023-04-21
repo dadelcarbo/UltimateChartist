@@ -11,6 +11,7 @@
         <Canvas Name="chartCanvas" ClipToBounds="True"/>
         <Canvas Name="mouseCanvas" ClipToBounds="False" Background="Transparent" 
                 MouseMove="mouseCanvas_MouseMove" MouseLeave="mouseCanvas_MouseLeave" 
-                MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp"/>
+                MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp" 
+                MouseWheel="mouseCanvas_MouseWheel"/>
     </Grid>
 </chartcontrols:ChartControlBase>

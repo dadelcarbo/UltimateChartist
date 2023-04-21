@@ -30,7 +30,7 @@ namespace ZoomIn
             {
                 new StockSerie { Name = "CAC40", Bars = Bars}
             };
-            this.Series.AddRange(this.GenerateSeries());
+            this.Series.AddRange(this.GenerateSeries(this.Bars.Length));
             this.Serie = this.Series[0];
 
             this.Values = Bars.Select(b => b.Close).ToArray();
@@ -40,7 +40,7 @@ namespace ZoomIn
             this.maxIndex = Values.Length - 1;
         }
 
-        List<StockSerie> GenerateSeries()
+        List<StockSerie> GenerateSeries(int nbBars)
         {
             double degToRad = Math.PI / 180.0;
             var rnd = new Random();
@@ -86,10 +86,10 @@ namespace ZoomIn
                     default:
                         break;
                 }
-                var serie = new StockSerie() { Name = duration.ToString(), Bars = new StockBar[500] };
+                var serie = new StockSerie() { Name = duration.ToString(), Bars = new StockBar[nbBars] };
                 double value = 100;
                 DateTime date = DateTime.Today;
-                for (int i = 0; i < 500; i++)
+                for (int i = 0; i < nbBars; i++)
                 {
                     var open = value * (1 + 0.02 * (rnd.NextDouble() - 0.5));
                     var close = open * (1 + 0.02 * (rnd.NextDouble() - 0.5));

@@ -25,7 +25,7 @@ namespace UltimateChartist {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\r395930\\Perso\\OneDrive\\UltimateChartistDev_new")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\David\\Perso\\OneDrive\\UltimateChartistDev_new")]
         public string PersonalFolder {
             get {
                 return ((string)(this["PersonalFolder"]));

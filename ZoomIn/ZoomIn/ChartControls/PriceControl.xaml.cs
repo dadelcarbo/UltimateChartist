@@ -169,7 +169,7 @@ namespace ZoomIn.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(stockSerie, viewModel.StartIndex, viewModel.EndIndex, gridCanvas.ActualHeight);
+            verticalGrid.CreateGeometry(stockSerie, viewModel.StartIndex, viewModel.EndIndex, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
 
@@ -243,5 +243,17 @@ namespace ZoomIn.ChartControls
 
         }
         #endregion
+
+        private void mouseCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                this.viewModel.EndIndex += 50;
+            }
+            else
+            {
+                this.viewModel.StartIndex -= 50;
+            }
+        }
     }
 }
