@@ -68,7 +68,6 @@ namespace ZoomIn.ChartControls
                     highSerie[i] = macd[i];
                 }
             }
-            this.OnResize();
         }
 
         protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)

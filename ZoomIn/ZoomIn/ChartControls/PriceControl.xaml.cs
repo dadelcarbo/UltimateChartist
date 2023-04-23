@@ -71,9 +71,6 @@ namespace ZoomIn.ChartControls
         {
             switch (e.PropertyName)
             {
-                case "Range":
-                    this.OnResize();
-                    break;
                 case "MousePos":
                     this.OnMouseIndexChanged();
                     break;
