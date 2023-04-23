@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using ZoomIn.ChartControls;
 
 namespace ZoomIn
 {
@@ -23,26 +24,30 @@ namespace ZoomIn
     }
     public class StockChartViewModel : INotifyPropertyChanged
     {
+        static private StockChartViewModel instance;
+        static public StockChartViewModel Instance => instance;
+
+        private ChartControlViewModel chartControlViewModel;
+        public ChartControlViewModel ChartControlViewModel { get { return chartControlViewModel; } set { if (chartControlViewModel != value) { chartControlViewModel = value; RaisePropertyChanged(); } } }
+
+
         public StockChartViewModel()
         {
+            instance = this;
+            this.chartControlViewModel = new ChartControlViewModel();
             this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").ToArray();
             this.Series = new List<StockSerie>
             {
                 new StockSerie { Name = "CAC40", Bars = Bars}
             };
-            this.Series.AddRange(this.GenerateSeries(this.Bars.Length));
+            this.Series.AddRange(this.GenerateSeries(600));
             this.Serie = this.Series[0];
 
             this.Values = Bars.Select(b => b.Close).ToArray();
-            this.Values2 = Bars.Select(b => b.Close).Reverse().ToArray();
-            this.startIndex = 0;
-            this.endIndex = Values.Length - 1;
-            this.maxIndex = Values.Length - 1;
         }
 
         List<StockSerie> GenerateSeries(int nbBars)
         {
-            double degToRad = Math.PI / 180.0;
             var rnd = new Random();
             var series = new List<StockSerie>();
             foreach (var duration in Enum.GetValues<BarDuration>())
@@ -106,37 +111,14 @@ namespace ZoomIn
             return series;
         }
 
-        private int startIndex;
-        public int StartIndex
-        {
-            get { return startIndex; }
-            set { if (startIndex != value) { startIndex = value; RaisePropertyChanged(); } }
-        }
-
-        private int endIndex;
-        public int EndIndex
-        {
-            get { return endIndex; }
-            set { if (endIndex != value) { endIndex = value; RaisePropertyChanged(); } }
-        }
-
-        private int maxIndex;
-
-        public int MaxIndex
-        {
-            get { return maxIndex; }
-            set { if (maxIndex != value) { maxIndex = value; RaisePropertyChanged(); } }
-        }
-
         public double[] Values { get; set; }
-        public double[] Values2 { get; set; }
 
         public StockBar[] Bars { get; set; }
 
         public List<StockSerie> Series { get; set; }
 
         private StockSerie serie;
-        public StockSerie Serie { get { return serie; } set { if (serie != value) { serie = value; RaisePropertyChanged(); } } }
+        public StockSerie Serie { get { return serie; } set { if (serie != value) { serie = value; this.ChartControlViewModel.Serie = value; RaisePropertyChanged(); } } }
 
         private Point mousePoint;
         public Point MousePoint

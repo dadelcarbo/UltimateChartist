@@ -19,33 +19,14 @@ namespace ZoomIn.ChartControls
         public IndicatorControl()
         {
             InitializeComponent();
-
-            this.SizeChanged += IndicatorControl_SizeChanged;
-        }
-
-        private void IndicatorControl_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.OnResize();
         }
 
         double[] lowSerie, highSerie;
-        ChartControlViewModel viewModel;
-        StockSerie stockSerie;
-        protected override void OnStockSerieChanged(StockSerie newSerie)
+        protected override void OnStockSerieChanged()
         {
-            if (this.stockSerie == newSerie)
-                return;
-            this.stockSerie = newSerie;
-
-            var closeSerie = stockSerie?.CloseValues;
+            var closeSerie = viewModel?.Serie?.CloseValues;
             if (closeSerie == null)
                 return;
-
-            if (viewModel == null)
-            {
-                viewModel = (ChartControlViewModel)this.DataContext;
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            }
 
             this.shapes.Clear();
             this.indicatorCanvas.Children.Clear();
@@ -90,14 +71,10 @@ namespace ZoomIn.ChartControls
             this.OnResize();
         }
 
-        private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case "StartIndex":
-                case "EndIndex":
-                    this.OnResize();
-                    break;
                 case "MousePos":
                     this.OnMouseIndexChanged();
                     break;
@@ -106,26 +83,25 @@ namespace ZoomIn.ChartControls
             }
         }
 
-
         private List<IStockShapeBase> shapes = new();
         private Transform chartToPixelTransform;
-        private void OnResize()
+        protected override void OnResize()
         {
             var canvasWidth = indicatorCanvas.ActualWidth;
             var canvasHeight = indicatorCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            if (viewModel == null || viewModel.EndIndex == 0)
+            if (viewModel == null || viewModel.Range == null)
                 return;
-            var curveWidth = (viewModel.EndIndex - viewModel.StartIndex + 1);
+            var curveWidth = (viewModel.ZoomRange.End - viewModel.ZoomRange.Start + 1);
             if (curveWidth == 0)
                 return;
-            if (this.StockSerie?.Bars == null)
+            if (viewModel.Serie?.Bars == null)
                 return;
 
             double min = double.MaxValue;
             double max = double.MinValue;
-            for (int i = viewModel.StartIndex; i <= viewModel.EndIndex; i++)
+            for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
             {
                 min = Math.Min(lowSerie[i], min);
                 max = Math.Max(highSerie[i], max);
@@ -135,7 +111,7 @@ namespace ZoomIn.ChartControls
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, -max));
+            tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, -max));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, -canvasHeight / curveHeight));
 
             foreach (var shape in shapes)
@@ -159,10 +135,10 @@ namespace ZoomIn.ChartControls
 
             #region Vertical Grid
             tg = new();
-            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, 0));
+            tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(stockSerie, viewModel.StartIndex, viewModel.EndIndex, gridCanvas.RenderSize);
+            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
             #endregion
@@ -172,7 +148,7 @@ namespace ZoomIn.ChartControls
         {
             mouseCanvas.Children.Clear();
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(this.StockSerie, new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
+            mouseCross.CreateGeometry(viewModel.Serie, new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
             mouseCanvas.Children.Add(mouseCross);
         }
 
@@ -192,7 +168,7 @@ namespace ZoomIn.ChartControls
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
+            mouseCross.CreateGeometry(viewModel.Serie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
             var label = new System.Windows.Controls.Label()

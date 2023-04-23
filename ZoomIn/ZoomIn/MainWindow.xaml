@@ -10,7 +10,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <chartcontrol:ChartControlViewModel x:Key="chartControlViewModel"/>
         <local:ChartViewModel x:Key="chartViewModel"/>
         <local:StockChartViewModel x:Key="mainViewModel"/>
         <telerik:ColorToBrushConverter x:Key="colorToBrushConverter" />
@@ -18,32 +17,22 @@
     </Window.Resources>
     <Grid >
         <TabControl>
-            <TabItem Header="GraphControls" DataContext="{StaticResource chartControlViewModel}">
+            <TabItem Header="GraphControls">
                 <Grid>
-                    <Grid.RowDefinitions >
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="60"></RowDefinition>
-                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="180"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" 
                             BorderBrush="Black" BorderThickness="1" Background="LightGoldenrodYellow" >
-                        <StackPanel>
+                        <StackPanel DataContext="{Binding ChartControlViewModel,Source={StaticResource mainViewModel}}">
                             <StackPanel Orientation="Horizontal" DataContext="{StaticResource mainViewModel}">
                                 <Label>StockSerie:</Label>
-                                <ComboBox ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
+                                <ComboBox ItemsSource="{Binding Series,Source={StaticResource mainViewModel}}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>StartIndex:</Label>
-                                <TextBlock Text="{Binding StartIndex}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>EndIndex:</Label>
-                                <TextBlock Text="{Binding EndIndex}"></TextBlock>
-                            </StackPanel>
+                            <TextBlock Grid.Column="0" Text="{Binding Range.Start, StringFormat='StartIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding Range.End, StringFormat='EndIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
                             <GroupBox Header="MousePos">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -76,16 +65,7 @@
                             </GroupBox>
                         </StackPanel>
                     </Border>
-
-                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,2">
-                        <chartcontrol:OverviewControl x:Name="overviewControl" Grid.Row="0" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
-                    </Border>
-                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,25">
-                        <chartcontrol:PriceControl x:Name="priceControl" Grid.Row="1" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
-                    </Border>
-                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="40,1,20,2">
-                        <chartcontrol:IndicatorControl x:Name="indicatorControl" Grid.Row="2" Grid.Column="1" StockSerie="{Binding Serie,Source={StaticResource mainViewModel}}"/>
-                    </Border>
+                    <chartcontrol:StockChartControl Grid.Row="0" Grid.Column="1"/>
                 </Grid>
             </TabItem>
 
@@ -141,10 +121,11 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="0.25*"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="29*"></ColumnDefinition>
+                        <ColumnDefinition Width="130*"/>
+                        <ColumnDefinition Width="635*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.RowSpan="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                    <Border Grid.RowSpan="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Margin="0,0,635,0">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>StartIndex:</Label>
@@ -173,7 +154,7 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <Border Name="zoomGraph" Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                    <Border Name="zoomGraph" Grid.Row="0" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
@@ -189,7 +170,7 @@
                             </Border>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1">
                         <Border Grid.Row="1" Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="50,10,50,10">
                             <Canvas Name="mainGraph" ClipToBounds="True" LayoutTransform="1 0 0 -1 0 0">
                                 <local:OHLCSeries Values="{Binding Bars}" StartIndex="{Binding StartIndex}" EndIndex="{Binding EndIndex}" Stroke="DarkGreen" StrokeThickness="2"/>

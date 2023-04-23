@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Windows;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Controls.Charting;
 
 namespace ZoomIn.ChartControls
 {
     public class ChartControlViewModel : ViewModelBase
     {
+        private SelectionRange<double> range;
+        public SelectionRange<double> Range { get { return range; } set { if (range != value) { range = value; ZoomRange = new SelectionRange<int>((int)range.Start, (int)range.End); RaisePropertyChanged(); } } }
+
+        private SelectionRange<int> zoomRange;
+        public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; RaisePropertyChanged(); } } }
+
         private int minRange = 25;
         public int MinRange
         {
@@ -18,20 +23,6 @@ namespace ZoomIn.ChartControls
         {
             get { return maxRange; }
             set { if (maxRange != value) { maxRange = value; RaisePropertyChanged(); } }
-        }
-
-        private int startIndex;
-        public int StartIndex
-        {
-            get { return startIndex; }
-            set { if (startIndex != value) { startIndex = value; RaisePropertyChanged(); } }
-        }
-
-        private int endIndex;
-        public int EndIndex
-        {
-            get { return endIndex; }
-            set { if (endIndex != value) { endIndex = value; RaisePropertyChanged(); } }
         }
 
         public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Length - 1;
@@ -48,29 +39,15 @@ namespace ZoomIn.ChartControls
                 {
                     serie = value;
 
-                    this.endIndex = serie.Bars == null ? 0 : serie.Bars.Length - 1;
-                    this.startIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
+                    var endIndex = serie.Bars == null ? 0 : serie.Bars.Length - 1;
+                    var startIndex = Math.Max(0, endIndex - (MinRange + MaxRange) / 2);
+
+                    this.range = new SelectionRange<double> { Start = startIndex, End = endIndex };
+                    this.zoomRange = new SelectionRange<int> { Start = startIndex, End = endIndex };
                     RaisePropertyChanged();
                 }
             }
         }
-
-
-
-        //private StockBar[] bars;
-        //public StockBar[] Bars
-        //{
-        //    get => bars; set
-        //    {
-        //        if (bars == value) return;
-        //        bars = value;
-        //        this.endIndex = this.Bars == null ? 0 : this.Bars.Length - 1;
-        //        this.startIndex = Math.Max(0, this.EndIndex - (MinRange + MaxRange) / 2);
-        //        RaisePropertyChanged("MaxIndex");
-        //        RaisePropertyChanged("StartIndex");
-        //        RaisePropertyChanged("EndIndex");
-        //    }
-        //}
 
         private Point mousePos;
         public Point MousePos { get { return mousePos; } set { if (mousePos != value) { mousePos = value; RaisePropertyChanged(); } } }

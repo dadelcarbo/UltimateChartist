@@ -15,39 +15,20 @@ namespace ZoomIn.ChartControls
     /// </summary>
     public partial class PriceControl : ChartControlBase
     {
-        ChartControlViewModel viewModel;
-
         public PriceControl()
         {
             InitializeComponent();
-
-            this.SizeChanged += PriceControl_SizeChanged;
         }
 
-        private void PriceControl_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.OnResize();
-        }
         private List<IStockShapeBase> shapes = new();
-        private StockSerie stockSerie;
-        protected override void OnStockSerieChanged(StockSerie newSerie)
+        protected override void OnStockSerieChanged()
         {
-            if (viewModel == null)
-            {
-                viewModel = (ChartControlViewModel)this.DataContext;
-                viewModel.PropertyChanged += ViewModel_PropertyChanged;
-            }
-
-            if (this.stockSerie == newSerie)
-                return;
-            this.stockSerie = newSerie;
-
-            var closeSerie = stockSerie?.CloseValues;
+            var closeSerie = viewModel?.Serie?.CloseValues;
             if (closeSerie == null)
                 return;
 
-            var lowSerie = stockSerie?.LowValues;
-            var highSerie = stockSerie?.HighValues;
+            var lowSerie = viewModel.Serie?.LowValues;
+            var highSerie = viewModel.Serie?.HighValues;
 
             this.chartCanvas.Children.Clear();
             shapes.Clear();
@@ -62,9 +43,9 @@ namespace ZoomIn.ChartControls
 
             #region Price Candle/Barchart...
 
-            for (int i = 0; i < stockSerie.Bars.Length; i++)
+            for (int i = 0; i < viewModel.Serie.Bars.Length; i++)
             {
-                var bar = stockSerie.Bars[i];
+                var bar = viewModel.Serie.Bars[i];
                 var shape = new Shapes.Candle() { StrokeThickness = 1 };
                 shape.CreateGeometry(bar, i);
 
@@ -86,19 +67,15 @@ namespace ZoomIn.ChartControls
             this.OnResize();
         }
 
-        private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case "StartIndex":
-                case "EndIndex":
+                case "Range":
                     this.OnResize();
                     break;
                 case "MousePos":
                     this.OnMouseIndexChanged();
-                    break;
-                case "Serie":
-                    this.OnStockSerieChanged(viewModel.Serie);
                     break;
                 default:
                     break;
@@ -106,25 +83,25 @@ namespace ZoomIn.ChartControls
         }
 
         private Transform chartToPixelTransform;
-        private void OnResize()
+        protected override void OnResize()
         {
             var canvasWidth = chartCanvas.ActualWidth;
             var canvasHeight = chartCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            if (viewModel == null || viewModel.EndIndex == 0)
+            if (viewModel?.Range == null || viewModel.Range.End == 0)
                 return;
-            var curveWidth = (viewModel.EndIndex - viewModel.StartIndex + 1);
+            var curveWidth = (viewModel.Range.End - viewModel.Range.Start + 1);
             if (curveWidth == 0)
                 return;
-            if (this.StockSerie?.Bars == null)
+            if (viewModel.Serie?.Bars == null)
                 return;
 
             double min = double.MaxValue;
             double max = double.MinValue;
-            var lowSerie = stockSerie?.LowValues;
-            var highSerie = stockSerie?.HighValues;
-            for (int i = viewModel.StartIndex; i <= viewModel.EndIndex; i++)
+            var lowSerie = viewModel.Serie?.LowValues;
+            var highSerie = viewModel.Serie?.HighValues;
+            for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
             {
                 min = Math.Min(lowSerie[i], min);
                 max = Math.Max(highSerie[i], max);
@@ -134,7 +111,7 @@ namespace ZoomIn.ChartControls
             var curveHeight = max - min;
 
             TransformGroup tg = new();
-            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, -max));
+            tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, -max));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, -canvasHeight / curveHeight));
 
             foreach (var shape in shapes)
@@ -150,7 +127,7 @@ namespace ZoomIn.ChartControls
             tg.Children.Add(new TranslateTransform(0, -max));
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
-            horizontalGrid.CreateGeometry(stockSerie, min, max, gridCanvas.ActualWidth);
+            horizontalGrid.CreateGeometry(viewModel.Serie, min, max, gridCanvas.ActualWidth);
             horizontalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(horizontalGrid);
 
@@ -166,10 +143,10 @@ namespace ZoomIn.ChartControls
             #endregion
             #region Vertical Grid
             tg = new();
-            tg.Children.Add(new TranslateTransform(-viewModel.StartIndex + 0.5, 0));
+            tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(stockSerie, viewModel.StartIndex, viewModel.EndIndex, gridCanvas.RenderSize);
+            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
 
@@ -190,7 +167,7 @@ namespace ZoomIn.ChartControls
         {
             mouseCanvas.Children.Clear();
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(this.StockSerie, new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
+            mouseCross.CreateGeometry(viewModel.Serie, new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
             mouseCanvas.Children.Add(mouseCross);
         }
 
@@ -199,7 +176,7 @@ namespace ZoomIn.ChartControls
         {
             mouseCanvas.Children.Clear();
             var point = e.GetPosition(sender as IInputElement);
-            if (point.X < 0 || point.X > mouseCanvas.ActualWidth)
+            if (point.X < 0 || point.X > mouseCanvas.ActualWidth || this.chartToPixelTransform?.Inverse == null)
             {
                 return;
             }
@@ -209,7 +186,7 @@ namespace ZoomIn.ChartControls
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(this.StockSerie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
+            mouseCross.CreateGeometry(viewModel.Serie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
             var label = new System.Windows.Controls.Label()
@@ -246,14 +223,14 @@ namespace ZoomIn.ChartControls
 
         private void mouseCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            if (e.Delta > 0)
-            {
-                this.viewModel.EndIndex += 50;
-            }
-            else
-            {
-                this.viewModel.StartIndex -= 50;
-            }
+            //if (e.Delta > 0)
+            //{
+            //    this.viewModel.ZoomRange.End += 50;
+            //}
+            //else
+            //{
+            //    this.viewModel.ZoomRange.Start -= 50;
+            //}
         }
     }
 }

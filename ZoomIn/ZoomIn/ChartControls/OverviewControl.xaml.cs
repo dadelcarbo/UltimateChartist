@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.ComponentModel;
+using System.Windows.Media;
+using Telerik.Windows.Controls.Calendar;
 using ZoomIn.StockControl;
 
 namespace ZoomIn.ChartControls
@@ -12,21 +14,16 @@ namespace ZoomIn.ChartControls
         {
             InitializeComponent();
         }
-
-        StockSerie stockSerie;
-        protected override void OnStockSerieChanged(StockSerie newSerie)
+        protected override void OnStockSerieChanged()
         {
-            this.overviewGraph.Children.Clear();
-            if (this.stockSerie == newSerie)
-                return;
-            this.stockSerie = newSerie;
+            this.overviewSlider.Maximum = viewModel.MaxIndex;
+            this.overviewSlider.Selection = viewModel.Range;
 
-            var closeSerie = stockSerie?.CloseValues;
+            this.overviewGraph.Children.Clear();
+
+            var closeSerie = viewModel?.Serie?.CloseValues;
             if (closeSerie == null)
                 return;
-
-            var viewModel = (ChartControlViewModel)this.DataContext;
-            viewModel.Serie = stockSerie;
 
             #region Create overview
             var overviewCurve = new OverviewCurve()
@@ -38,6 +35,21 @@ namespace ZoomIn.ChartControls
 
             this.overviewGraph.Children.Add(overviewCurve);
             #endregion
+        }
+
+        private void overviewSlider_SelectionChanged(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            if (viewModel == null)
+                return;
+            this.viewModel.Range = overviewSlider.Selection;
+        }
+
+        protected override void OnResize()
+        {
+        }
+
+        protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
         }
     }
 }

@@ -8,24 +8,53 @@ namespace ZoomIn.ChartControls
     public abstract class ChartControlBase : UserControl
     {
         protected FontFamily labelFontFamily = new FontFamily("Calibri");
-        #region StockSerie DependencyProperty
-        public StockSerie StockSerie
+
+        protected ChartControlViewModel viewModel;
+        public ChartControlViewModel ViewModel
         {
-            get { return (StockSerie)GetValue(StockBarsProperty); }
-            set { SetValue(StockBarsProperty, value); }
+            get { return viewModel; }
+            set
+            {
+                if (viewModel != value)
+                {
+                    if (viewModel != null)
+                    {
+                        viewModel.PropertyChanged -= ViewModel_PropertyChanged;
+                    }
+                    viewModel = value;
+                    if (viewModel != null)
+                    {
+                        viewModel.PropertyChanged += ViewModel_PropertyChanged;
+                    }
+                    OnStockSerieChanged();
+                }
+            }
         }
 
-        // Using a DependencyProperty as the backing store for StockBars.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty StockBarsProperty =
-            DependencyProperty.Register("StockSerie", typeof(StockSerie), typeof(ChartControlBase), new PropertyMetadata(null, OnStockSerieChanged));
-
-        private static void OnStockSerieChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            var stockChart = (ChartControlBase)d;
-            stockChart.OnStockSerieChanged((StockSerie)e.NewValue);
+            base.OnRenderSizeChanged(sizeInfo);
+            this.OnResize();
         }
 
-        protected abstract void OnStockSerieChanged(StockSerie newSerie);
-        #endregion
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Range":
+                    this.OnResize();
+                    return;
+                case "Serie":
+                    this.OnStockSerieChanged();
+                    return;
+                default:
+                    this.OnViewModelPropertyChanged(sender, e);
+                    break;
+            }
+        }
+
+        protected abstract void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e);
+        protected abstract void OnResize();
+        protected abstract void OnStockSerieChanged();
     }
 }
