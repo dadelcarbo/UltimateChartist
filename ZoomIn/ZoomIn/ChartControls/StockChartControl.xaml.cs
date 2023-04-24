@@ -22,19 +22,13 @@ namespace ZoomIn.ChartControls
     /// </summary>
     public partial class StockChartControl : UserControl
     {
-        public StockChartControl()
+        public StockChartControl(ChartControlViewModel viewModel)
         {
             InitializeComponent();
 
-
-            Loaded += StockChartControl_Loaded;
-        }
-
-        private void StockChartControl_Loaded(object sender, RoutedEventArgs e)
-        {
             foreach (var child in grid.ChildrenOfType<ChartControlBase>())
             {
-                child.ViewModel = StockChartViewModel.Instance.ChartControlViewModel;
+                child.ViewModel = viewModel;
             }
         }
     }

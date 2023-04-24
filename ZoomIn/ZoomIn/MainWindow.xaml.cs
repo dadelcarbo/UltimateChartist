@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ZoomIn.ChartControls;
 
 namespace ZoomIn
 {
@@ -10,6 +11,11 @@ namespace ZoomIn
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.contentBorder.Child = new StockChartControl(StockChartViewModel.Instance.ChartControlViewModel);
         }
     }
 }

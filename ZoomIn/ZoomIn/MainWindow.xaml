@@ -26,6 +26,7 @@
                     <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" 
                             BorderBrush="Black" BorderThickness="1" Background="LightGoldenrodYellow" >
                         <StackPanel DataContext="{Binding ChartControlViewModel,Source={StaticResource mainViewModel}}">
+                            <Button Content="Init" Click="Button_Click" Margin="4"></Button>
                             <StackPanel Orientation="Horizontal" DataContext="{StaticResource mainViewModel}">
                                 <Label>StockSerie:</Label>
                                 <ComboBox ItemsSource="{Binding Series,Source={StaticResource mainViewModel}}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
@@ -65,7 +66,8 @@
                             </GroupBox>
                         </StackPanel>
                     </Border>
-                    <chartcontrol:StockChartControl Grid.Row="0" Grid.Column="1"/>
+                    <Border Name="contentBorder" Grid.Row="0" Grid.Column="1">
+                    </Border>
                 </Grid>
             </TabItem>
 
