@@ -40,7 +40,7 @@ namespace ZoomIn
             {
                 new StockSerie { Name = "CAC40", Bars = Bars}
             };
-            this.Series.AddRange(this.GenerateSeries(600));
+            this.Series.AddRange(this.GenerateSeries(2000));
             this.Serie = this.Series[0];
 
             this.Values = Bars.Select(b => b.Close).ToArray();

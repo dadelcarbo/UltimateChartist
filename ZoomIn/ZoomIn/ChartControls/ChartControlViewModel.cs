@@ -6,9 +6,6 @@ namespace ZoomIn.ChartControls
 {
     public class ChartControlViewModel : ViewModelBase
     {
-        private SelectionRange<double> range;
-        public SelectionRange<double> Range { get { return range; } set { if (range != value) { range = value; ZoomRange = new SelectionRange<int>((int)range.Start, (int)range.End); RaisePropertyChanged(); } } }
-
         private SelectionRange<int> zoomRange;
         public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; RaisePropertyChanged(); } } }
 
@@ -42,7 +39,6 @@ namespace ZoomIn.ChartControls
                     var endIndex = serie.Bars == null ? 0 : serie.Bars.Length - 1;
                     var startIndex = Math.Max(0, endIndex - (MinRange + MaxRange) / 2);
 
-                    this.range = new SelectionRange<double> { Start = startIndex, End = endIndex };
                     this.zoomRange = new SelectionRange<int> { Start = startIndex, End = endIndex };
                     RaisePropertyChanged();
                 }

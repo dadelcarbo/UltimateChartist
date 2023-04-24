@@ -26,8 +26,8 @@ namespace ZoomIn.ChartControls
                     {
                         viewModel.PropertyChanged += ViewModel_PropertyChanged;
                     }
-                    this.DataContext = viewModel;
                     OnStockSerieChanged();
+                    this.DataContext = viewModel;
                 }
             }
         }

@@ -86,9 +86,9 @@ namespace ZoomIn.ChartControls
             var canvasHeight = chartCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            if (viewModel?.Range == null || viewModel.Range.End == 0)
+            if (viewModel?.ZoomRange == null || viewModel.ZoomRange.End == 0)
                 return;
-            var curveWidth = (viewModel.Range.End - viewModel.Range.Start + 1);
+            var curveWidth = (viewModel.ZoomRange.End - viewModel.ZoomRange.Start + 1);
             if (curveWidth == 0)
                 return;
             if (viewModel.Serie?.Bars == null)
