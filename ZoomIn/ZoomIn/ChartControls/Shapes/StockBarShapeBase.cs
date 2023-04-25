@@ -4,12 +4,6 @@ using System.Windows.Shapes;
 
 namespace ZoomIn.ChartControls.Shapes
 {
-    public abstract class StockBarShapeBase : StockShapeBase
-    {
-        public StockBar StockBar { get; private set; }
-
-        public abstract void CreateGeometry(StockBar bar, int index);
-    }
     public abstract class StockShapeBase : Shape, IStockShapeBase
     {
         IEnumerable<Shape> shapes;

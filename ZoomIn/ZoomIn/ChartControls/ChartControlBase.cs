@@ -42,7 +42,7 @@ namespace ZoomIn.ChartControls
         {
             switch (e.PropertyName)
             {
-                case "Range":
+                case "ZoomRange":
                     this.OnResize();
                     return;
                 case "Serie":

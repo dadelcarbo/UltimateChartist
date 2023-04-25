@@ -47,7 +47,7 @@ namespace ZoomIn.ChartControls
             {
                 var bar = viewModel.Serie.Bars[i];
                 var shape = new Shapes.Candle() { StrokeThickness = 1 };
-                shape.CreateGeometry(bar, i);
+                shape.CreateGeometry(bar, i, false);
 
                 if (bar.Close >= bar.Open)
                 {
