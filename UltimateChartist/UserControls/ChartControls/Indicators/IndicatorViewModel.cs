@@ -122,6 +122,21 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorBandSeries":
                     {
+                        var lineSeries = new LineSeries()
+                        {
+                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
+                            ValueBinding = new PropertyNameDataPointBinding("Mid")
+                        };
+                        var binding = new Binding($"Series.MidLine.Stroke");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
+                        binding = new Binding($"Series.MidLine.Thickness");
+                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Values");
+                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
+                        lineSeries.DataContext = indicator;
+
+                        CartesianSeries.Add(lineSeries);
+
                         var rangeSeries = new RangeSeries()
                         {
                             CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
@@ -130,7 +145,7 @@ public class IndicatorViewModel : ViewModelBase
                             StrokeMode = RangeSeriesStrokeMode.LowAndHighPoints,
                         };
 
-                        var binding = new Binding($"Series.Area.Fill");
+                        binding = new Binding($"Series.Area.Fill");
                         rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
                         binding = new Binding($"Series.Area.Thickness");
                         rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
@@ -142,21 +157,6 @@ public class IndicatorViewModel : ViewModelBase
                         rangeSeries.DataContext = indicator;
 
                         CartesianSeries.Add(rangeSeries);
-
-                        var lineSeries = new LineSeries()
-                        {
-                            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                            ValueBinding = new PropertyNameDataPointBinding("Mid")
-                        };
-                        binding = new Binding($"Series.MidLine.Stroke");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                        binding = new Binding($"Series.MidLine.Thickness");
-                        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                        binding = new Binding($"Series.Values");
-                        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                        lineSeries.DataContext = indicator;
-
-                        CartesianSeries.Add(lineSeries);
                     }
                     break;
                 case "IndicatorTrailSeries":

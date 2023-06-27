@@ -86,12 +86,12 @@ public partial class IndicatorConfigUserControl : UserControl
                 break;
             case "IndicatorBandSeries":
                 {
-                    var rangeConfig = new RangeConfigUserControl();
-                    rangeConfig.DataContext = (indicator.Series as IndicatorBandSeries).Area;
-                    this.curvePanel.Children.Add(rangeConfig);
                     var curveConfig = new CurveConfigUserControl();
                     curveConfig.DataContext = (indicator.Series as IndicatorBandSeries).MidLine;
                     this.curvePanel.Children.Add(curveConfig);
+                    var rangeConfig = new RangeConfigUserControl();
+                    rangeConfig.DataContext = (indicator.Series as IndicatorBandSeries).Area;
+                    this.curvePanel.Children.Add(rangeConfig);
                 }
                 break;
             case "IndicatorTrailSeries":

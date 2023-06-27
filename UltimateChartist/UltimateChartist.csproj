@@ -57,6 +57,7 @@
     <Compile Include="Indicators\Events\StockEvent_TrailStop.cs" />
     <Compile Include="Indicators\Events\StockEvent_MA.cs" />
     <Compile Include="Indicators\IndicatorManager.cs" />
+    <Compile Include="Indicators\StockIndicator_TRAILATRBOX.cs" />
     <Compile Include="Indicators\Theme\DisplaySettings.cs" />
     <Compile Include="Indicators\Theme\IndicatorSettings.cs" />
     <Compile Include="Indicators\Theme\ParameterValue.cs" />
@@ -168,10 +169,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Telerik.UI.for.Wpf.70.Xaml">
-      <Version>2023.1.315</Version>
+      <Version>2023.2.606</Version>
     </PackageReference>
     <PackageReference Include="Telerik.UI.for.Wpf.70.Xaml">
-      <Version>2023.1.315.0</Version>
+      <Version>2023.2.606</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

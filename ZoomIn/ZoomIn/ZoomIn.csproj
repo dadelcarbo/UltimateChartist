@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Telerik.UI.for.Wpf.60.Xaml">
-      <Version>2023.1.315.0</Version>
+      <Version>2023.2.606</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

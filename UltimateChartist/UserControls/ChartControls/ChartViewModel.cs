@@ -65,15 +65,13 @@ public class ChartViewModel : ViewModelBase
             case DisplayType.TrailStop:
                 PriceIndicators.Add(indicator);
                 break;
+            case DisplayType.Volume:
             case DisplayType.Ranged:
             case DisplayType.NonRanged:
                 this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
                 break;
-            case DisplayType.Volume:
-                this.Indicators.Add(new IndicatorChartViewModel(this, indicator));
-                break;
             default:
-                break;
+                throw new NotImplementedException($"DisplayType {indicator.DisplayType} not implemented !");
         }
     }
     public void RemoveIndicator(IIndicator indicator)

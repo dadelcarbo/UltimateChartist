@@ -38,6 +38,7 @@ namespace ZoomIn.ChartControls
             #endregion
         }
 
+
         private void overviewSlider_SelectionChanged(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
             if (viewModel == null)

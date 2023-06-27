@@ -51,8 +51,6 @@ namespace ZoomIn.ChartControls
 
             this.indicatorCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
 
-            double min = double.MaxValue;
-            double max = double.MinValue;
             lowSerie = new double[macd.Length];
             highSerie = new double[macd.Length];
             for (int i = 0; i < macd.Length; i++)
@@ -68,6 +66,7 @@ namespace ZoomIn.ChartControls
                     highSerie[i] = macd[i];
                 }
             }
+            this.OnResize();
         }
 
         protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
