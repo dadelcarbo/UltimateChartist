@@ -2,8 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Controls.Calendar;
-using ZoomIn.StockControl;
+using ZoomIn.ChartControls.Shapes;
 
 namespace ZoomIn.ChartControls
 {
