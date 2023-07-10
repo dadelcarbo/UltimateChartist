@@ -2,12 +2,15 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Telerik.UI.for.Wpf.60.Xaml">
       <Version>2023.2.606</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UltimateChartistControls\UltimateChartistControls.csproj" />
+    <ProjectReference Include="..\UltimateChartistLib\UltimateChartistLib.csproj" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace ZoomIn.ChartControls.Shapes
+namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class Curve : StockShapeBase
     {

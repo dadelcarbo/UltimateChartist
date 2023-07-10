@@ -5,71 +5,70 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using Telerik.Windows.Controls;
-using ZoomIn.ChartControls.Shapes;
+using UltimateChartistControls.ChartControls.Shapes;
+using UltimateChartistLib;
 
-namespace ZoomIn.ChartControls
+namespace UltimateChartistControls.ChartControls
 {
     /// <summary>
-    /// Interaction logic for IndicatorControl.xaml
+    /// Interaction logic for PriceControl.xaml
     /// </summary>
-    public partial class IndicatorControl : ChartControlBase
+    public partial class PriceControl : ChartControlBase
     {
-        public IndicatorControl()
+        public PriceControl()
         {
             InitializeComponent();
         }
 
-        double[] lowSerie, highSerie;
+        private List<IStockShapeBase> shapes = new();
         protected override void OnStockSerieChanged()
         {
             var closeSerie = viewModel?.Serie?.CloseValues;
             if (closeSerie == null)
                 return;
 
-            this.shapes.Clear();
-            this.indicatorCanvas.Children.Clear();
+            var lowSerie = viewModel.Serie?.LowValues;
+            var highSerie = viewModel.Serie?.HighValues;
 
-            var macd = closeSerie.CalculateMACD(12, 26);
-            var macdCurve = new Shapes.Curve()
+            this.chartCanvas.Children.Clear();
+            shapes.Clear();
+
+            #region Price Indicators (EMA, Cloud, Trail...)
+
+            var fill = new Fill() { };
+            fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));
+            this.shapes.Add(fill);
+
+            #endregion
+
+            #region Price Candle/Barchart...
+
+            for (int i = 0; i < viewModel.Serie.Bars.Length; i++)
             {
-                Stroke = Brushes.DarkGreen,
-                StrokeThickness = 1
-            };
-            macdCurve.CreateGeometry(macd);
-            this.shapes.Add(macdCurve);
+                var bar = viewModel.Serie.Bars[i];
+                var shape = new Shapes.Candle() { StrokeThickness = 1 };
+                shape.CreateGeometry(bar, i, false);
 
-            var signal = macd.CalculateEMA(9);
-            var signalCurve = new Shapes.Curve()
-            {
-                Stroke = Brushes.DarkRed,
-                StrokeThickness = 1
-            };
-            signalCurve.CreateGeometry(signal);
-            this.shapes.Add(signalCurve);
-
-            this.indicatorCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
-
-            lowSerie = new double[macd.Length];
-            highSerie = new double[macd.Length];
-            for (int i = 0; i < macd.Length; i++)
-            {
-                if (macd[i] < signal[i])
+                if (bar.Close >= bar.Open)
                 {
-                    lowSerie[i] = macd[i];
-                    highSerie[i] = signal[i];
+                    shape.Stroke = Brushes.DarkGreen;
+                    shape.Fill = Brushes.Green;
                 }
                 else
                 {
-                    lowSerie[i] = signal[i];
-                    highSerie[i] = macd[i];
+                    shape.Stroke = Brushes.DarkRed;
+                    shape.Fill = Brushes.Red;
                 }
+                shapes.Add(shape);
             }
+            #endregion
+
+            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
             this.OnResize();
         }
 
-        protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        protected override void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -81,15 +80,14 @@ namespace ZoomIn.ChartControls
             }
         }
 
-        private List<IStockShapeBase> shapes = new();
         private Transform chartToPixelTransform;
         protected override void OnResize()
         {
-            var canvasWidth = indicatorCanvas.ActualWidth;
-            var canvasHeight = indicatorCanvas.ActualHeight;
+            var canvasWidth = chartCanvas.ActualWidth;
+            var canvasHeight = chartCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
-            if (viewModel == null || viewModel.ZoomRange == null)
+            if (viewModel?.ZoomRange == null || viewModel.ZoomRange.End == 0)
                 return;
             var curveWidth = (viewModel.ZoomRange.End - viewModel.ZoomRange.Start + 1);
             if (curveWidth == 0)
@@ -99,6 +97,8 @@ namespace ZoomIn.ChartControls
 
             double min = double.MaxValue;
             double max = double.MinValue;
+            var lowSerie = viewModel.Serie?.LowValues;
+            var highSerie = viewModel.Serie?.HighValues;
             for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
             {
                 min = Math.Min(lowSerie[i], min);
@@ -118,19 +118,27 @@ namespace ZoomIn.ChartControls
             }
             chartToPixelTransform = tg;
 
+            #region Grid
             this.gridCanvas.Children.Clear();
-
+            #region Horizontal Grid
             tg = new();
             tg.Children.Add(new TranslateTransform(0, -max));
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
-            var zeroLine = new Path()
-            {
-                Stroke = Brushes.LightGray,
-                StrokeThickness = 1,
-                Data = new LineGeometry(new Point(0, 0), new Point(canvasWidth, 0), tg)
-            };
-            this.gridCanvas.Children.Add(zeroLine);
+            var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            horizontalGrid.CreateGeometry(viewModel.Serie, min, max, gridCanvas.ActualWidth);
+            horizontalGrid.ApplyTransform(tg);
+            this.gridCanvas.Children.Add(horizontalGrid);
 
+            foreach (var legend in horizontalGrid.Legends)
+            {
+                var location = tg.Transform(legend.Location);
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
+                label.Measure(gridCanvas.RenderSize);
+                Canvas.SetTop(label, location.Y - label.DesiredSize.Height / 2);
+                Canvas.SetLeft(label, -label.DesiredSize.Width);
+                this.gridCanvas.Children.Add(label);
+            }
+            #endregion
             #region Vertical Grid
             tg = new();
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
@@ -139,6 +147,17 @@ namespace ZoomIn.ChartControls
             verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
+
+            foreach (var legend in verticalGrid.Legends)
+            {
+                var location = tg.Transform(legend.Location);
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
+                label.Measure(gridCanvas.RenderSize);
+                Canvas.SetTop(label, gridCanvas.ActualHeight - 5);
+                Canvas.SetLeft(label, location.X - label.DesiredSize.Width / 2);
+                this.gridCanvas.Children.Add(label);
+            }
+            #endregion
             #endregion
         }
 
@@ -155,12 +174,11 @@ namespace ZoomIn.ChartControls
         {
             mouseCanvas.Children.Clear();
             var point = e.GetPosition(sender as IInputElement);
-            if (point.X < 0 || point.X > mouseCanvas.ActualWidth)
+            if (point.X < 0 || point.X > mouseCanvas.ActualWidth || this.chartToPixelTransform?.Inverse == null)
             {
                 return;
             }
             var p2 = this.chartToPixelTransform.Inverse.Transform(point);
-            p2.X = Math.Max(0, Math.Round(p2.X));
             this.viewModel.MousePos = point;
             this.viewModel.MouseValue = p2;
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
@@ -201,5 +219,16 @@ namespace ZoomIn.ChartControls
         }
         #endregion
 
+        private void mouseCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            //if (e.Delta > 0)
+            //{
+            //    this.viewModel.ZoomRange.End += 50;
+            //}
+            //else
+            //{
+            //    this.viewModel.ZoomRange.Start -= 50;
+            //}
+        }
     }
 }

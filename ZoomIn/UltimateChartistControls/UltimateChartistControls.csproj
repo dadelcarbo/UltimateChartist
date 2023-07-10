@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Telerik.UI.for.Wpf.60.Xaml" Version="2023.2.606" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UltimateChartistLib\UltimateChartistLib.csproj" />
+  </ItemGroup>
+
+</Project>

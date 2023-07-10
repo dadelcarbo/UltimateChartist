@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using ZoomIn.StockDrawing;
+using UltimateChartistLib.StockDrawing;
 
-namespace ZoomIn.ChartControls.Shapes
+namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class Fill : DependencyObject, IStockShapeBase
     {
@@ -71,7 +71,7 @@ namespace ZoomIn.ChartControls.Shapes
         public static readonly DependencyProperty BearStrokeThicknessProperty = DependencyProperty.Register("BearStrokeThickness", typeof(double), typeof(Fill), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
-        private Geometry? bullGeometry = null, bearGeometry = null;
+        private Geometry bullGeometry = null, bearGeometry = null;
 
         public void CreateGeometry(double[] fast, double[] slow)
         {

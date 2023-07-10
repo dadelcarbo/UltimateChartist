@@ -4,24 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using ZoomIn.ChartControls;
+using UltimateChartistControls.ChartControls;
+using UltimateChartistLib;
 
 namespace ZoomIn
 {
-    public class StockSerie
-    {
-        public StockBar[] Bars { get; set; }
-        public string Name { get; set; }
-
-        private double[] closeValues;
-        public double[] CloseValues => closeValues ??= this.Bars?.Select(b => b.Close).ToArray();
-
-        private double[] lowValues;
-        public double[] LowValues => lowValues ??= this.Bars?.Select(b => b.Low).ToArray();
-
-        private double[] highValues;
-        public double[] HighValues => highValues ??= this.Bars?.Select(b => b.High).ToArray();
-    }
     public class StockChartViewModel : INotifyPropertyChanged
     {
         static private StockChartViewModel instance;
@@ -134,7 +121,7 @@ namespace ZoomIn
             set { if (canvasMousePoint != value) { canvasMousePoint = value; RaisePropertyChanged(); } }
         }
         #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName] string name = "")
         {
@@ -144,21 +131,5 @@ namespace ZoomIn
             }
         }
         #endregion
-    }
-
-
-    public enum BarDuration
-    {
-        M_1,
-        M_2,
-        M_5,
-        M_15,
-        M_30,
-        H_1,
-        H_2,
-        H_4,
-        Daily,
-        Weekly,
-        Monthly
     }
 }

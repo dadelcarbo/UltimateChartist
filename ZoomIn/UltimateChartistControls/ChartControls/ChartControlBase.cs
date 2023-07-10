@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ZoomIn.ChartControls
+namespace UltimateChartistControls.ChartControls
 {
     public abstract class ChartControlBase : UserControl
     {
@@ -38,7 +38,7 @@ namespace ZoomIn.ChartControls
             this.OnResize();
         }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -54,7 +54,7 @@ namespace ZoomIn.ChartControls
             }
         }
 
-        protected abstract void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e);
+        protected abstract void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e);
         protected abstract void OnResize();
         protected abstract void OnStockSerieChanged();
     }

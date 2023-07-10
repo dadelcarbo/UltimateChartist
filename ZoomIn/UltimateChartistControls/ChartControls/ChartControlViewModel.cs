@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
 using Telerik.Windows.Controls;
+using UltimateChartistLib;
 
-namespace ZoomIn.ChartControls
+namespace UltimateChartistControls.ChartControls
 {
     public class ChartControlViewModel : ViewModelBase
     {

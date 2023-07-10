@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoomIn", "ZoomIn\ZoomIn.csproj", "{8CC4F54C-96F9-4B75-B189-757E23CC6A63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoomIn", "ZoomIn\ZoomIn.csproj", "{8CC4F54C-96F9-4B75-B189-757E23CC6A63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateChartistControls", "UltimateChartistControls\UltimateChartistControls.csproj", "{34203841-80F1-45DA-B0D0-7F9F1220D109}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateChartistLib", "UltimateChartistLib\UltimateChartistLib.csproj", "{879D2E88-5147-48FD-A733-0B997CBFF050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8CC4F54C-96F9-4B75-B189-757E23CC6A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CC4F54C-96F9-4B75-B189-757E23CC6A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CC4F54C-96F9-4B75-B189-757E23CC6A63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34203841-80F1-45DA-B0D0-7F9F1220D109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34203841-80F1-45DA-B0D0-7F9F1220D109}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34203841-80F1-45DA-B0D0-7F9F1220D109}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34203841-80F1-45DA-B0D0-7F9F1220D109}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879D2E88-5147-48FD-A733-0B997CBFF050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879D2E88-5147-48FD-A733-0B997CBFF050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879D2E88-5147-48FD-A733-0B997CBFF050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879D2E88-5147-48FD-A733-0B997CBFF050}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

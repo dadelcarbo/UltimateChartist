@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using UltimateChartistLib;
 
 namespace ZoomIn
 {
@@ -67,7 +68,7 @@ namespace ZoomIn
             set { if (canvasMousePoint != value) { canvasMousePoint = value; RaisePropertyChanged(); } }
         }
         #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName] string name = "")
         {

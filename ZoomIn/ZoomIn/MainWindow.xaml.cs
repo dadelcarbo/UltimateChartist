@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ZoomIn.ChartControls;
+using UltimateChartistControls.ChartControls;
 
 namespace ZoomIn
 {

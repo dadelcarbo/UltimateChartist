@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.ChartView;
 
-namespace ZoomIn.ChartControls
+namespace UltimateChartistControls.ChartControls
 {
     /// <summary>
     /// Interaction logic for StockChartControl.xaml

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ZoomIn.ChartControls.Shapes
+namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class OverviewCurve : Shape
     {

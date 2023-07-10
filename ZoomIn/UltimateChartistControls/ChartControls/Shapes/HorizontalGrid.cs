@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using UltimateChartistLib;
 
-namespace ZoomIn.ChartControls.Shapes
+namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class HorizontalGrid : StockShapeBase
     {

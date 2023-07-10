@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
-using ZoomIn.ChartControls.Shapes;
+using UltimateChartistControls.ChartControls.Shapes;
 
-namespace ZoomIn.ChartControls
+namespace UltimateChartistControls.ChartControls
 {
     /// <summary>
     /// Interaction logic for OverviewControl.xaml
@@ -49,7 +49,7 @@ namespace ZoomIn.ChartControls
         {
         }
 
-        protected override void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        protected override void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
         }
     }
