@@ -59,7 +59,6 @@ namespace UltimateChartistControls.ChartControls.Shapes
                 default:
                     break;
             }
-
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
         }
 

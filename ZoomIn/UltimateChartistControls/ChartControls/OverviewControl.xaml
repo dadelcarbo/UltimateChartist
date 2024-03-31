@@ -7,19 +7,16 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls.Primitives;assembly=Telerik.Windows.Controls" 
              d:DataContext="{d:DesignInstance Type=chartcontrols:ChartControlViewModel}"
-             mc:Ignorable="d" d:DesignWidth="800" d:Background="White">
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Telerik.Windows.Controls;component/Themes/GenericFluent.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <Style TargetType="RepeatButton" x:Key="LeftOutTrackStyle">
                 <Setter Property="IsTabStop" Value="False" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RepeatButton">
-                            <Grid Background="#C0E3E3E3" Margin="0,0,-5,0"/>
+                            <Grid Background="#60838383" Margin="0,0,-5,0"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -30,7 +27,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RepeatButton">
-                            <Grid Background="#C0E3E3E3" Margin="-4,0,0,0"/>
+                            <Grid Background="#60838383" Margin="-4,0,0,0"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>

@@ -124,7 +124,7 @@ namespace UltimateChartistControls.ChartControls
             tg = new();
             tg.Children.Add(new TranslateTransform(0, -max));
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
-            var horizontalGrid = new HorizontalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            var horizontalGrid = new HorizontalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
             horizontalGrid.CreateGeometry(viewModel.Serie, min, max, gridCanvas.ActualWidth);
             horizontalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(horizontalGrid);
@@ -132,7 +132,7 @@ namespace UltimateChartistControls.ChartControls
             foreach (var legend in horizontalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, location.Y - label.DesiredSize.Height / 2);
                 Canvas.SetLeft(label, -label.DesiredSize.Width);
@@ -143,7 +143,7 @@ namespace UltimateChartistControls.ChartControls
             tg = new();
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
-            var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
             verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
@@ -151,7 +151,7 @@ namespace UltimateChartistControls.ChartControls
             foreach (var legend in verticalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10 };
+                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, gridCanvas.ActualHeight - 5);
                 Canvas.SetLeft(label, location.X - label.DesiredSize.Width / 2);
@@ -190,12 +190,13 @@ namespace UltimateChartistControls.ChartControls
             var label = new System.Windows.Controls.Label()
             {
                 Content = p2.Y.ToString("0.##"),
-                BorderBrush = Brushes.Gray,
+                BorderBrush = GridBrush,
                 BorderThickness = new Thickness(1),
-                Background = Brushes.Goldenrod,
+                Background = Brushes.DarkSlateGray,
                 FontFamily = labelFontFamily,
                 FontSize = 10,
-                Padding = new Thickness(1)
+                Padding = new Thickness(1),
+                Foreground = TextBrush,
             };
             label.Measure(mouseCanvas.RenderSize);
             Canvas.SetTop(label, point.Y - label.DesiredSize.Height / 2);

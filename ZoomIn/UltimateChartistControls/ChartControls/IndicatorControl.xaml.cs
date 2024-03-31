@@ -126,7 +126,7 @@ namespace UltimateChartistControls.ChartControls
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var zeroLine = new Path()
             {
-                Stroke = Brushes.LightGray,
+                Stroke = GridBrush,
                 StrokeThickness = 1,
                 Data = new LineGeometry(new Point(0, 0), new Point(canvasWidth, 0), tg)
             };
@@ -136,7 +136,7 @@ namespace UltimateChartistControls.ChartControls
             tg = new();
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
-            var verticalGrid = new VerticalGrid() { Stroke = Brushes.LightGray, StrokeThickness = 1 };
+            var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
             verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
@@ -173,12 +173,13 @@ namespace UltimateChartistControls.ChartControls
             var label = new System.Windows.Controls.Label()
             {
                 Content = p2.Y.ToString("0.##"),
-                BorderBrush = Brushes.Gray,
+                BorderBrush = GridBrush,
                 BorderThickness = new Thickness(1),
-                Background = Brushes.Goldenrod,
+                Background = Brushes.DarkSlateGray,
                 FontFamily = labelFontFamily,
                 FontSize = 10,
-                Padding = new Thickness(1)
+                Padding = new Thickness(1),
+                Foreground = TextBrush,
             };
             label.Measure(mouseCanvas.RenderSize);
             Canvas.SetTop(label, point.Y - label.DesiredSize.Height / 2);
