@@ -40,6 +40,14 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));
             this.shapes.Add(fill);
 
+            var trail = new Trail() { };
+            var upperBand = closeSerie.Mult(1.05);
+            var lowerBand = closeSerie.Mult(0.95);
+            double?[] longStop, shortStop;
+            viewModel.Serie.Bars.CalculateBandTrailStop(lowerBand, upperBand, out longStop, out shortStop);
+            trail.CreateGeometry(closeSerie, longStop, shortStop);
+            this.shapes.Add(trail);
+
             #endregion
 
             #region Price Candle/Barchart...

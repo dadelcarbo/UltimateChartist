@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZoomIn" 
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        d:DataContext="{d:DesignInstance Type=local:StockChartViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>

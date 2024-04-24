@@ -10,15 +10,15 @@ using TradeStudio.UserControls.Graphs.ChartControls;
 
 namespace ZoomIn
 {
-    public class StockChartViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
-        static private StockChartViewModel instance;
-        static public StockChartViewModel Instance => instance ??= new StockChartViewModel();
+        static private MainWindowViewModel instance;
+        static public MainWindowViewModel Instance => instance ??= new MainWindowViewModel();
 
         private ChartControlViewModel chartControlViewModel;
         public ChartControlViewModel ChartControlViewModel { get { return chartControlViewModel; } set { if (chartControlViewModel != value) { chartControlViewModel = value; RaisePropertyChanged(); } } }
 
-        private StockChartViewModel()
+        private MainWindowViewModel()
         {
             instance = this;
             this.chartControlViewModel = new ChartControlViewModel();

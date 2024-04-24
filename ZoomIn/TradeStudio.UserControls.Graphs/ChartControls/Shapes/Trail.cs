@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
-    public class Fill : DependencyObject, IStockShapeBase
+    public class Trail : DependencyObject, IStockShapeBase
     {
         static public Brush DefaultBullFillBrush = new SolidColorBrush(Colors.Green) { Opacity = 0.5 };
         static public Brush DefaultBearFillBrush = new SolidColorBrush(Colors.Red) { Opacity = 0.5 };
@@ -21,7 +21,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BullFill.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BullFillProperty = DependencyProperty.Register("BullFill", typeof(Brush), typeof(Fill), new FrameworkPropertyMetadata(DefaultBullFillBrush, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BullFillProperty = DependencyProperty.Register("BullFill", typeof(Brush), typeof(Trail), new FrameworkPropertyMetadata(DefaultBullFillBrush, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public Brush BullStroke
         {
@@ -30,7 +30,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BullStroke.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BullStrokeProperty = DependencyProperty.Register("BullStroke", typeof(Brush), typeof(Fill), new FrameworkPropertyMetadata(DefaultBullStrokeBrush, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BullStrokeProperty = DependencyProperty.Register("BullStroke", typeof(Brush), typeof(Trail), new FrameworkPropertyMetadata(DefaultBullStrokeBrush, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double BullStrokeThickness
         {
@@ -39,7 +39,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BullStrokeThickness.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BullStrokeThicknessProperty = DependencyProperty.Register("BullStrokeThickness", typeof(double), typeof(Fill), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BullStrokeThicknessProperty = DependencyProperty.Register("BullStrokeThickness", typeof(double), typeof(Trail), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public Brush BearFill
         {
@@ -48,7 +48,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BearFill.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BearFillProperty = DependencyProperty.Register("BearFill", typeof(Brush), typeof(Fill), new PropertyMetadata(DefaultBearFillBrush));
+        public static readonly DependencyProperty BearFillProperty = DependencyProperty.Register("BearFill", typeof(Brush), typeof(Trail), new PropertyMetadata(DefaultBearFillBrush));
 
 
         public Brush BearStroke
@@ -58,7 +58,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BearStroke.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BearStrokeProperty = DependencyProperty.Register("BearStroke", typeof(Brush), typeof(Fill), new FrameworkPropertyMetadata(DefaultBearStrokeBrush, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BearStrokeProperty = DependencyProperty.Register("BearStroke", typeof(Brush), typeof(Trail), new FrameworkPropertyMetadata(DefaultBearStrokeBrush, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public double BearStrokeThickness
         {
@@ -67,89 +67,15 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         }
 
         // Using a DependencyProperty as the backing store for BearStrokeThickness.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BearStrokeThicknessProperty = DependencyProperty.Register("BearStrokeThickness", typeof(double), typeof(Fill), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BearStrokeThicknessProperty = DependencyProperty.Register("BearStrokeThickness", typeof(double), typeof(Trail), new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
 
 
         private Geometry bullGeometry = null, bearGeometry = null;
 
-        public void CreateGeometry(double[] fast, double[] slow)
+        public void CreateGeometry(double[] close, double?[] longStop, double?[] shortStop)
         {
-            var bullPoints = new List<List<Point>>();
-            var bearPoints = new List<List<Point>>();
-
-            bool bull = fast[0] > slow[0];
-
-            List<Point> fastPoints = new () { new Point(0, fast[0]) };
-            List<Point> slowPoints = new () { new Point(0, slow[0]) };
-            for (int i = 1; i < fast.Length; i++)
-            {
-                if (bull)
-                {
-                    if (fast[i] > slow[i])
-                    {
-                        fastPoints.Add(new Point(i, fast[i]));
-                        slowPoints.Add(new Point(i, slow[i]));
-                    }
-                    else
-                    {
-                        if (i < fast.Length - 1)
-                        {
-                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(i, fast[i]), slowPoints.Last(), new Point(i, slow[i]));
-                            fastPoints.Add(pivot);
-                            slowPoints.Reverse();
-                            fastPoints.AddRange(slowPoints);
-                            bullPoints.Add(fastPoints);
-
-                            fastPoints = new () { pivot, new Point(i, fast[i]) };
-                        }
-                        else
-                        {
-                            fastPoints = new () { new Point(i, fast[i]) };
-                        }
-                        slowPoints = new () { new Point(i, slow[i]) };
-                        bull = false;
-                    }
-                }
-                else
-                {
-                    if (fast[i] < slow[i])
-                    {
-                        fastPoints.Add(new Point(i, fast[i]));
-                        slowPoints.Add(new Point(i, slow[i]));
-                    }
-                    else
-                    {
-                        if (i < fast.Length - 1)
-                        {
-                            var pivot = Line2D.Intersection(fastPoints.Last(), new Point(i, fast[i]), slowPoints.Last(), new Point(i, slow[i]));
-                            fastPoints.Add(pivot);
-                            slowPoints.Reverse();
-                            fastPoints.AddRange(slowPoints);
-                            bearPoints.Add(fastPoints);
-
-                            fastPoints = new () { pivot, new Point(i, fast[i]) };
-                        }
-                        else
-                        {
-                            fastPoints = new () { new Point(i, fast[i]) };
-                        }
-                        slowPoints = new () { new Point(i, slow[i]) };
-                        bull = true;
-                    }
-                }
-            }
-            if (bull)
-            {
-                slowPoints.Reverse();
-                fastPoints.AddRange(slowPoints);
-                bullPoints.Add(fastPoints);
-            }
-            else
-            {
-                slowPoints.Reverse();
-                fastPoints.AddRange(slowPoints);
-                bearPoints.Add(fastPoints);
-            }
+            var bullPoints = GetTrailAreas(close, longStop);
+            var bearPoints = GetTrailAreas(close, shortStop);
 
             var geometryGroup = new GeometryGroup();
             foreach (var points in bullPoints)
@@ -190,6 +116,31 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             this.BearShape.SetBinding(Path.FillProperty, new Binding("BearFill") { Source = this });
             this.BearShape.SetBinding(Path.StrokeProperty, new Binding("BearStroke") { Source = this });
             this.BearShape.SetBinding(Path.StrokeThicknessProperty, new Binding("BearStrokeThickness") { Source = this });
+        }
+
+        private static List<List<Point>> GetTrailAreas(double[] close, double?[] trail)
+        {
+            var pointList = new List<List<Point>>();
+            int i = 0;
+            do
+            {
+                while (i < close.Length && trail[i] == null) { i++; }
+                if (i == trail.Length) break;
+
+                List<Point> closePoints = new() { new Point(i, close[i]) };
+                List<Point> trailPoints = new() { new Point(i, trail[i].Value) };
+                i++;
+                while (i < close.Length && trail[i] != null)
+                {
+                    closePoints.Add(new Point(i, close[i]));
+                    trailPoints.Insert(0, new Point(i, trail[i].Value));
+                    i++;
+                }
+                closePoints.AddRange(trailPoints);
+                pointList.Add(closePoints);
+            }
+            while (i < close.Length);
+            return pointList;
         }
 
         public void ApplyTransform(Transform transform)
