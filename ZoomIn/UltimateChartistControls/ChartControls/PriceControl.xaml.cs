@@ -125,7 +125,7 @@ namespace UltimateChartistControls.ChartControls
             tg.Children.Add(new TranslateTransform(0, -max));
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var horizontalGrid = new HorizontalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
-            horizontalGrid.CreateGeometry(viewModel.Serie, min, max, gridCanvas.ActualWidth);
+            horizontalGrid.CreateGeometry(min, max, gridCanvas.ActualWidth);
             horizontalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(horizontalGrid);
 
@@ -165,7 +165,7 @@ namespace UltimateChartistControls.ChartControls
         {
             mouseCanvas.Children.Clear();
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(viewModel.Serie, new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
+            mouseCross.CreateGeometry(new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
             mouseCanvas.Children.Add(mouseCross);
         }
 
@@ -184,7 +184,7 @@ namespace UltimateChartistControls.ChartControls
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
-            mouseCross.CreateGeometry(viewModel.Serie, point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
+            mouseCross.CreateGeometry(point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
             var label = new System.Windows.Controls.Label()

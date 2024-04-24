@@ -5,12 +5,12 @@ using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
-    public class MouseCross : StockShapeBase
+    public class MouseCross : BarsShapeBase
     {
-        public void CreateGeometry(DataSerie serie, Point point, double width, double height, bool addHorizontal = true)
+        public void CreateGeometry(Point point, double width, double height, bool addHorizontal = true)
         {
             this.IsHitTestVisible = false;
-            RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
 
             var geometryGroup = new GeometryGroup();
             LineGeometry line;

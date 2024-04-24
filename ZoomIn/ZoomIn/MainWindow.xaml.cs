@@ -11,6 +11,8 @@ namespace ZoomIn
         public MainWindow()
         {
             InitializeComponent();
+
+            this.chartControlDebug.DataContext = StockChartViewModel.Instance;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

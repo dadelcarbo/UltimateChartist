@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
-    public class Range : StockShapeBase
+    public class Range : BarsShapeBase
     {
         public void CreateGeometry(double[] lows, double[] highs)
         {

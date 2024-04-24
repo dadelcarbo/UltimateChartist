@@ -12,7 +12,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
         public Point Location { get; set; }
         public string Text { get; set; }
     }
-    public class VerticalGrid : StockShapeBase
+    public class VerticalGrid : BarsShapeBase
     {
         static CultureInfo frCulture = new CultureInfo("fr-FR");
         public List<Legend> Legends { get; } = new List<Legend>();

@@ -5,7 +5,7 @@ using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
-    public class Candle : StockShapeBase
+    public class Candle : BarsShapeBase
     {
         protected double gap = 0.2;
         protected double width = 0.8;

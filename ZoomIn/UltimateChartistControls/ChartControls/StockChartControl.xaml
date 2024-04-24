@@ -9,7 +9,7 @@
     <Grid Name="grid" Background="Black">
         <Grid.RowDefinitions >
             <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">

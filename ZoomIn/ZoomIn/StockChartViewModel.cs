@@ -13,13 +13,12 @@ namespace ZoomIn
     public class StockChartViewModel : INotifyPropertyChanged
     {
         static private StockChartViewModel instance;
-        static public StockChartViewModel Instance => instance;
+        static public StockChartViewModel Instance => instance ??= new StockChartViewModel();
 
         private ChartControlViewModel chartControlViewModel;
         public ChartControlViewModel ChartControlViewModel { get { return chartControlViewModel; } set { if (chartControlViewModel != value) { chartControlViewModel = value; RaisePropertyChanged(); } } }
 
-
-        public StockChartViewModel()
+        private StockChartViewModel()
         {
             instance = this;
             this.chartControlViewModel = new ChartControlViewModel();

@@ -4,10 +4,10 @@ using System.Windows.Shapes;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
-    public abstract class StockShapeBase : Shape, IStockShapeBase
+    public abstract class BarsShapeBase : Shape, IStockShapeBase
     {
         IEnumerable<Shape> shapes;
-        public StockShapeBase()
+        public BarsShapeBase()
         {
             shapes = new List<Shape>() { this };
         }

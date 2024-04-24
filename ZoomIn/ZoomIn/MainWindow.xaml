@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZoomIn" 
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        d:DataContext="{d:DesignInstance Type=local:StockChartViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <local:StockChartViewModel x:Key="mainViewModel"/>
         <telerik:ColorToBrushConverter x:Key="colorToBrushConverter" />
         <telerik:BrushToColorConverter x:Key="brushToColorConverter" />
     </Window.Resources>
@@ -22,23 +22,23 @@
                     </Grid.ColumnDefinitions>
                     <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" 
                             BorderBrush="DarkGray" BorderThickness="1" Background="LightGoldenrodYellow" >
-                        <StackPanel DataContext="{Binding ChartControlViewModel,Source={StaticResource mainViewModel}}">
+                        <StackPanel >
                             <Button Content="Init" Click="Button_Click" Margin="4"></Button>
-                            <StackPanel Orientation="Horizontal" DataContext="{StaticResource mainViewModel}">
+                            <StackPanel Orientation="Horizontal">
                                 <Label>StockSerie:</Label>
-                                <ComboBox ItemsSource="{Binding Series,Source={StaticResource mainViewModel}}" SelectedItem="{Binding Serie}" DisplayMemberPath="Instrument.Name"></ComboBox>
+                                <ComboBox ItemsSource="{Binding Series}" SelectedItem="{Binding Serie}" DisplayMemberPath="Instrument.Name"></ComboBox>
                             </StackPanel>
-                            <TextBlock Grid.Column="0" Text="{Binding Range.Start, StringFormat='StartIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding Range.End, StringFormat='EndIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
                             <GroupBox Header="MousePos">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding MousePos.X, StringFormat='X:{0:0.##}'}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MousePos.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
                             </GroupBox>
                             <GroupBox Header="MouseValue">
@@ -47,18 +47,18 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding MouseValue.X, StringFormat='X:{0:0.##}'}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MouseValue.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
                             </GroupBox>
                             <GroupBox Header="Current Bar">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
-                                    <TextBlock Text="{Binding CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
