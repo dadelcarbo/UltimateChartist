@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace UltimateChartistControls.ChartControls.Shapes
+namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
     public class Fill : DependencyObject, IStockShapeBase
     {

@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using UltimateChartistControls.ChartControls;
+using TradeStudio.UserControls.Graphs.ChartControls;
 
 namespace ZoomIn
 {

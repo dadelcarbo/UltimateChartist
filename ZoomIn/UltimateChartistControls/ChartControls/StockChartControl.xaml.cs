@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using Telerik.Windows.Controls;
 
-namespace UltimateChartistControls.ChartControls
+namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     /// <summary>
     /// Interaction logic for StockChartControl.xaml

@@ -8,9 +8,9 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
-using UltimateChartistControls.ChartControls.Shapes;
+using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 
-namespace UltimateChartistControls.ChartControls
+namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     /// <summary>
     /// Interaction logic for IndicatorControl.xaml

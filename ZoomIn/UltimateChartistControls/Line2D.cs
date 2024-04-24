@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace UltimateChartistControls;
+namespace TradeStudio.UserControls.Graphs;
 
 public class Line2D
 {

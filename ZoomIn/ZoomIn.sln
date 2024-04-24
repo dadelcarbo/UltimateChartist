@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoomIn", "ZoomIn\ZoomIn.csproj", "{8CC4F54C-96F9-4B75-B189-757E23CC6A63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltimateChartistControls", "UltimateChartistControls\UltimateChartistControls.csproj", "{34203841-80F1-45DA-B0D0-7F9F1220D109}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeStudio.UserControls.Graphs", "UltimateChartistControls\TradeStudio.UserControls.Graphs.csproj", "{34203841-80F1-45DA-B0D0-7F9F1220D109}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltimateChartistLib", "UltimateChartistLib\UltimateChartistLib.csproj", "{879D2E88-5147-48FD-A733-0B997CBFF050}"
 EndProject

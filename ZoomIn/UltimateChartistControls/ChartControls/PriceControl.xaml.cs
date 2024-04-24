@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
-using UltimateChartistControls.ChartControls.Shapes;
+using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 
-namespace UltimateChartistControls.ChartControls
+namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     /// <summary>
     /// Interaction logic for PriceControl.xaml

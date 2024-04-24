@@ -3,7 +3,7 @@ using System.Windows;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.DataProviders;
 
-namespace UltimateChartistControls.ChartControls
+namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     public class ChartControlViewModel : ViewModelBase
     {

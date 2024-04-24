@@ -64,6 +64,7 @@
                         </StackPanel>
                     </Border>
                     <Border Name="contentBorder" Grid.Row="0" Grid.Column="1">
+                       
                     </Border>
                 </Grid>
             </TabItem>

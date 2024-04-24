@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace UltimateChartistControls.ChartControls.Shapes
+namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
     public abstract class BarsShapeBase : Shape, IStockShapeBase
     {

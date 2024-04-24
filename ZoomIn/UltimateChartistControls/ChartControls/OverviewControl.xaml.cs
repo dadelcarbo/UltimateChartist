@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
-using UltimateChartistControls.ChartControls.Shapes;
+using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 
-namespace UltimateChartistControls.ChartControls
+namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     /// <summary>
     /// Interaction logic for OverviewControl.xaml

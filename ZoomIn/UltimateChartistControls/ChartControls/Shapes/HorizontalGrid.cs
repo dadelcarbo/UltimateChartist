@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using TradeStudio.Data.DataProviders;
 
-namespace UltimateChartistControls.ChartControls.Shapes
+namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
     public class HorizontalGrid : BarsShapeBase
     {

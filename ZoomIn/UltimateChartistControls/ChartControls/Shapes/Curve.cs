@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace UltimateChartistControls.ChartControls.Shapes
+namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
     public class Curve : BarsShapeBase
     {

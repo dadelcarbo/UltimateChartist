@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Instruments;
-using UltimateChartistControls.ChartControls;
+using TradeStudio.UserControls.Graphs.ChartControls;
 
 namespace ZoomIn
 {
