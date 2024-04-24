@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Telerik.Windows.Controls;
-using UltimateChartistLib;
+using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls
 {
@@ -23,12 +23,12 @@ namespace UltimateChartistControls.ChartControls
             set { if (maxRange != value) { maxRange = value; RaisePropertyChanged(); } }
         }
 
-        public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Length - 1;
+        public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Count - 1;
 
 
 
-        private StockSerie serie;
-        public StockSerie Serie
+        private DataSerie serie;
+        public DataSerie Serie
         {
             get { return serie; }
             set
@@ -37,7 +37,7 @@ namespace UltimateChartistControls.ChartControls
                 {
                     serie = value;
 
-                    var endIndex = serie.Bars == null ? 0 : serie.Bars.Length - 1;
+                    var endIndex = serie.Bars == null ? 0 : serie.Bars.Count - 1;
                     var startIndex = Math.Max(0, endIndex - (MinRange + MaxRange) / 2);
 
                     this.zoomRange = new SelectionRange<int> { Start = startIndex, End = endIndex };
@@ -55,8 +55,8 @@ namespace UltimateChartistControls.ChartControls
         private int mouseIndex;
         public int MouseIndex { get { return mouseIndex; } set { if (mouseIndex != value) { mouseIndex = value; this.CurrentBar = serie?.Bars[mouseIndex]; RaisePropertyChanged(); } } }
 
-        private StockBar currentBar;
-        public StockBar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
+        private Bar currentBar;
+        public Bar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
 
     }
 }

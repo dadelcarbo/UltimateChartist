@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using UltimateChartistLib;
+using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
@@ -16,7 +16,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
         /// <param name="index"></param>
         /// <param name="width">Width of the bar itself</param>
         /// <param name="gap">Distance between two bars</param>
-        public void CreateGeometry(StockBar bar, int index, bool candle)
+        public void CreateGeometry(Bar bar, int index, bool candle)
         {
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
 

@@ -4,8 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using TradeStudio.Data.DataProviders;
+using TradeStudio.Data.Instruments;
 using UltimateChartistControls.ChartControls;
-using UltimateChartistLib;
 
 namespace ZoomIn
 {
@@ -22,10 +23,10 @@ namespace ZoomIn
         {
             instance = this;
             this.chartControlViewModel = new ChartControlViewModel();
-            this.Bars = StockBar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").ToArray();
-            this.Series = new List<StockSerie>
+            this.Bars = Bar.Load(@"C:\ProgramData\UltimateChartist_new\Data\Archive\ABC\Daily\CAC_FR0003500008.csv").ToArray();
+            this.Series = new List<DataSerie>
             {
-                new StockSerie { Name = "CAC40", Bars = Bars}
+                new DataSerie(new TradeInstrument{ Name = "CAC40" }, BarDuration.Daily, Bars.ToList())
             };
             this.Series.AddRange(this.GenerateSeries(2000));
             this.Serie = this.Series[0];
@@ -33,21 +34,15 @@ namespace ZoomIn
             this.Values = Bars.Select(b => b.Close).ToArray();
         }
 
-        List<StockSerie> GenerateSeries(int nbBars)
+        List<DataSerie> GenerateSeries(int nbBars)
         {
             var rnd = new Random();
-            var series = new List<StockSerie>();
+            var series = new List<DataSerie>();
             foreach (var duration in Enum.GetValues<BarDuration>())
             {
                 TimeSpan timeSpan = TimeSpan.FromDays(1);
                 switch (duration)
                 {
-                    case BarDuration.M_1:
-                        timeSpan = TimeSpan.FromMinutes(1);
-                        break;
-                    case BarDuration.M_2:
-                        timeSpan = TimeSpan.FromMinutes(2);
-                        break;
                     case BarDuration.M_5:
                         timeSpan = TimeSpan.FromMinutes(5);
                         break;
@@ -78,7 +73,9 @@ namespace ZoomIn
                     default:
                         break;
                 }
-                var serie = new StockSerie() { Name = duration.ToString(), Bars = new StockBar[nbBars] };
+
+
+                var serie = new DataSerie(new TradeInstrument { Name = duration.ToString() }, duration, new List<Bar>());
                 double value = 100;
                 DateTime date = DateTime.Today;
                 for (int i = 0; i < nbBars; i++)
@@ -88,7 +85,7 @@ namespace ZoomIn
                     var high = Math.Max(open, close) * (1 + 0.01 * rnd.NextDouble());
                     var low = Math.Min(open, close) * (1 - 0.01 * rnd.NextDouble());
                     var volume = rnd.Next(100000);
-                    serie.Bars[i] = new StockBar(date, open, high, low, close, volume);
+                    serie.Bars.Add(new Bar(date, open, high, low, close, volume));
 
                     date = date + timeSpan;
                     value = close;
@@ -100,12 +97,12 @@ namespace ZoomIn
 
         public double[] Values { get; set; }
 
-        public StockBar[] Bars { get; set; }
+        public Bar[] Bars { get; set; }
 
-        public List<StockSerie> Series { get; set; }
+        public List<DataSerie> Series { get; set; }
 
-        private StockSerie serie;
-        public StockSerie Serie { get { return serie; } set { if (serie != value) { serie = value; this.ChartControlViewModel.Serie = value; RaisePropertyChanged(); } } }
+        private DataSerie serie;
+        public DataSerie Serie { get { return serie; } set { if (serie != value) { serie = value; this.ChartControlViewModel.Serie = value; RaisePropertyChanged(); } } }
 
         private Point mousePoint;
         public Point MousePoint

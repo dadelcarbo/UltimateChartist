@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using UltimateChartistLib;
+using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class HorizontalGrid : StockShapeBase
     {
         public List<Legend> Legends { get; } = new List<Legend>();
-        public void CreateGeometry(StockSerie serie, double min, double max, double width)
+        public void CreateGeometry(DataSerie serie, double min, double max, double width)
         {
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);
             var geometryGroup = new GeometryGroup();

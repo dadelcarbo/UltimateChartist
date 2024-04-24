@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using UltimateChartistLib.StockDrawing;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
@@ -75,13 +74,13 @@ namespace UltimateChartistControls.ChartControls.Shapes
 
         public void CreateGeometry(double[] fast, double[] slow)
         {
-            List<List<Point>> bullPoints = new List<List<Point>>();
-            List<List<Point>> bearPoints = new List<List<Point>>();
+            var bullPoints = new List<List<Point>>();
+            var bearPoints = new List<List<Point>>();
 
             bool bull = fast[0] > slow[0];
 
-            List<Point> fastPoints = new List<Point>() { new Point(0, fast[0]) };
-            List<Point> slowPoints = new List<Point>() { new Point(0, slow[0]) };
+            List<Point> fastPoints = new () { new Point(0, fast[0]) };
+            List<Point> slowPoints = new () { new Point(0, slow[0]) };
             for (int i = 1; i < fast.Length; i++)
             {
                 if (bull)
@@ -101,13 +100,13 @@ namespace UltimateChartistControls.ChartControls.Shapes
                             fastPoints.AddRange(slowPoints);
                             bullPoints.Add(fastPoints);
 
-                            fastPoints = new List<Point>() { pivot, new Point(i, fast[i]) };
+                            fastPoints = new () { pivot, new Point(i, fast[i]) };
                         }
                         else
                         {
-                            fastPoints = new List<Point>() { new Point(i, fast[i]) };
+                            fastPoints = new () { new Point(i, fast[i]) };
                         }
-                        slowPoints = new List<Point>() { new Point(i, slow[i]) };
+                        slowPoints = new () { new Point(i, slow[i]) };
                         bull = false;
                     }
                 }
@@ -128,13 +127,13 @@ namespace UltimateChartistControls.ChartControls.Shapes
                             fastPoints.AddRange(slowPoints);
                             bearPoints.Add(fastPoints);
 
-                            fastPoints = new List<Point>() { pivot, new Point(i, fast[i]) };
+                            fastPoints = new () { pivot, new Point(i, fast[i]) };
                         }
                         else
                         {
-                            fastPoints = new List<Point>() { new Point(i, fast[i]) };
+                            fastPoints = new () { new Point(i, fast[i]) };
                         }
-                        slowPoints = new List<Point>() { new Point(i, slow[i]) };
+                        slowPoints = new () { new Point(i, slow[i]) };
                         bull = true;
                     }
                 }

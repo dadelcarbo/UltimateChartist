@@ -30,6 +30,7 @@
         <BitmapImage x:Key="barchartImg" UriSource="Resources/barchart.png" />
         <BitmapImage x:Key="curveImg" UriSource="Resources/curve.png" />
 
+        <!-- Graph style  and template -->
         <converters:AxisDateLabelConverter x:Key="axisDateLabelConverter"/>
         <DataTemplate x:Key="axisDailyLabelTemplate">
             <TextBlock Text="{Binding Converter={StaticResource axisDateLabelConverter},ConverterParameter=Daily}" TextAlignment="Center"/>

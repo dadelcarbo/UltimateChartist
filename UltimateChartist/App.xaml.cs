@@ -10,10 +10,8 @@ namespace UltimateChartist;
 /// </summary>
 public partial class App : Application
 {
-    public static App AppInstance { get; private set; }
     public App()
     {
-        AppInstance = this;
         this.InitializeComponent();
     }
 

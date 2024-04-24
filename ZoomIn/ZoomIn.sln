@@ -5,9 +5,13 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoomIn", "ZoomIn\ZoomIn.csproj", "{8CC4F54C-96F9-4B75-B189-757E23CC6A63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateChartistControls", "UltimateChartistControls\UltimateChartistControls.csproj", "{34203841-80F1-45DA-B0D0-7F9F1220D109}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltimateChartistControls", "UltimateChartistControls\UltimateChartistControls.csproj", "{34203841-80F1-45DA-B0D0-7F9F1220D109}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateChartistLib", "UltimateChartistLib\UltimateChartistLib.csproj", "{879D2E88-5147-48FD-A733-0B997CBFF050}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltimateChartistLib", "UltimateChartistLib\UltimateChartistLib.csproj", "{879D2E88-5147-48FD-A733-0B997CBFF050}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeStudio.Data", "..\..\TradeStudio\TradeStudio.Data\TradeStudio.Data.csproj", "{66EF4E04-5FB2-4A6C-BC0A-C5C9A963D9CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeStudio.Common", "..\..\TradeStudio\TradeStudio.Common\TradeStudio.Common.csproj", "{B6DB7228-EEEE-4B21-9FAF-58B07B954B53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{879D2E88-5147-48FD-A733-0B997CBFF050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{879D2E88-5147-48FD-A733-0B997CBFF050}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{879D2E88-5147-48FD-A733-0B997CBFF050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66EF4E04-5FB2-4A6C-BC0A-C5C9A963D9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66EF4E04-5FB2-4A6C-BC0A-C5C9A963D9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66EF4E04-5FB2-4A6C-BC0A-C5C9A963D9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66EF4E04-5FB2-4A6C-BC0A-C5C9A963D9CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6DB7228-EEEE-4B21-9FAF-58B07B954B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6DB7228-EEEE-4B21-9FAF-58B07B954B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6DB7228-EEEE-4B21-9FAF-58B07B954B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6DB7228-EEEE-4B21-9FAF-58B07B954B53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

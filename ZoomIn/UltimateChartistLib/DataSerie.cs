@@ -2,9 +2,9 @@
 
 namespace UltimateChartistLib;
 
-public class StockSerie
+public class DataSerie
 {
-    public StockBar[] Bars { get; set; }
+    public Bar[] Bars { get; set; }
     public string Name { get; set; }
 
     private double[] closeValues;

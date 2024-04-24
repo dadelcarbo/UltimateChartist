@@ -22,7 +22,7 @@ public enum BarDuration
 }
 
 [DebuggerDisplay("Date={Date}")]
-public class StockBar
+public class Bar
 {
     public DateTime Date { get; private set; }
     public double Open { get; private set; }
@@ -36,7 +36,7 @@ public class StockBar
 
     public bool IsComplete { get; set; } = true;
 
-    public StockBar(DateTime date, double open, double high, double low, double close, double volume)
+    public Bar(DateTime date, double open, double high, double low, double close, double volume)
     {
         Date = date;
         Open = open;
@@ -46,19 +46,19 @@ public class StockBar
         Volume = volume;
     }
 
-    public static List<StockBar> GenerateWeeklyBarsFomDaily(List<StockBar> dailyBars)
+    public static List<Bar> GenerateWeeklyBarsFomDaily(List<Bar> dailyBars)
     {
         if (dailyBars == null)
             return null;
-        var newBars = new List<StockBar>();
-        StockBar newBar = null;
+        var newBars = new List<Bar>();
+        Bar newBar = null;
         DayOfWeek previousDayOfWeek = DayOfWeek.Sunday;
 
         foreach (var bar in dailyBars)
         {
             if (newBar == null)
             {
-                newBar = new StockBar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
+                newBar = new Bar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
                 previousDayOfWeek = bar.Date.DayOfWeek;
                 newBar.IsComplete = false;
             }
@@ -78,7 +78,7 @@ public class StockBar
                     // We switched to next week
                     newBar.IsComplete = true;
                     newBars.Add(newBar);
-                    newBar = new StockBar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
+                    newBar = new Bar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
                     previousDayOfWeek = bar.Date.DayOfWeek;
                     newBar.IsComplete = false;
                 }
@@ -93,19 +93,19 @@ public class StockBar
         }
         return newBars;
     }
-    public static List<StockBar> GenerateMonthlyBarsFomDaily(List<StockBar> dailyBars)
+    public static List<Bar> GenerateMonthlyBarsFomDaily(List<Bar> dailyBars)
     {
         if (dailyBars == null)
             return null;
 
-        var newBars = new List<StockBar>();
-        StockBar newValue = null;
+        var newBars = new List<Bar>();
+        Bar newValue = null;
 
-        foreach (StockBar bar in dailyBars)
+        foreach (Bar bar in dailyBars)
         {
             if (newValue == null)
             {
-                newValue = new StockBar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
+                newValue = new Bar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
                 newValue.IsComplete = false;
             }
             else
@@ -123,7 +123,7 @@ public class StockBar
                     // We switched to next month
                     newValue.IsComplete = true;
                     newBars.Add(newValue);
-                    newValue = new StockBar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
+                    newValue = new Bar(bar.Date, bar.Open, bar.High, bar.Low, bar.Close, bar.Volume);
                     newValue.IsComplete = false;
                 }
             }
@@ -144,7 +144,7 @@ public class StockBar
     const char SEPARATOR = ';';
     const string Header = "Date;Open;High;Low;Close;Volume";
 
-    public static StockBar Parse(string csvLine, DateTime? startDate = null)
+    public static Bar Parse(string csvLine, DateTime? startDate = null)
     {
         try
         {
@@ -152,7 +152,7 @@ public class StockBar
             DateTime date = DateTime.Parse(row[0]);
             if (startDate != null && date < startDate)
                 return null;
-            return new StockBar(date,
+            return new Bar(date,
                double.Parse(row[1]),
                double.Parse(row[2]),
                double.Parse(row[3]),
@@ -168,14 +168,14 @@ public class StockBar
     /// <param name="fileName"></param>
     /// <param name="startDate"></param>
     /// <returns></returns>
-    public static List<StockBar> Load(string fileName, DateTime? startDate = null)
+    public static List<Bar> Load(string fileName, DateTime? startDate = null)
     {
         if (File.Exists(fileName))
         {
-            List<StockBar> bars = new List<StockBar>();
+            List<Bar> bars = new List<Bar>();
             foreach (var line in File.ReadAllLines(fileName).Skip(1))
             {
-                var readValue = StockBar.Parse(line, startDate);
+                var readValue = Bar.Parse(line, startDate);
                 if (readValue != null)
                 {
                     bars.Add(readValue);
@@ -189,7 +189,7 @@ public class StockBar
         }
     }
 
-    public static void SaveCsv(IEnumerable<StockBar> bars, string fileName, DateTime? startDate = null, DateTime? endDate = null)
+    public static void SaveCsv(IEnumerable<Bar> bars, string fileName, DateTime? startDate = null, DateTime? endDate = null)
     {
         var selectedBars = bars.AsEnumerable();
         if (startDate != null)
@@ -204,7 +204,7 @@ public class StockBar
         {
             using (StreamWriter sw = new StreamWriter(fileName))
             {
-                sw.WriteLine(StockBar.Header);
+                sw.WriteLine(Bar.Header);
                 sw.Write(selectedBars.Select(b => b.ToCsvString()).Aggregate((i, j) => i + Environment.NewLine + j));
             }
         }

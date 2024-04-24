@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
-using UltimateChartistLib;
+using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
@@ -16,19 +16,16 @@ namespace UltimateChartistControls.ChartControls.Shapes
     {
         static CultureInfo frCulture = new CultureInfo("fr-FR");
         public List<Legend> Legends { get; } = new List<Legend>();
-        public void CreateGeometry(StockSerie serie, int startIndex, int endIndex, Size canvasSize)
+        public void CreateGeometry(DataSerie serie, int startIndex, int endIndex, Size canvasSize, BarDuration duration)
         {
-            if (!Enum.TryParse(serie.Name, out BarDuration duration))
-                duration = BarDuration.Daily;
-
             switch (duration)
             {
-                case BarDuration.M_1:
-                    GenerateMinuteGrid(serie, startIndex, endIndex, canvasSize.Height, 15);
-                    break;
-                case BarDuration.M_2:
-                    GenerateMinuteGrid(serie, startIndex, endIndex, canvasSize.Height, 30);
-                    break;
+                //case BarDuration.M_1: §§§§
+                //    GenerateMinuteGrid(serie, startIndex, endIndex, canvasSize.Height, 15);
+                //    break;
+                //case BarDuration.M_2:
+                //    GenerateMinuteGrid(serie, startIndex, endIndex, canvasSize.Height, 30);
+                //    break;
                 case BarDuration.M_5:
                     GenerateMinuteGrid(serie, startIndex, endIndex, canvasSize.Height, 60);
                     break;
@@ -63,7 +60,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
         }
 
 
-        private void GenerateMinuteGrid(StockSerie serie, int startIndex, int endIndex, double height, int barFrequency)
+        private void GenerateMinuteGrid(DataSerie serie, int startIndex, int endIndex, double height, int barFrequency)
         {
             var geometryGroup = new GeometryGroup();
 
@@ -92,7 +89,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
             geometry = geometryGroup;
         }
 
-        private void GenerateHourGrid(StockSerie serie, int startIndex, int endIndex, double height)
+        private void GenerateHourGrid(DataSerie serie, int startIndex, int endIndex, double height)
         {
             var calendar = CultureInfo.CurrentCulture.Calendar;
 
@@ -122,7 +119,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
             }
             geometry = geometryGroup;
         }
-        private void GenerateDailyGrid(StockSerie serie, int startIndex, int endIndex, double height)
+        private void GenerateDailyGrid(DataSerie serie, int startIndex, int endIndex, double height)
         {
             var geometryGroup = new GeometryGroup();
 
@@ -150,7 +147,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
             geometry = geometryGroup;
         }
 
-        private void GenerateWeeklyGrid(StockSerie serie, int startIndex, int endIndex, double height)
+        private void GenerateWeeklyGrid(DataSerie serie, int startIndex, int endIndex, double height)
         {
             var geometryGroup = new GeometryGroup();
 
@@ -178,7 +175,7 @@ namespace UltimateChartistControls.ChartControls.Shapes
             geometry = geometryGroup;
         }
 
-        private void GenerateMonthlyGrid(StockSerie serie, int startIndex, int endIndex, double height)
+        private void GenerateMonthlyGrid(DataSerie serie, int startIndex, int endIndex, double height)
         {
             var geometryGroup = new GeometryGroup();
 

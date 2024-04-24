@@ -5,12 +5,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Telerik.UI.for.Wpf.70">
-      <Version>2024.1.312</Version>
-    </PackageReference>
+    <ProjectReference Include="..\UltimateChartistControls\UltimateChartistControls.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UltimateChartistControls\UltimateChartistControls.csproj" />
-    <ProjectReference Include="..\UltimateChartistLib\UltimateChartistLib.csproj" />
+    <PackageReference Include="Telerik.UI.for.Wpf.70">
+      <Version>2024.1.423</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

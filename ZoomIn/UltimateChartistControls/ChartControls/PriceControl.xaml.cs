@@ -6,8 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
+using TradeStudio.Data.Indicators;
 using UltimateChartistControls.ChartControls.Shapes;
-using UltimateChartistLib;
 
 namespace UltimateChartistControls.ChartControls
 {
@@ -44,7 +44,7 @@ namespace UltimateChartistControls.ChartControls
 
             #region Price Candle/Barchart...
 
-            for (int i = 0; i < viewModel.Serie.Bars.Length; i++)
+            for (int i = 0; i < viewModel.Serie.Bars.Count; i++)
             {
                 var bar = viewModel.Serie.Bars[i];
                 var shape = new Shapes.Candle() { StrokeThickness = 1 };
@@ -144,7 +144,7 @@ namespace UltimateChartistControls.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
+            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
 

@@ -26,7 +26,7 @@
                             <Button Content="Init" Click="Button_Click" Margin="4"></Button>
                             <StackPanel Orientation="Horizontal" DataContext="{StaticResource mainViewModel}">
                                 <Label>StockSerie:</Label>
-                                <ComboBox ItemsSource="{Binding Series,Source={StaticResource mainViewModel}}" SelectedItem="{Binding Serie}" DisplayMemberPath="Name"></ComboBox>
+                                <ComboBox ItemsSource="{Binding Series,Source={StaticResource mainViewModel}}" SelectedItem="{Binding Serie}" DisplayMemberPath="Instrument.Name"></ComboBox>
                             </StackPanel>
                             <TextBlock Grid.Column="0" Text="{Binding Range.Start, StringFormat='StartIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding Range.End, StringFormat='EndIndex: {0:0}'}"/>

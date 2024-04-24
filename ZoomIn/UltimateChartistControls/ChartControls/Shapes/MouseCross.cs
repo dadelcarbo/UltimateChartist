@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
-using UltimateChartistLib;
+using TradeStudio.Data.DataProviders;
 
 namespace UltimateChartistControls.ChartControls.Shapes
 {
     public class MouseCross : StockShapeBase
     {
-        public void CreateGeometry(StockSerie serie, Point point, double width, double height, bool addHorizontal = true)
+        public void CreateGeometry(DataSerie serie, Point point, double width, double height, bool addHorizontal = true)
         {
             this.IsHitTestVisible = false;
             RenderOptions.SetEdgeMode((DependencyObject)this, EdgeMode.Aliased);

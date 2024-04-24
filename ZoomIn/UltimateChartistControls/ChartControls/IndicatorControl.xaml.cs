@@ -7,8 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using TradeStudio.Data.Indicators;
 using UltimateChartistControls.ChartControls.Shapes;
-using UltimateChartistLib;
 
 namespace UltimateChartistControls.ChartControls
 {
@@ -137,7 +137,7 @@ namespace UltimateChartistControls.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize);
+            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
             #endregion

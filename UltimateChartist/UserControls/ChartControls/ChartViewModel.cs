@@ -247,10 +247,10 @@ public class ChartViewModel : ViewModelBase
 
     public DataTemplate AxisLabelTemplate => BarDuration switch
     {
-        BarDuration.Daily => App.AppInstance.FindResource($"axisDailyLabelTemplate") as DataTemplate,
-        BarDuration.Weekly => App.AppInstance.FindResource($"axisDailyLabelTemplate") as DataTemplate,
-        BarDuration.Monthly => App.AppInstance.FindResource($"axisDailyLabelTemplate") as DataTemplate,
-        _ => App.AppInstance.FindResource($"axisIntradayLabelTemplate") as DataTemplate
+        BarDuration.Daily => App.Current.FindResource($"axisDailyLabelTemplate") as DataTemplate,
+        BarDuration.Weekly => App.Current.FindResource($"axisDailyLabelTemplate") as DataTemplate,
+        BarDuration.Monthly => App.Current.FindResource($"axisDailyLabelTemplate") as DataTemplate,
+        _ => App.Current.FindResource($"axisIntradayLabelTemplate") as DataTemplate
     };
 
     public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ObservableCollection<IIndicator>();

@@ -44,15 +44,15 @@ namespace UltimateChartistLib
             curve.TransformGeometry();
         }
 
-        public StockBar[] Values
+        public Bar[] Values
         {
-            get { return (StockBar[])GetValue(ValuesProperty); }
+            get { return (Bar[])GetValue(ValuesProperty); }
             set { SetValue(ValuesProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Values.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ValuesProperty =
-            DependencyProperty.Register("Values", typeof(StockBar[]), typeof(OHLCSeries),
+            DependencyProperty.Register("Values", typeof(Bar[]), typeof(OHLCSeries),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, ValuesPropertyChanged));
 
         private static void ValuesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -165,7 +165,7 @@ namespace UltimateChartistLib
 
 
 
-        private Geometry CreateCandleGeometry(StockBar bar, double offset, double width)
+        private Geometry CreateCandleGeometry(Bar bar, double offset, double width)
         {
             var geometry = new PathGeometry();
             PathFigureCollection pathFigureCollection = new PathFigureCollection();
