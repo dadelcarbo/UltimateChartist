@@ -4,20 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:chartcontrol="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             d:DataContext="{d:DesignInstance Type=chartcontrol:ChartControlViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Name="grid" Background="Black">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid Name="grid">
+        
         <Grid.RowDefinitions >
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
+     
+        <Border Grid.Row="0" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2" Visibility="{Binding Serie, Converter={StaticResource NullToVisibilityConverter}}">
             <chartcontrol:OverviewControl x:Name="overviewControl"/>
         </Border>
         <Border Grid.Row="1" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,25">
             <chartcontrol:PriceControl x:Name="priceControl"/>
-        </Border>                                        
+        </Border>
         <Border Grid.Row="2" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
             <chartcontrol:IndicatorControl x:Name="indicatorControl"/>
         </Border>

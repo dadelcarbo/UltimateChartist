@@ -2,6 +2,7 @@
 using System.Windows;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.DataProviders;
+using TradeStudio.Data.Instruments;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
@@ -25,6 +26,19 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Count - 1;
 
+        private TradeInstrument instrument;
+        public TradeInstrument Instrument
+        {
+            get { return instrument; }
+            set { instrument = value; this.Serie = instrument.GetDataSerie(duration); }
+        }
+
+        private BarDuration duration = BarDuration.Daily;
+        public BarDuration Duration
+        {
+            get { return duration; }
+            set { duration = value; this.Serie = instrument?.GetDataSerie(duration); }
+        }
 
 
         private DataSerie serie;

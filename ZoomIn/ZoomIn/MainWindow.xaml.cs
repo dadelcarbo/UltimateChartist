@@ -13,11 +13,7 @@ namespace ZoomIn
             InitializeComponent();
 
             this.chartControlDebug.DataContext = MainWindowViewModel.Instance;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.contentBorder.Child = new StockChartControl(MainWindowViewModel.Instance.ChartControlViewModel);
+            MainWindowViewModel.Instance.ChartControlViewModel = this.StockChartControl.ViewModel;
         }
     }
 }
