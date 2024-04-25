@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
@@ -51,6 +52,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         protected override void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+        }
+
+        private void overviewSlider_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var dir = Math.Sign(e.Delta) * this.viewModel.MaxIndex / 20;
+            this.overviewSlider.Selection = new SelectionRange<double>(Math.Max(0, this.viewModel.ZoomRange.Start + dir), this.viewModel.ZoomRange.End);
         }
     }
 }

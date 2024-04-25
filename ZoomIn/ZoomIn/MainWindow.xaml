@@ -30,7 +30,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>Duration:</Label>
-                                <ComboBox x:Name="DurationComboBox" ItemsSource="{Binding Durations}" ></ComboBox>
+                                <ComboBox x:Name="DurationComboBox" ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration, Mode=OneTime}"></ComboBox>
                             </StackPanel>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
@@ -70,7 +70,7 @@
                     <Border Name="contentBorder" Grid.Row="0" Grid.Column="1">
                         <chartcontrols:StockChartControl x:Name="StockChartControl"
                                                          Instrument="{Binding SelectedItem, ElementName=InstrumentComboBox}"
-                                                         Duration="{Binding SelectedItem, ElementName=DurationComboBox}"
+                                                         Duration="{Binding SelectedItem, ElementName=DurationComboBox, Mode=TwoWay}"
                                                          />
                     </Border>
                 </Grid>

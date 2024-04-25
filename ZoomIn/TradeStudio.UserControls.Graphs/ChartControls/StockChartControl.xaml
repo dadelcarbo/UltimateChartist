@@ -10,22 +10,27 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
     </UserControl.Resources>
-    <Grid Name="grid">
-        
-        <Grid.RowDefinitions >
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-     
-        <Border Grid.Row="0" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2" Visibility="{Binding Serie, Converter={StaticResource NullToVisibilityConverter}}">
-            <chartcontrol:OverviewControl x:Name="overviewControl"/>
-        </Border>
-        <Border Grid.Row="1" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,25">
-            <chartcontrol:PriceControl x:Name="priceControl"/>
-        </Border>
-        <Border Grid.Row="2" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
-            <chartcontrol:IndicatorControl x:Name="indicatorControl"/>
-        </Border>
+    <Grid Background="Black">
+        <Grid Name="grid" Visibility="{Binding Serie, Converter={StaticResource NullToVisibilityConverter}}">
+
+            <Grid.RowDefinitions >
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
+                <chartcontrol:OverviewControl x:Name="overviewControl"/>
+            </Border>
+            <Border Grid.Row="1" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,25">
+                <chartcontrol:PriceControl x:Name="priceControl"/>
+            </Border>
+            <Border Grid.Row="2" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
+                <chartcontrol:IndicatorControl x:Name="indicatorControl"/>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding Serie, Converter={StaticResource InvertedNullToVisibilityConverter}}">
+            <telerik:Label Content="No Data" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
     </Grid>
 </UserControl>

@@ -51,6 +51,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             InitializeComponent();
 
             viewModel = new ChartControlViewModel();
+            this.DataContext = viewModel;
             foreach (var child in grid.ChildrenOfType<ChartControlBase>())
             {
                 child.ViewModel = viewModel;

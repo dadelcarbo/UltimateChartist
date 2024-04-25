@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using TradeStudio.Common.Helpers;
 using TradeStudio.Data.DataProviders;
@@ -27,7 +24,7 @@ namespace ZoomIn
         {
             instance = this;
 
-            Folders.Initialize("C:\\Users\\r395930\\OneDrive\\TradeStudio", "C:\\ProgramData\\TradeStudio");
+            Folders.Initialize("C:\\Users\\david\\OneDrive\\TradeStudio", "C:\\ProgramData\\TradeStudio");
             ABCDataProvider.Instance.InitializeAsync(new DumbProgress(), false).Wait();
         }
 
@@ -74,6 +71,7 @@ namespace ZoomIn
 
         public System.Collections.IEnumerable Instruments => TradeInstrument.Instruments;
 
-        public List<BarDuration> Durations => new () { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly};
+        public List<BarDuration> Durations => new() { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly };
+
     }
 }

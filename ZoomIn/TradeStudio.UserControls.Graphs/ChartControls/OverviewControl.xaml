@@ -208,6 +208,7 @@
             Minimum="0" Maximum="{Binding MaxIndex}" MinimumRangeSpan="{Binding MinRange}" MaximumRangeSpan="{Binding MaxRange}"
             SelectionChanged="overviewSlider_SelectionChanged"
             IsSelectionRangeEnabled="True" RepeatInterval="1" SmallChange="1" LargeChange="1"
+            MouseWheel="overviewSlider_MouseWheel"
             SelectionMiddleThumbStyle="{StaticResource SelectionMiddleThumbStyle}"
             Template="{StaticResource SliderControlTemplate}"/>
     </Grid>

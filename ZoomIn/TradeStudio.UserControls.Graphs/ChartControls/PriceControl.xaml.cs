@@ -112,8 +112,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 min = Math.Min(lowSerie[i], min);
                 max = Math.Max(highSerie[i], max);
             }
-            //min *= 0.98;
-            //max *= 1.02;
+            min *= 0.98;
+            max *= 1.02;
             var curveHeight = max - min;
 
             TransformGroup tg = new();

@@ -9,7 +9,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
     public class ChartControlViewModel : ViewModelBase
     {
         private SelectionRange<int> zoomRange;
-        public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; RaisePropertyChanged(); } } }
+        public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; if (!changingSerie) RaisePropertyChanged(); } } }
 
         private int minRange = 25;
         public int MinRange
@@ -40,7 +40,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             set { duration = value; this.Serie = instrument?.GetDataSerie(duration); }
         }
 
-
+        bool changingSerie = false;
         private DataSerie serie;
         public DataSerie Serie
         {
@@ -49,13 +49,18 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             {
                 if (serie != value)
                 {
+                    changingSerie = true;
                     serie = value;
+                    OnPropertyChanged("MaxIndex");
 
                     var endIndex = serie.Bars == null ? 0 : serie.Bars.Count - 1;
                     var startIndex = Math.Max(0, endIndex - (MinRange + MaxRange) / 2);
 
                     this.zoomRange = new SelectionRange<int> { Start = startIndex, End = endIndex };
+
                     RaisePropertyChanged();
+                    OnPropertyChanged("ChartVisibility");
+                    changingSerie = false;
                 }
             }
         }
@@ -71,6 +76,5 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private Bar currentBar;
         public Bar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
-
     }
 }
