@@ -78,5 +78,9 @@ namespace ZoomIn
         public BarDuration Duration { get { return duration; } set { if (duration != value) { duration = value; RaisePropertyChanged(); } } }
 
 
+
+        public List<BarType> BarTypes => new() { BarType.BarChart, BarType.Line, BarType.Candle };
+
+        public BarType BarType { get => ChartControlViewModel == null ? BarType.Candle : ChartControlViewModel.BarType; set { ChartControlViewModel.BarType = value; } }
     }
 }

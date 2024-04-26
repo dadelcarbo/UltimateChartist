@@ -82,7 +82,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             }
         }
 
-        private List<IStockShapeBase> shapes = new();
+        private List<IChartShapeBase> shapes = new();
         private Transform chartToPixelTransform;
         protected override void OnResize()
         {

@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
-    public class Fill : DependencyObject, IStockShapeBase
+    public class Fill : DependencyObject, IChartShapeBase
     {
         static public Brush DefaultBullFillBrush = new SolidColorBrush(Colors.Green) { Opacity = 0.5 };
         static public Brush DefaultBearFillBrush = new SolidColorBrush(Colors.Red) { Opacity = 0.5 };

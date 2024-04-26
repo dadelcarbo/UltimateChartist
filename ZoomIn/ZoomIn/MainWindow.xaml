@@ -27,8 +27,10 @@
                             <telerik:RadComboBox x:Name="InstrumentComboBox" Width="160" HorizontalAlignment="Left"
                                                      ItemsSource="{Binding Instruments}" DisplayMemberPath="Name"/>
                             <telerik:Label HorizontalAlignment="Left">Duration:</telerik:Label>
-                            <telerik:RadComboBox x:Name="DurationComboBox" Width="120" HorizontalAlignment="Left"
+                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left"
                                                      ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
+                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left"
+                                                     ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>

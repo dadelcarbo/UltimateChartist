@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
-    public class Range : BarsShapeBase
+    public class Range : ChartShapeBase
     {
         public void CreateGeometry(double[] lows, double[] highs)
         {

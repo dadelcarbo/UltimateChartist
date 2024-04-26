@@ -76,5 +76,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private Bar currentBar;
         public Bar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
+
+        private BarType type = BarType.Candle;
+        public BarType BarType { get { return type; } set { if (type != value) { type = value; RaisePropertyChanged(); } } }
     }
 }

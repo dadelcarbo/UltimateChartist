@@ -11,17 +11,39 @@ using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
+    public enum BarType
+    {
+        Candle,
+        BarChart,
+        Line
+    }
     /// <summary>
     /// Interaction logic for PriceControl.xaml
     /// </summary>
     public partial class PriceControl : ChartControlBase
     {
+        public BarType BarType
+        {
+            get { return (BarType)GetValue(BarTypeProperty); }
+            set { SetValue(BarTypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BarType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BarTypeProperty =
+            DependencyProperty.Register("BarType", typeof(BarType), typeof(PriceControl), new PropertyMetadata(BarType.Candle, BarTypeChanged));
+
+        private static void BarTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var priceControl = (PriceControl)d;
+            priceControl.OnStockSerieChanged();
+        }
+
         public PriceControl()
         {
             InitializeComponent();
         }
 
-        private List<IStockShapeBase> shapes = new();
+        private List<IChartShapeBase> shapes = new();
         protected override void OnStockSerieChanged()
         {
             var closeSerie = viewModel?.Serie?.CloseValues;
@@ -51,12 +73,37 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             #endregion
 
             #region Price Candle/Barchart...
+            switch (BarType)
+            {
+                case BarType.Candle:
+                    GeneratePriceBars<Candle>();
+                    break;
+                case BarType.BarChart:
+                    GeneratePriceBars<BarChart>();
+                    break;
+                case BarType.Line:
+                    var closeCurve = new Curve()
+                    {
+                        Stroke = Brushes.DarkGreen,
+                        StrokeThickness = 1
+                    };
+                    closeCurve.CreateGeometry(closeSerie);
+                    this.shapes.Add(closeCurve);
+                    break;
+            }
+            #endregion
 
+            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
+            this.OnResize();
+        }
+
+        private void GeneratePriceBars<T>() where T : BarsShapeBase, new()
+        {
             for (int i = 0; i < viewModel.Serie.Bars.Count; i++)
             {
                 var bar = viewModel.Serie.Bars[i];
-                var shape = new Shapes.Candle() { StrokeThickness = 1 };
-                shape.CreateGeometry(bar, i, false);
+                BarsShapeBase shape = new T() { StrokeThickness = 1 };
+                shape.CreateGeometry(bar, i);
 
                 if (bar.Close >= bar.Open)
                 {
@@ -70,10 +117,6 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 }
                 shapes.Add(shape);
             }
-            #endregion
-
-            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
-            this.OnResize();
         }
 
         protected override void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)

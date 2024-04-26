@@ -6,7 +6,7 @@ using TradeStudio.Data.DataProviders;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
-    public class HorizontalGrid : BarsShapeBase
+    public class HorizontalGrid : ChartShapeBase
     {
         public List<Legend> Legends { get; } = new List<Legend>();
         public void CreateGeometry(double min, double max, double width)

@@ -5,7 +5,7 @@ using TradeStudio.Data.DataProviders;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
-    public class MouseCross : BarsShapeBase
+    public class MouseCross : ChartShapeBase
     {
         public void CreateGeometry(Point point, double width, double height, bool addHorizontal = true)
         {

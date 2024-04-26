@@ -23,7 +23,7 @@
                 <chartcontrol:OverviewControl x:Name="overviewControl"/>
             </Border>
             <Border Grid.Row="1" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,25">
-                <chartcontrol:PriceControl x:Name="priceControl"/>
+                <chartcontrol:PriceControl x:Name="priceControl" BarType="{Binding BarType}"/>
             </Border>
             <Border Grid.Row="2" BorderBrush="#FF808080" BorderThickness="1" Margin="40,1,20,2">
                 <chartcontrol:IndicatorControl x:Name="indicatorControl"/>
