@@ -25,7 +25,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         double[] lowSerie, highSerie;
         protected override void OnStockSerieChanged()
         {
-            var closeSerie = viewModel?.Serie?.CloseValues;
+            var closeSerie = viewModel?.DataSerie?.CloseValues;
             if (closeSerie == null)
                 return;
 
@@ -49,6 +49,10 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             };
             signalCurve.CreateGeometry(signal);
             this.shapes.Add(signalCurve);
+
+            var fill = new Shapes.Fill();
+            fill.CreateGeometry(macd, signal);
+            this.shapes.Add(fill);
 
             this.indicatorCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
 
@@ -95,7 +99,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             var curveWidth = (viewModel.ZoomRange.End - viewModel.ZoomRange.Start + 1);
             if (curveWidth == 0)
                 return;
-            if (viewModel.Serie?.Bars == null)
+            if (viewModel.DataSerie?.Bars == null)
                 return;
 
             double min = double.MaxValue;
@@ -137,7 +141,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
+            verticalGrid.CreateGeometry(viewModel.DataSerie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
             #endregion

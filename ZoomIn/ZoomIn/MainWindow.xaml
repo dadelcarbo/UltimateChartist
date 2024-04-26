@@ -70,7 +70,7 @@
                     <Border Name="contentBorder" Grid.Row="0" Grid.Column="1" BorderThickness="1">
                         <chartcontrols:StockChartControl x:Name="StockChartControl"
                                                          Instrument="{Binding SelectedItem, ElementName=InstrumentComboBox}"
-                                                         Duration="{Binding Duration}"
+                                                         Duration="{Binding Duration, Mode=TwoWay}"
                                                          />
                     </Border>
                 </Grid>

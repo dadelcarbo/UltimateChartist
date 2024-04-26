@@ -7,8 +7,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
     public class Candle : BarsShapeBase
     {
-        protected double gap = 0.3;
-        protected double width = 0.7;
+        protected double gap = 0.4;
+        protected double width = 0.6;
         /// <summary>
         /// Create a bar geometry.
         /// </summary>

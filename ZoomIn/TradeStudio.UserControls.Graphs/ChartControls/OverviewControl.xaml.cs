@@ -22,7 +22,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
             this.overviewGraph.Children.Clear();
 
-            var closeSerie = viewModel?.Serie?.CloseValues;
+            var closeSerie = viewModel?.DataSerie?.CloseValues;
             if (closeSerie == null)
                 return;
 

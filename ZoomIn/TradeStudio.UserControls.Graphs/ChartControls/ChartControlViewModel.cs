@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.DataProviders;
+using TradeStudio.Data.Indicators.Theme;
+using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
@@ -30,19 +33,19 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         public TradeInstrument Instrument
         {
             get { return instrument; }
-            set { instrument = value; this.Serie = instrument.GetDataSerie(duration); }
+            set { instrument = value; this.DataSerie = instrument.GetDataSerie(duration); }
         }
 
         private BarDuration duration = BarDuration.Daily;
         public BarDuration Duration
         {
             get { return duration; }
-            set { duration = value; this.Serie = instrument?.GetDataSerie(duration); }
+            set { duration = value; this.DataSerie = instrument?.GetDataSerie(duration); }
         }
 
         bool changingSerie = false;
         private DataSerie serie;
-        public DataSerie Serie
+        public DataSerie DataSerie
         {
             get { return serie; }
             set

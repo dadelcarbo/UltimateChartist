@@ -46,29 +46,29 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         private List<IChartShapeBase> shapes = new();
         protected override void OnStockSerieChanged()
         {
-            var closeSerie = viewModel?.Serie?.CloseValues;
+            var closeSerie = viewModel?.DataSerie?.CloseValues;
             if (closeSerie == null)
                 return;
 
-            var lowSerie = viewModel.Serie?.LowValues;
-            var highSerie = viewModel.Serie?.HighValues;
+            var lowSerie = viewModel.DataSerie?.LowValues;
+            var highSerie = viewModel.DataSerie?.HighValues;
 
             this.chartCanvas.Children.Clear();
             shapes.Clear();
 
             #region Price Indicators (EMA, Cloud, Trail...)
 
-            var fill = new Fill() { };
-            fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));
-            this.shapes.Add(fill);
+            //var fill = new Fill() { };
+            //fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));
+            //this.shapes.Add(fill);
 
-            var trail = new Trail() { };
-            var upperBand = closeSerie.Mult(1.05);
-            var lowerBand = closeSerie.Mult(0.95);
-            double?[] longStop, shortStop;
-            viewModel.Serie.Bars.CalculateBandTrailStop(lowerBand, upperBand, out longStop, out shortStop);
-            trail.CreateGeometry(closeSerie, longStop, shortStop);
-            this.shapes.Add(trail);
+            //var trail = new Trail() { };
+            //var upperBand = closeSerie.Mult(1.05);
+            //var lowerBand = closeSerie.Mult(0.95);
+            //double?[] longStop, shortStop;
+            //viewModel.Serie.Bars.CalculateBandTrailStop(lowerBand, upperBand, out longStop, out shortStop);
+            //trail.CreateGeometry(closeSerie, longStop, shortStop);
+            //this.shapes.Add(trail);
 
             #endregion
 
@@ -99,9 +99,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private void GeneratePriceBars<T>() where T : BarsShapeBase, new()
         {
-            for (int i = 0; i < viewModel.Serie.Bars.Count; i++)
+            for (int i = 0; i < viewModel.DataSerie.Bars.Count; i++)
             {
-                var bar = viewModel.Serie.Bars[i];
+                var bar = viewModel.DataSerie.Bars[i];
                 BarsShapeBase shape = new T() { StrokeThickness = 1 };
                 shape.CreateGeometry(bar, i);
 
@@ -143,13 +143,13 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             var curveWidth = (viewModel.ZoomRange.End - viewModel.ZoomRange.Start + 1);
             if (curveWidth == 0)
                 return;
-            if (viewModel.Serie?.Bars == null)
+            if (viewModel.DataSerie?.Bars == null)
                 return;
 
             double min = double.MaxValue;
             double max = double.MinValue;
-            var lowSerie = viewModel.Serie?.LowValues;
-            var highSerie = viewModel.Serie?.HighValues;
+            var lowSerie = viewModel.DataSerie?.LowValues;
+            var highSerie = viewModel.DataSerie?.HighValues;
             for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
             {
                 min = Math.Min(lowSerie[i], min);
@@ -195,7 +195,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
-            verticalGrid.CreateGeometry(viewModel.Serie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
+            verticalGrid.CreateGeometry(viewModel.DataSerie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
 

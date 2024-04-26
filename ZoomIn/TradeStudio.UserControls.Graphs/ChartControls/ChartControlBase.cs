@@ -46,7 +46,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 case "ZoomRange":
                     this.OnResize();
                     return;
-                case "Serie":
+                case "DataSerie":
                     this.OnStockSerieChanged();
                     return;
                 default:
@@ -58,5 +58,10 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         protected abstract void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e);
         protected abstract void OnResize();
         protected abstract void OnStockSerieChanged();
+
+        public virtual void SetViewModel(ChartControlViewModel viewModel)
+        {
+            this.ViewModel = viewModel;
+        }
     }
 }

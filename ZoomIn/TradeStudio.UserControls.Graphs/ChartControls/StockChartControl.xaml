@@ -11,7 +11,7 @@
     <UserControl.Resources>
     </UserControl.Resources>
     <Grid Background="Black">
-        <Grid Name="grid" Visibility="{Binding Serie, Converter={StaticResource NullToVisibilityConverter}}">
+        <Grid Name="grid" Visibility="{Binding DataSerie, Converter={StaticResource NullToVisibilityConverter}}">
 
             <Grid.RowDefinitions >
                 <RowDefinition Height="30"></RowDefinition>
@@ -29,7 +29,7 @@
                 <chartcontrol:IndicatorControl x:Name="indicatorControl"/>
             </Border>
         </Grid>
-        <Grid Visibility="{Binding Serie, Converter={StaticResource InvertedNullToVisibilityConverter}}">
+        <Grid Visibility="{Binding DataSerie, Converter={StaticResource InvertedNullToVisibilityConverter}}">
             <telerik:Label Content="No Data" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
     </Grid>

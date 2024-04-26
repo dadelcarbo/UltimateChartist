@@ -75,12 +75,18 @@ namespace ZoomIn
         public List<BarDuration> Durations => new() { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly };
 
         private BarDuration duration = BarDuration.Daily;
-        public BarDuration Duration { get { return duration; } set { if (duration != value) { duration = value; RaisePropertyChanged(); } } }
-
-
+        public BarDuration Duration
+        {
+            get => ChartControlViewModel == null ? BarDuration.Daily : ChartControlViewModel.Duration;
+            set { ChartControlViewModel.Duration = value; }
+        }
 
         public List<BarType> BarTypes => new() { BarType.BarChart, BarType.Line, BarType.Candle };
 
-        public BarType BarType { get => ChartControlViewModel == null ? BarType.Candle : ChartControlViewModel.BarType; set { ChartControlViewModel.BarType = value; } }
+        public BarType BarType
+        {
+            get => ChartControlViewModel == null ? BarType.Candle : ChartControlViewModel.BarType;
+            set { ChartControlViewModel.BarType = value; }
+        }
     }
 }
