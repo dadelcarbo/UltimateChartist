@@ -8,7 +8,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
     public abstract class ChartControlBase : UserControl
     {
         protected FontFamily labelFontFamily = new FontFamily("Calibri");
-        protected static Brush GridBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x40, 0x40, 0x40));
+        protected static Brush GridBrush => new SolidColorBrush(Color.FromArgb(0xFF, 0x40, 0x40, 0x40));
         protected static Brush TextBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0XB0, 0xB0, 0xB0));
 
         protected ChartControlViewModel viewModel;

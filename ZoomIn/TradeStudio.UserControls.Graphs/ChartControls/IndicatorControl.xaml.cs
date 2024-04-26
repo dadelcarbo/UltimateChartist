@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
+using Label = Telerik.Windows.Controls.Label;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
@@ -130,17 +132,19 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             tg.Children.Add(new ScaleTransform(1, -canvasHeight / curveHeight));
             var zeroLine = new Path()
             {
-                Stroke = GridBrush,
                 StrokeThickness = 1,
                 Data = new LineGeometry(new Point(0, 0), new Point(canvasWidth, 0), tg)
             };
+            zeroLine.SetBinding(Path.StrokeProperty, new Binding("GridBrush"));
+
             this.gridCanvas.Children.Add(zeroLine);
 
             #region Vertical Grid
             tg = new();
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
-            var verticalGrid = new VerticalGrid() { Stroke = GridBrush, StrokeThickness = 1 };
+            var verticalGrid = new VerticalGrid() { StrokeThickness = 1 };
+            verticalGrid.SetBinding(Shape.StrokeProperty, new Binding("GridBrush"));
             verticalGrid.CreateGeometry(viewModel.DataSerie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
@@ -150,7 +154,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         private void OnMouseIndexChanged()
         {
             mouseCanvas.Children.Clear();
-            var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
+            var mouseCross = new MouseCross();
             mouseCross.CreateGeometry(new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
             mouseCanvas.Children.Add(mouseCross);
         }
@@ -170,21 +174,21 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             this.viewModel.MouseValue = p2;
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
-            var mouseCross = new MouseCross() { Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = { 3, 1 } };
+            var mouseCross = new MouseCross();
             mouseCross.CreateGeometry(point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
-            var label = new System.Windows.Controls.Label()
+            var label = new Label()
             {
                 Content = p2.Y.ToString("0.##"),
-                BorderBrush = GridBrush,
                 BorderThickness = new Thickness(1),
-                Background = Brushes.DarkSlateGray,
                 FontFamily = labelFontFamily,
                 FontSize = 10,
-                Padding = new Thickness(1),
-                Foreground = TextBrush,
+                Padding = new Thickness(1)
             };
+            label.SetBinding(Label.BorderBrushProperty, new Binding("GridBrush"));
+
+
             label.Measure(mouseCanvas.RenderSize);
             Canvas.SetTop(label, point.Y - label.DesiredSize.Height / 2);
             Canvas.SetLeft(label, -label.DesiredSize.Width);

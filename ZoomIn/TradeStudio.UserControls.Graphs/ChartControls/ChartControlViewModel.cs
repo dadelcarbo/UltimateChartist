@@ -6,6 +6,7 @@ using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
+using System.Windows.Media;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
@@ -82,5 +83,16 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private BarType type = BarType.Candle;
         public BarType BarType { get { return type; } set { if (type != value) { type = value; RaisePropertyChanged(); } } }
+
+
+        private Brush mouseBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x80, 0x80, 0x80));
+        public Brush MouseBrush { get { return mouseBrush; } set { if (mouseBrush != value) { mouseBrush = value; RaisePropertyChanged(); } } }
+
+        private Brush gridBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20));
+        public Brush GridBrush { get { return gridBrush; } set { if (gridBrush != value) { gridBrush = value; RaisePropertyChanged(); } } }
+
+        private Brush textBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0XB0, 0xB0, 0xB0));
+        public Brush TextBrush { get { return textBrush; } set { if (textBrush != value) { textBrush = value; RaisePropertyChanged(); } } }
+
     }
 }
