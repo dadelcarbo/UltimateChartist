@@ -28,7 +28,8 @@ namespace ZoomIn
             ABCDataProvider.Instance.InitializeAsync(new DumbProgress(), false).Wait();
         }
 
-        public ChartControlViewModel ChartControlViewModel { get; set; }
+        private ChartControlViewModel chartControlViewModel;
+        public ChartControlViewModel ChartControlViewModel { get { return chartControlViewModel; } set { if (chartControlViewModel != value) { chartControlViewModel = value; RaisePropertyChanged(); } } }
 
         private Point mousePoint;
         public Point MousePoint
@@ -72,6 +73,10 @@ namespace ZoomIn
         public System.Collections.IEnumerable Instruments => TradeInstrument.Instruments;
 
         public List<BarDuration> Durations => new() { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly };
+
+        private BarDuration duration = BarDuration.Daily;
+        public BarDuration Duration { get { return duration; } set { if (duration != value) { duration = value; RaisePropertyChanged(); } } }
+
 
     }
 }

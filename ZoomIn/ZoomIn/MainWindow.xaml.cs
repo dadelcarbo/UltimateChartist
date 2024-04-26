@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TradeStudio.Data.DataProviders;
 using TradeStudio.UserControls.Graphs.ChartControls;
 
 namespace ZoomIn
@@ -10,9 +11,9 @@ namespace ZoomIn
     {
         public MainWindow()
         {
+            this.DataContext = MainWindowViewModel.Instance;
             InitializeComponent();
 
-            this.chartControlDebug.DataContext = MainWindowViewModel.Instance;
             MainWindowViewModel.Instance.ChartControlViewModel = this.StockChartControl.ViewModel;
         }
     }

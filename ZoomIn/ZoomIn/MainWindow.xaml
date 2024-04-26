@@ -14,28 +14,25 @@
         <telerik:BrushToColorConverter x:Key="brushToColorConverter" />
     </Window.Resources>
     <Grid >
-        <TabControl>
-            <TabItem Header="GraphControls">
+        <telerik:RadTabControl>
+            <telerik:RadTabItem Header="GraphControls">
                 <Grid>
                     <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="180"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" 
-                            BorderBrush="DarkGray" BorderThickness="1" Background="LightGoldenrodYellow" >
+                    <Border Name="chartControlDebug" Grid.RowSpan="3" Grid.Column="0" BorderThickness="1" >
                         <StackPanel >
-                            <StackPanel Orientation="Horizontal">
-                                <Label>StockSerie:</Label>
-                                <ComboBox x:Name="InstrumentComboBox" ItemsSource="{Binding Instruments}" DisplayMemberPath="Name"></ComboBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Duration:</Label>
-                                <ComboBox x:Name="DurationComboBox" ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration, Mode=OneTime}"></ComboBox>
-                            </StackPanel>
+                            <telerik:Label Width="60" HorizontalAlignment="Left">Instrument</telerik:Label>
+                            <telerik:RadComboBox x:Name="InstrumentComboBox" Width="160" HorizontalAlignment="Left"
+                                                     ItemsSource="{Binding Instruments}" DisplayMemberPath="Name"/>
+                            <telerik:Label HorizontalAlignment="Left">Duration:</telerik:Label>
+                            <telerik:RadComboBox x:Name="DurationComboBox" Width="120" HorizontalAlignment="Left"
+                                                     ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
-                            <GroupBox Header="MousePos">
+                            <telerik:GroupBox Header="MousePos">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -44,8 +41,8 @@
                                     <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MousePos.X, StringFormat='X:{0:0.##}'}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
-                            </GroupBox>
-                            <GroupBox Header="MouseValue">
+                            </telerik:GroupBox>
+                            <telerik:GroupBox Header="MouseValue">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -54,8 +51,8 @@
                                     <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MouseValue.X, StringFormat='X:{0:0.##}'}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
-                            </GroupBox>
-                            <GroupBox Header="Current Bar">
+                            </telerik:GroupBox>
+                            <telerik:GroupBox Header="Current Bar">
                                 <StackPanel>
                                     <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
                                     <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
@@ -63,18 +60,19 @@
                                     <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
                                     <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
                                     <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
+                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Exchanged, StringFormat='Exchanged: {0:0}'}"/>
                                 </StackPanel>
-                            </GroupBox>
+                            </telerik:GroupBox>
                         </StackPanel>
                     </Border>
-                    <Border Name="contentBorder" Grid.Row="0" Grid.Column="1">
+                    <Border Name="contentBorder" Grid.Row="0" Grid.Column="1" BorderThickness="1">
                         <chartcontrols:StockChartControl x:Name="StockChartControl"
                                                          Instrument="{Binding SelectedItem, ElementName=InstrumentComboBox}"
-                                                         Duration="{Binding SelectedItem, ElementName=DurationComboBox, Mode=TwoWay}"
+                                                         Duration="{Binding Duration}"
                                                          />
                     </Border>
                 </Grid>
-            </TabItem>
-        </TabControl>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
     </Grid>
 </Window>
