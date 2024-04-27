@@ -187,7 +187,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             foreach (var legend in horizontalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
+                var label = new Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, location.Y - label.DesiredSize.Height / 2);
                 Canvas.SetLeft(label, -label.DesiredSize.Width);
@@ -208,7 +208,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             foreach (var legend in verticalGrid.Legends)
             {
                 var location = tg.Transform(legend.Location);
-                var label = new System.Windows.Controls.Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
+                var label = new Label() { Content = legend.Text, FontFamily = labelFontFamily, FontSize = 10, Foreground = TextBrush };
                 label.Measure(gridCanvas.RenderSize);
                 Canvas.SetTop(label, gridCanvas.ActualHeight - 5);
                 Canvas.SetLeft(label, location.X - label.DesiredSize.Width / 2);
