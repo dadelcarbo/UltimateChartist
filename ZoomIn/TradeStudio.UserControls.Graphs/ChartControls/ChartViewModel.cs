@@ -10,8 +10,9 @@ using System.Windows.Media;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
-    public class ChartControlViewModel : ViewModelBase
+    public class ChartViewModel : ViewModelBase
     {
+        #region ZOOMING
         private SelectionRange<int> zoomRange;
         public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; if (!changingSerie) RaisePropertyChanged(); } } }
 
@@ -27,6 +28,78 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             get { return maxRange; }
             set { if (maxRange != value) { maxRange = value; RaisePropertyChanged(); } }
         }
+        #endregion    #region THEME & INDICATORS
+
+        public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ObservableCollection<IIndicator>();
+        public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
+
+        public void RemoveIndicator(IndicatorChartViewModel indicatorViewModel)
+        {
+            Indicators.Remove(indicatorViewModel);
+        }
+
+        private TradeTheme theme;
+        public TradeTheme Theme
+        {
+            get { return theme; }
+            set
+            {
+                if (theme != value)
+                {
+                    theme = value;
+                    Indicators.Clear();
+                    PriceIndicators.Clear();
+                    if (theme != null)
+                    {
+                        foreach (var indicator in theme.Indicators)
+                        {
+                            AddIndicator(indicator);
+                        }
+                    }
+
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public void AddIndicator(IIndicator indicator)
+        {
+            switch (indicator.DisplayType)
+            {
+                case DisplayType.Price:
+                case DisplayType.TrailStop:
+                    PriceIndicators.Add(indicator);
+                    break;
+                case DisplayType.Volume:
+                case DisplayType.Ranged:
+                case DisplayType.NonRanged:
+                    Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                    break;
+                default:
+                    throw new NotImplementedException($"DisplayType {indicator.DisplayType} not implemented !");
+            }
+        }
+        public void RemoveIndicator(IIndicator indicator)
+        {
+            switch (indicator.DisplayType)
+            {
+                case DisplayType.Price:
+                case DisplayType.TrailStop:
+                    PriceIndicators.Remove(indicator);
+                    break;
+                case DisplayType.Ranged:
+                case DisplayType.NonRanged:
+                    Indicators.RemoveAll(i => i.Indicator?.Indicator == indicator);
+                    break;
+                case DisplayType.Volume:
+                    Indicators.RemoveAll(i => i.Indicator == indicator);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
 
         public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Count - 1;
 

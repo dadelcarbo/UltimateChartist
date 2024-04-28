@@ -6,7 +6,7 @@
              xmlns:chartcontrols="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls" 
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls.Primitives;assembly=Telerik.Windows.Controls" 
-             d:DataContext="{d:DesignInstance Type=chartcontrols:ChartControlViewModel}"
+             d:DataContext="{d:DesignInstance Type=chartcontrols:ChartViewModel}"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600" d:Background="White">
     <UserControl.Resources>
         <ResourceDictionary>

@@ -44,13 +44,13 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             chart.viewModel.Instrument = chart.Instrument;
         }
 
-        private ChartControlViewModel viewModel;
-        public ChartControlViewModel ViewModel => viewModel;
+        private ChartViewModel viewModel;
+        public ChartViewModel ViewModel => viewModel;
         public StockChartControl()
         {
             InitializeComponent();
 
-            viewModel = new ChartControlViewModel();
+            viewModel = new ChartViewModel();
             this.DataContext = viewModel;
             foreach (var child in grid.ChildrenOfType<ChartControlBase>())
             {

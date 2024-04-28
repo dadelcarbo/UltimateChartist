@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="TradeStudio.UserControls.Graphs.ChartControls.Indicators.IndicatorConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls.Indicators"
+        xmlns:indicator="clr-namespace:TradeStudio.Data.Indicators;assembly=TradeStudio.Data"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        d:DataContext="{d:DesignInstance Type=local:IndicatorViewModel}"
+        mc:Ignorable="d" Height="450" Width="750">
+    <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <DataTemplate x:Key="indicatorCellTemplate" >
+                <Grid HorizontalAlignment="Stretch">
+                    <TextBlock Text="{Binding Name}" FontSize="11" HorizontalAlignment="Left" />
+                    <Button Name="deleteIndicatorButton" HorizontalAlignment="Right" Width="16" Height="16" BorderThickness="0"
+                            Visibility="{Binding IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type telerik:TreeListViewRow}}}"
+                            Click="deleteIndicatorButton_Click">
+                        <Image Source="{StaticResource crossImg}"/>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="2">
+            <telerik:RadComboBox Width="200" Margin="0" DisplayMemberPath="Name"
+                                  ItemsSource="{Binding Themes}" SelectedItem="{Binding ChartViewModel.Theme}"></telerik:RadComboBox>
+            <Button Margin="0" Command="{Binding ReloadThemeCommand}">
+                <Image Source="{Binding Source={StaticResource reloadImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Command="{Binding SaveThemeCommand}">
+                <Image Source="{Binding Source={StaticResource diskImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0"  Command="{Binding NewThemeCommand}">
+                <Image Source="{Binding Source={StaticResource newImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Button Margin="0" Command="{Binding DeleteThemeCommand}">
+                <Image Source="{Binding Source={StaticResource trashImg}}" Height="16" Width="16"></Image>
+            </Button>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" >
+                <telerik:EventToCommandBehavior.EventBindings>
+                    <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
+                    <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" PassEventArgsToCommand="True" EventName="DropDownOpening" />
+                </telerik:EventToCommandBehavior.EventBindings>
+                <telerik:RadDropDownButton.Content>
+                    <Image Source="{Binding Source={StaticResource indicatorImg}}" Height="16" Width="16"></Image>
+                </telerik:RadDropDownButton.Content>
+                <telerik:RadDropDownButton.DropDownContent>
+                    <telerik:RadGridView ItemsSource="{Binding Source={x:Static indicator:IndicatorManager.Indicators}}" RowIndicatorVisibility="Collapsed"
+                                         AutoGenerateColumns="False" ShowGroupPanel="False" CanUserDeleteRows="False" FrozenColumnsSplitterVisibility="Collapsed" 
+                                         SelectionMode="Single" SelectionUnit="FullRow"
+                                         SelectedItem="{Binding NewIndicator, Mode=TwoWay}">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="Name" MinWidth="100" DataMemberBinding="{Binding ShortName}"/>
+                            <telerik:GridViewDataColumn Header="Type" MinWidth="80" DataMemberBinding="{Binding DisplayType}"/>
+                        </telerik:RadGridView.Columns>
+                        <telerik:EventToCommandBehavior.EventBindings>
+                            <telerik:EventBinding EventName="SelectionChanged" Command="telerik:PopupCommands.CloseAll" RaiseOnHandledEvents="True" />
+                        </telerik:EventToCommandBehavior.EventBindings>
+                    </telerik:RadGridView>
+                </telerik:RadDropDownButton.DropDownContent>
+            </telerik:RadDropDownButton>
+
+        </StackPanel>
+        <telerik:RadTreeListView Grid.Row="1" Margin="2" ItemsSource="{Binding Root}" RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False"
+                                 AutoExpandItems="True" AutoGenerateColumns="False" FrozenColumnsSplitterVisibility="Collapsed"
+                                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <telerik:EventToCommandBehavior.EventBindings>
+                <telerik:EventBinding Command="{Binding DeleteIndicatorCommand}" EventName="Deleting" />
+            </telerik:EventToCommandBehavior.EventBindings>
+            <telerik:RadTreeListView.Columns>
+                <telerik:GridViewColumn Header="Name" CellTemplate="{StaticResource indicatorCellTemplate}" Width="*"/>
+            </telerik:RadTreeListView.Columns>
+            <telerik:RadTreeListView.ChildTableDefinitions>
+                <telerik:TreeListViewTableDefinition ItemsSource="{Binding Items}" />
+            </telerik:RadTreeListView.ChildTableDefinitions>
+        </telerik:RadTreeListView>
+        <Grid Grid.Row="1" Grid.Column="1" Name="IndicatorConfigPanel"></Grid>
+    </Grid>
+</UserControl>

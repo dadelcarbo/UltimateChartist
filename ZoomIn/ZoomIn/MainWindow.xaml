@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ZoomIn" 
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:chartcontrols="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls;assembly=TradeStudio.UserControls.Graphs"
-        d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1000">
     <Window.Resources>
@@ -31,17 +31,22 @@
                                                      ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
                             <telerik:RadComboBox Width="120" HorizontalAlignment="Left"
                                                      ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <telerik:Label Content="EMA" Margin="2"/>
+                                <telerik:RadNumericUpDown Value="{Binding EmaPeriod}" Minimum="10" Maximum="300" Width="40" Margin="2" ValueFormat="Numeric" NumberDecimalDigits="0"/>
+                                <Button Content="Add" Command="{Binding AddIndicator}" Margin="2"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
                             <telerik:GroupBox Header="MousePos">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MousePos.X, StringFormat='X:{0:0.##}'}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.MousePos.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ChartViewModel.MousePos.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
                             </telerik:GroupBox>
                             <telerik:GroupBox Header="MouseValue">
@@ -50,19 +55,19 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding ChartControlViewModel.MouseValue.X, StringFormat='X:{0:0.##}'}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding ChartControlViewModel.MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.MouseValue.X, StringFormat='X:{0:0.##}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ChartViewModel.MouseValue.Y, StringFormat='Y:{0:0.##}'}"/>
                                 </Grid>
                             </telerik:GroupBox>
                             <telerik:GroupBox Header="Current Bar">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
-                                    <TextBlock Text="{Binding ChartControlViewModel.CurrentBar.Exchanged, StringFormat='Exchanged: {0:0}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
+                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Exchanged, StringFormat='Exchanged: {0:0}'}"/>
                                 </StackPanel>
                             </telerik:GroupBox>
                         </StackPanel>

@@ -2,9 +2,12 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
+using Telerik.Windows.Controls;
 using TradeStudio.Common.Helpers;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.DataProviders.ABCDataProvider;
+using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
 using TradeStudio.UserControls.Graphs.ChartControls;
 
@@ -15,12 +18,12 @@ namespace ZoomIn
         public void NotifyProgressContent(string text) { }
         public void NotifyProgressFooter(string footer, string text) { }
     }
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
-        static private MainWindowViewModel instance;
-        static public MainWindowViewModel Instance => instance ??= new MainWindowViewModel();
+        static private MainViewModel instance;
+        static public MainViewModel Instance => instance ??= new MainViewModel();
 
-        private MainWindowViewModel()
+        private MainViewModel()
         {
             instance = this;
 
@@ -28,8 +31,8 @@ namespace ZoomIn
             ABCDataProvider.Instance.InitializeAsync(new DumbProgress(), false).Wait();
         }
 
-        private ChartControlViewModel chartControlViewModel;
-        public ChartControlViewModel ChartControlViewModel { get { return chartControlViewModel; } set { if (chartControlViewModel != value) { chartControlViewModel = value; RaisePropertyChanged(); } } }
+        private ChartViewModel chartViewModel;
+        public ChartViewModel ChartViewModel { get { return chartViewModel; } set { if (chartViewModel != value) { chartViewModel = value; RaisePropertyChanged(); } } }
 
         private Point mousePoint;
         public Point MousePoint
@@ -74,19 +77,31 @@ namespace ZoomIn
 
         public List<BarDuration> Durations => new() { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly };
 
-        private BarDuration duration = BarDuration.Daily;
         public BarDuration Duration
         {
-            get => ChartControlViewModel == null ? BarDuration.Daily : ChartControlViewModel.Duration;
-            set { ChartControlViewModel.Duration = value; }
+            get => ChartViewModel == null ? BarDuration.Daily : ChartViewModel.Duration;
+            set { ChartViewModel.Duration = value; }
         }
 
         public List<BarType> BarTypes => new() { BarType.BarChart, BarType.Line, BarType.Candle };
 
         public BarType BarType
         {
-            get => ChartControlViewModel == null ? BarType.Candle : ChartControlViewModel.BarType;
-            set { ChartControlViewModel.BarType = value; }
+            get => ChartViewModel == null ? BarType.Candle : ChartViewModel.BarType;
+            set { ChartViewModel.BarType = value; }
+        }
+
+        private int emaPeriod = 20;
+
+        public int EmaPeriod { get => emaPeriod; set => SetProperty(ref emaPeriod, value); }
+
+        private DelegateCommand addIndicator;
+        public ICommand AddIndicator => addIndicator ??= new DelegateCommand(PerformAddIndicator);
+
+        private void PerformAddIndicator(object commandParameter)
+        {
+            var indicator = new TradeIndicator_EMA { Period = emaPeriod };
+            ChartViewModel.AddIndicator(indicator);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
+using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Label = Telerik.Windows.Controls.Label;
 
@@ -60,6 +61,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             shapes.Clear();
 
             #region Price Indicators (EMA, Cloud, Trail...)
+
+            foreach(var indicator in viewModel.PriceIndicators)
+            {
+                var ivm = new IndicatorViewModel(indicator, viewModel.DataSerie);
+                this.shapes.AddRange(ivm.Shapes);
+            }
 
             //var fill = new Fill() { };
             //fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));

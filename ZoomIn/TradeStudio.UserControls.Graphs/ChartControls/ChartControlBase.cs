@@ -10,8 +10,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         protected FontFamily labelFontFamily = new FontFamily("Calibri");
         protected static Brush TextBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0XB0, 0xB0, 0xB0));
 
-        protected ChartControlViewModel viewModel;
-        public ChartControlViewModel ViewModel
+        protected ChartViewModel viewModel;
+        public ChartViewModel ViewModel
         {
             get { return viewModel; }
             set
@@ -58,7 +58,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         protected abstract void OnResize();
         protected abstract void OnStockSerieChanged();
 
-        public virtual void SetViewModel(ChartControlViewModel viewModel)
+        public virtual void SetViewModel(ChartViewModel viewModel)
         {
             this.ViewModel = viewModel;
         }

@@ -11,10 +11,10 @@ namespace ZoomIn
     {
         public MainWindow()
         {
-            this.DataContext = MainWindowViewModel.Instance;
+            this.DataContext = MainViewModel.Instance;
             InitializeComponent();
 
-            MainWindowViewModel.Instance.ChartControlViewModel = this.StockChartControl.ViewModel;
+            MainViewModel.Instance.ChartViewModel = this.StockChartControl.ViewModel;
             InstrumentComboBox.SelectedIndex = 0;
         }
     }
