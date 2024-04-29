@@ -94,7 +94,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
 
         public ObservableCollection<IndicatorTreeViewModel> Root { get => root; set { if (root != value) { root = value; RaisePropertyChanged(); } } }
 
-        public ObservableCollection<TradeTheme> Themes => null; // §§§§ MainViewModel.Instance.Themes;
+        public ObservableCollection<TradeTheme> Themes => TradeTheme.Themes; // §§§§ MainViewModel.Instance.Themes;
 
         private IndicatorTreeViewModel selectedItem;
         public IndicatorTreeViewModel SelectedItem

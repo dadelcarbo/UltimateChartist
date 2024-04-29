@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,6 +11,7 @@ using TradeStudio.Data.DataProviders.ABCDataProvider;
 using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
 using TradeStudio.UserControls.Graphs.ChartControls;
+using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
 namespace ZoomIn
 {
@@ -27,7 +29,7 @@ namespace ZoomIn
         {
             instance = this;
 
-            Folders.Initialize("C:\\Users\\david\\OneDrive\\TradeStudio", "C:\\ProgramData\\TradeStudio");
+            Folders.Initialize($"C:\\Users\\{Environment.UserName}\\OneDrive\\TradeStudio", "C:\\ProgramData\\TradeStudio");
             ABCDataProvider.Instance.InitializeAsync(new DumbProgress(), false).Wait();
         }
 
@@ -102,6 +104,20 @@ namespace ZoomIn
         {
             var indicator = new TradeIndicator_EMA { Period = emaPeriod };
             ChartViewModel.AddIndicator(indicator);
+        }
+
+        private DelegateCommand graphSettingsCommand;
+        public ICommand GraphSettingsCommand => graphSettingsCommand ??= new DelegateCommand(GraphSettings);
+
+        private void GraphSettings(object commandParameter)
+        {
+            var indicatorSelectorWindow = new RadWindow()
+            {
+                Content = new IndicatorConfigWindow(this.ChartViewModel),
+                Owner = MainWindow.Instance,
+                Header = "Theme configuration"
+            };
+            indicatorSelectorWindow.ShowDialog();
         }
     }
 }

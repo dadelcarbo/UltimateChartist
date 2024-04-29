@@ -66,6 +66,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             {
                 var ivm = new IndicatorViewModel(indicator, viewModel.DataSerie);
                 this.shapes.AddRange(ivm.Shapes);
+
+                ivm.GeometryChanged += Ivm_GeometryChanged;
             }
 
             //var fill = new Fill() { };
@@ -105,6 +107,11 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
             this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
             this.OnResize();
+        }
+
+        private void Ivm_GeometryChanged(IndicatorViewModel indicatorViewModel)
+        {
+            throw new NotImplementedException();
         }
 
         private void GeneratePriceBars<T>() where T : BarsShapeBase, new()

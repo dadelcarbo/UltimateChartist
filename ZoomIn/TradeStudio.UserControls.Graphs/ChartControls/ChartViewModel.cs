@@ -7,6 +7,7 @@ using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
 using System.Windows.Media;
+using System.Linq;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
@@ -38,7 +39,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             Indicators.Remove(indicatorViewModel);
         }
 
-        private TradeTheme theme;
+        private TradeTheme theme = TradeTheme.Themes.First();
         public TradeTheme Theme
         {
             get { return theme; }

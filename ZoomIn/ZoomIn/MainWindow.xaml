@@ -35,6 +35,8 @@
                                 <telerik:Label Content="EMA" Margin="2"/>
                                 <telerik:RadNumericUpDown Value="{Binding EmaPeriod}" Minimum="10" Maximum="300" Width="40" Margin="2" ValueFormat="Numeric" NumberDecimalDigits="0"/>
                                 <Button Content="Add" Command="{Binding AddIndicator}" Margin="2"/>
+                                <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}"
+                                Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14"/>
                             </StackPanel>
                             <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
                             <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>

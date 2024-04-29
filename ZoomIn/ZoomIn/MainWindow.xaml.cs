@@ -9,8 +9,10 @@ namespace ZoomIn
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance { get; private set; }
         public MainWindow()
         {
+            Instance = this;
             this.DataContext = MainViewModel.Instance;
             InitializeComponent();
 

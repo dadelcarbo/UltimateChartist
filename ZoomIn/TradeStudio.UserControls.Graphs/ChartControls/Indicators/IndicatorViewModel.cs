@@ -11,11 +11,15 @@ using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using System.Linq;
 using TradeStudio.Data.Indicators.Display;
 using Curve = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Curve;
+using System.ComponentModel;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
+public delegate void GeometryChangedEventHandler(IndicatorViewModel indicatorViewModel);
 public class IndicatorViewModel : ViewModelBase
 {
+    public event GeometryChangedEventHandler GeometryChanged;
+
     public IIndicator Indicator { get; }
 
     private void Indicator_ParameterChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -25,9 +29,10 @@ public class IndicatorViewModel : ViewModelBase
         {
             indicator.Initialize(dataSerie);
         }
+        this.GetIndicatorGeometry(indicator);
     }
 
-    public List<Shape> Shapes { get; } = new ();
+    public List<Shape> Shapes { get; } = new();
     public IndicatorViewModel() { }
 
     private DataSerie dataSerie;
@@ -37,6 +42,15 @@ public class IndicatorViewModel : ViewModelBase
         this.dataSerie = dataSerie;
         if (indicator.Series.Values == null && dataSerie != null)
             indicator.Initialize(dataSerie);
+
+        this.GetIndicatorGeometry(indicator);
+
+        indicator.ParameterChanged += Indicator_ParameterChanged;
+    }
+
+    void GetIndicatorGeometry(IIndicator indicator)
+    {
+        this.Shapes.Clear();
 
         // Create GraphSeries from instrospection
         var indicatorSeries = indicator.Series;
@@ -55,7 +69,7 @@ public class IndicatorViewModel : ViewModelBase
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
                         lineSeries.DataContext = indicator;
-                        lineSeries.CreateGeometry(indicator.Series.Values.Cast<IndicatorLineValue>().Select(v=>v.Value).ToArray());
+                        lineSeries.CreateGeometry(indicator.Series.Values.Cast<IndicatorLineValue>().Select(v => v.Value).ToArray());
 
                         Shapes.Add(lineSeries);
                     }
@@ -237,9 +251,8 @@ public class IndicatorViewModel : ViewModelBase
                     throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
             }
         }
-
-        indicator.ParameterChanged += Indicator_ParameterChanged;
     }
+
 
 }
 
