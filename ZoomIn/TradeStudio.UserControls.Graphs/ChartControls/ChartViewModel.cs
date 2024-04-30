@@ -35,7 +35,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         }
         #endregion    #region THEME & INDICATORS
 
-        public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ObservableCollection<IIndicator>();
+        public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ();
         public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
         public void RemoveIndicator(IndicatorChartViewModel indicatorViewModel)
