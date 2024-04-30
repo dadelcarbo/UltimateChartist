@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
+using TradeStudio.Common.Helpers;
 using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Indicators.Theme;
 
@@ -70,7 +71,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             int count = 1;
             if (theme != null)
             {
-                foreach (var indicator in theme.Indicators)
+                foreach (var indicator in theme.IndicatorSettings.Select(i => i.Indicator))
                 {
                     switch (indicator.DisplayType)
                     {
@@ -94,7 +95,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
 
         public ObservableCollection<IndicatorTreeViewModel> Root { get => root; set { if (root != value) { root = value; RaisePropertyChanged(); } } }
 
-        public ObservableCollection<TradeTheme> Themes => TradeTheme.Themes; // §§§§ MainViewModel.Instance.Themes;
+        public ObservableCollection<TradeTheme> Themes => Persister<TradeTheme>.Instance.Items;
 
         private IndicatorTreeViewModel selectedItem;
         public IndicatorTreeViewModel SelectedItem
@@ -118,7 +119,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             if (NewIndicator != null)
             {
                 var indicator = NewIndicator.CreateInstance();
-                ChartViewModel.Theme.Indicators.Add(indicator);
+                ChartViewModel.Theme.IndicatorSettings.Add(new IndicatorSettings(indicator));
                 SetTheme(ChartViewModel.Theme);
                 ChartViewModel.AddIndicator(indicator);
                 SelectedItem = Root.SelectMany(i => i.Items).FirstOrDefault(i => i.Indicator == indicator);
@@ -144,7 +145,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         {
             if (SelectedItem?.Indicator != null)
             {
-                ChartViewModel.Theme.Indicators.Remove(SelectedItem.Indicator);
+                ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(SelectedItem.Indicator)); // §§§§ 
                 ChartViewModel.RemoveIndicator(SelectedItem.Indicator);
                 SetTheme(ChartViewModel.Theme);
                 SelectedItem = Root.SelectMany(i => i.Items).FirstOrDefault();
@@ -155,14 +156,14 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         {
             if (treeItem.Indicator != null)
             {
-                ChartViewModel.Theme.Indicators.Remove(treeItem.Indicator);
+                ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(treeItem.Indicator)); // §§§§ 
                 ChartViewModel.RemoveIndicator(treeItem.Indicator);
             }
             else
             {
                 foreach (var item in treeItem.Items)
                 {
-                    ChartViewModel.Theme.Indicators.Remove(item.Indicator);
+                    ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(item.Indicator)); // §§§§ 
                     ChartViewModel.RemoveIndicator(item.Indicator);
                 }
             }

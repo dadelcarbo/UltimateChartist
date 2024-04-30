@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
+using TradeStudio.Common.Helpers;
 using TradeStudio.Data.DataProviders;
+using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.Data.Instruments;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
@@ -51,6 +54,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             InitializeComponent();
 
             viewModel = new ChartViewModel();
+            viewModel.Theme = Persister<TradeTheme>.Instance.Items.First();
             this.DataContext = viewModel;
             foreach (var child in grid.ChildrenOfType<ChartControlBase>())
             {

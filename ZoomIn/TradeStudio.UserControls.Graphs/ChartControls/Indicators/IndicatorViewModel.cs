@@ -40,7 +40,7 @@ public class IndicatorViewModel : ViewModelBase
     {
         Indicator = indicator;
         this.dataSerie = dataSerie;
-        if (indicator.Series.Values == null && dataSerie != null)
+        if (dataSerie != null)
             indicator.Initialize(dataSerie);
 
         this.GetIndicatorGeometry(indicator);
@@ -69,7 +69,7 @@ public class IndicatorViewModel : ViewModelBase
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
                         lineSeries.DataContext = indicator;
-                        lineSeries.CreateGeometry(indicator.Series.Values.Cast<IndicatorLineValue>().Select(v => v.Value).ToArray());
+                        lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
 
                         Shapes.Add(lineSeries);
                     }
@@ -247,8 +247,8 @@ public class IndicatorViewModel : ViewModelBase
 
                 //    }
                 //    break;
-                default:
-                    throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
+                //default: §§§§
+                //    throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
             }
         }
     }

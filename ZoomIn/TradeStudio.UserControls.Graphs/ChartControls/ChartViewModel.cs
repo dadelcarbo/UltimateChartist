@@ -13,6 +13,10 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     public class ChartViewModel : ViewModelBase
     {
+        public ChartViewModel()
+        {
+            
+        }
         #region ZOOMING
         private SelectionRange<int> zoomRange;
         public SelectionRange<int> ZoomRange { get { return zoomRange; } set { if (zoomRange != value) { zoomRange = value; if (!changingSerie) RaisePropertyChanged(); } } }
@@ -39,7 +43,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             Indicators.Remove(indicatorViewModel);
         }
 
-        private TradeTheme theme = TradeTheme.Themes.First();
+        private TradeTheme theme;
         public TradeTheme Theme
         {
             get { return theme; }
@@ -52,7 +56,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                     PriceIndicators.Clear();
                     if (theme != null)
                     {
-                        foreach (var indicator in theme.Indicators)
+                        foreach (var indicator in theme.IndicatorSettings.Select(i => i.Indicator))
                         {
                             AddIndicator(indicator);
                         }

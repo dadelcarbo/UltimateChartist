@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Documents.Model.Themes;
 using TradeStudio.Common.Helpers;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.DataProviders.ABCDataProvider;
 using TradeStudio.Data.Indicators;
+using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.Data.Instruments;
 using TradeStudio.UserControls.Graphs.ChartControls;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
@@ -31,6 +35,8 @@ namespace ZoomIn
 
             Folders.Initialize($"C:\\Users\\{Environment.UserName}\\OneDrive\\TradeStudio", "C:\\ProgramData\\TradeStudio");
             ABCDataProvider.Instance.InitializeAsync(new DumbProgress(), false).Wait();
+
+            Persister<TradeTheme>.Instance.Initialize(Path.Combine(Folders.UserFolder, "Themes"), "thm");
         }
 
         private ChartViewModel chartViewModel;
