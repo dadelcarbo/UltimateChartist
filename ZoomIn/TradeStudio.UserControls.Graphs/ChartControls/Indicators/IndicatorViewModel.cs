@@ -12,6 +12,7 @@ using System.Linq;
 using TradeStudio.Data.Indicators.Display;
 using Curve = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Curve;
 using System.ComponentModel;
+using TradeStudio.Data.Indicators.Theme;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
@@ -36,16 +37,16 @@ public class IndicatorViewModel : ViewModelBase
     public IndicatorViewModel() { }
 
     private DataSerie dataSerie;
-    public IndicatorViewModel(IIndicator indicator, DataSerie dataSerie)
+    public IndicatorViewModel(IndicatorSettings indicatorSettings, DataSerie dataSerie)
     {
-        Indicator = indicator;
+        Indicator = indicatorSettings.GetIndicator();
         this.dataSerie = dataSerie;
         if (dataSerie != null)
-            indicator.Initialize(dataSerie);
+            Indicator.Initialize(dataSerie);
 
-        this.GetIndicatorGeometry(indicator);
+        this.GetIndicatorGeometry(Indicator);
 
-        indicator.ParameterChanged += Indicator_ParameterChanged;
+        Indicator.ParameterChanged += Indicator_ParameterChanged;
     }
 
     void GetIndicatorGeometry(IIndicator indicator)

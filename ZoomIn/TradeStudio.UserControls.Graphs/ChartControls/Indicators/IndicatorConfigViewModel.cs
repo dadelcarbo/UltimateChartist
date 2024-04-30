@@ -13,7 +13,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
 {
     public class IndicatorConfigViewModel : ViewModelBase, IDisposable
     {
-        private ObservableCollection<IndicatorTreeViewModel> root;
+        private ObservableCollection<IndicatorTreeItemViewModel> root;
         private readonly IndicatorConfigWindow indicatorConfigWindow;
 
         public static IndicatorConfigViewModel Instance { get; private set; }
@@ -63,26 +63,26 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
                     item.Dispose();
                 }
             }
-            var root = new ObservableCollection<IndicatorTreeViewModel>
+            var root = new ObservableCollection<IndicatorTreeItemViewModel>
             {
-                new IndicatorTreeViewModel("Price Chart")
+                new IndicatorTreeItemViewModel("Price Chart")
             };
             var priceTreeViewModel = root.First().Items;
             int count = 1;
             if (theme != null)
             {
-                foreach (var indicator in theme.IndicatorSettings.Select(i => i.Indicator))
+                foreach (var indicatorSettings in theme.IndicatorSettings)
                 {
-                    switch (indicator.DisplayType)
+                    switch (indicatorSettings.DisplayType)
                     {
                         case DisplayType.Price:
                         case DisplayType.TrailStop:
-                            priceTreeViewModel.Add(new IndicatorTreeViewModel(indicator));
+                            priceTreeViewModel.Add(new IndicatorTreeItemViewModel(indicatorSettings));
                             break;
                         case DisplayType.Ranged:
                         case DisplayType.NonRanged:
-                            var indicatorTreeViewModel = new IndicatorTreeViewModel($"Indicator{count++} Graph");
-                            indicatorTreeViewModel.Items.Add(new IndicatorTreeViewModel(indicator));
+                            var indicatorTreeViewModel = new IndicatorTreeItemViewModel($"Indicator{count++} Graph");
+                            indicatorTreeViewModel.Items.Add(new IndicatorTreeItemViewModel(indicatorSettings));
                             root.Add(indicatorTreeViewModel);
                             break;
                         case DisplayType.Volume:
@@ -93,12 +93,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             Root = root;
         }
 
-        public ObservableCollection<IndicatorTreeViewModel> Root { get => root; set { if (root != value) { root = value; RaisePropertyChanged(); } } }
+        public ObservableCollection<IndicatorTreeItemViewModel> Root { get => root; set { if (root != value) { root = value; RaisePropertyChanged(); } } }
 
         public ObservableCollection<TradeTheme> Themes => Persister<TradeTheme>.Instance.Items;
 
-        private IndicatorTreeViewModel selectedItem;
-        public IndicatorTreeViewModel SelectedItem
+        private IndicatorTreeItemViewModel selectedItem;
+        public IndicatorTreeItemViewModel SelectedItem
         {
             get => selectedItem; set
             {
@@ -119,10 +119,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             if (NewIndicator != null)
             {
                 var indicator = NewIndicator.CreateInstance();
-                ChartViewModel.Theme.IndicatorSettings.Add(new IndicatorSettings(indicator));
+                var indicatorSettings = new IndicatorSettings(indicator);
+
+                ChartViewModel.Theme.IndicatorSettings.Add(indicatorSettings);
                 SetTheme(ChartViewModel.Theme);
-                ChartViewModel.AddIndicator(indicator);
-                SelectedItem = Root.SelectMany(i => i.Items).FirstOrDefault(i => i.Indicator == indicator);
+                ChartViewModel.AddIndicator(indicatorSettings);
+                SelectedItem = Root.SelectMany(i => i.Items).FirstOrDefault(i => i.IndicatorSettings == indicatorSettings);
                 NewIndicator = null;
             }
         }
@@ -145,26 +147,26 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         {
             if (SelectedItem?.Indicator != null)
             {
-                ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(SelectedItem.Indicator)); // §§§§ 
-                ChartViewModel.RemoveIndicator(SelectedItem.Indicator);
+                ChartViewModel.Theme.IndicatorSettings.Remove(SelectedItem.IndicatorSettings);
+                ChartViewModel.RemoveIndicator(SelectedItem.IndicatorSettings);
                 SetTheme(ChartViewModel.Theme);
                 SelectedItem = Root.SelectMany(i => i.Items).FirstOrDefault();
             }
         }
 
-        internal void DeleteItem(IndicatorTreeViewModel treeItem)
+        internal void DeleteItem(IndicatorTreeItemViewModel treeItem)
         {
             if (treeItem.Indicator != null)
             {
-                ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(treeItem.Indicator)); // §§§§ 
-                ChartViewModel.RemoveIndicator(treeItem.Indicator);
+                ChartViewModel.Theme.IndicatorSettings.Remove(treeItem.IndicatorSettings);
+                ChartViewModel.RemoveIndicator(treeItem.IndicatorSettings);
             }
             else
             {
                 foreach (var item in treeItem.Items)
                 {
-                    ChartViewModel.Theme.IndicatorSettings.Remove(new IndicatorSettings(item.Indicator)); // §§§§ 
-                    ChartViewModel.RemoveIndicator(item.Indicator);
+                    ChartViewModel.Theme.IndicatorSettings.Remove(item.IndicatorSettings);
+                    ChartViewModel.RemoveIndicator(item.IndicatorSettings);
                 }
             }
             SetTheme(ChartViewModel.Theme);

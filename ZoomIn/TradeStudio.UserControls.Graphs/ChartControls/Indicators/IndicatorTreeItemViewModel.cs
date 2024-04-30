@@ -2,20 +2,22 @@
 using System.Collections.ObjectModel;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
+using TradeStudio.Data.Indicators.Theme;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
 {
-    public class IndicatorTreeViewModel : ViewModelBase, IDisposable
+    public class IndicatorTreeItemViewModel : ViewModelBase, IDisposable
     {
-        public IndicatorTreeViewModel(string name)
+        public IndicatorTreeItemViewModel(string name)
         {
             Name = name;
         }
-        public IndicatorTreeViewModel(IIndicator indicator)
+        public IndicatorTreeItemViewModel(IndicatorSettings indicatorSettings)
         {
-            Name = indicator.DisplayName;
-            Indicator = indicator;
-            indicator.ParameterChanged += Indicator_ParameterChanged;
+            IndicatorSettings = indicatorSettings;
+            Indicator = indicatorSettings.GetIndicator();
+            Name = Indicator.DisplayName;
+            Indicator.ParameterChanged += Indicator_ParameterChanged;
         }
 
         protected new void Dispose()
@@ -35,7 +37,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         }
 
         public string Name { get; set; }
-        public ObservableCollection<IndicatorTreeViewModel> Items { get; set; } = new ObservableCollection<IndicatorTreeViewModel>();
+        public ObservableCollection<IndicatorTreeItemViewModel> Items { get; set; } = new ObservableCollection<IndicatorTreeItemViewModel>();
         public IIndicator Indicator { get; private set; }
+
+        public IndicatorSettings IndicatorSettings { get; private set; }
     }
 }

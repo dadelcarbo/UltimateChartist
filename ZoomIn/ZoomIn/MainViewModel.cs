@@ -109,7 +109,7 @@ namespace ZoomIn
         private void PerformAddIndicator(object commandParameter)
         {
             var indicator = new TradeIndicator_EMA { Period = emaPeriod };
-            ChartViewModel.AddIndicator(indicator);
+            ChartViewModel.AddIndicator(new(indicator));
         }
 
         private DelegateCommand graphSettingsCommand;

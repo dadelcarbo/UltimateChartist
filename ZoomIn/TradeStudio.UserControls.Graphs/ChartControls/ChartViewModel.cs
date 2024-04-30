@@ -15,7 +15,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
     {
         public ChartViewModel()
         {
-            
+
         }
         #region ZOOMING
         private SelectionRange<int> zoomRange;
@@ -35,7 +35,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         }
         #endregion    #region THEME & INDICATORS
 
-        public ObservableCollection<IIndicator> PriceIndicators { get; set; } = new ();
+        public ObservableCollection<IndicatorSettings> PriceIndicators { get; set; } = new();
         public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
         public void RemoveIndicator(IndicatorChartViewModel indicatorViewModel)
@@ -56,9 +56,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                     PriceIndicators.Clear();
                     if (theme != null)
                     {
-                        foreach (var indicator in theme.IndicatorSettings.Select(i => i.Indicator))
+                        foreach (var indicatorSettings in theme.IndicatorSettings)
                         {
-                            AddIndicator(indicator);
+                            AddIndicator(indicatorSettings);
                         }
                     }
 
@@ -67,37 +67,37 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             }
         }
 
-        public void AddIndicator(IIndicator indicator)
+        public void AddIndicator(IndicatorSettings indicatorSettings)
         {
-            switch (indicator.DisplayType)
+            switch (indicatorSettings.DisplayType)
             {
                 case DisplayType.Price:
                 case DisplayType.TrailStop:
-                    PriceIndicators.Add(indicator);
+                    PriceIndicators.Add(indicatorSettings);
                     break;
                 case DisplayType.Volume:
                 case DisplayType.Ranged:
                 case DisplayType.NonRanged:
-                    Indicators.Add(new IndicatorChartViewModel(this, indicator));
+                    Indicators.Add(new IndicatorChartViewModel(this, indicatorSettings));
                     break;
                 default:
-                    throw new NotImplementedException($"DisplayType {indicator.DisplayType} not implemented !");
+                    throw new NotImplementedException($"DisplayType {indicatorSettings.DisplayType} not implemented !");
             }
         }
-        public void RemoveIndicator(IIndicator indicator)
+        public void RemoveIndicator(IndicatorSettings indicatorSettings)
         {
-            switch (indicator.DisplayType)
+            switch (indicatorSettings.DisplayType)
             {
                 case DisplayType.Price:
                 case DisplayType.TrailStop:
-                    PriceIndicators.Remove(indicator);
+                    PriceIndicators.Remove(indicatorSettings);
                     break;
                 case DisplayType.Ranged:
                 case DisplayType.NonRanged:
-                    Indicators.RemoveAll(i => i.Indicator?.Indicator == indicator);
+                    Indicators.RemoveAll(i => i.Indicator?.Indicator == indicatorSettings);
                     break;
                 case DisplayType.Volume:
-                    Indicators.RemoveAll(i => i.Indicator == indicator);
+                    Indicators.RemoveAll(i => i.Indicator?.Indicator == indicatorSettings);
                     break;
                 default:
                     break;

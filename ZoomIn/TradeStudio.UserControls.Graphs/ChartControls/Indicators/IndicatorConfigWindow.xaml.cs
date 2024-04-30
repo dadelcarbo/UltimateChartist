@@ -20,7 +20,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             InitializeComponent();
         }
 
-        public void DisplayConfigItem(IndicatorTreeViewModel itemViewModel)
+        public void DisplayConfigItem(IndicatorTreeItemViewModel itemViewModel)
         {
             this.IndicatorConfigPanel.Children.Clear();
             if (itemViewModel == null)
@@ -42,7 +42,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         private void deleteIndicatorButton_Click(object sender, RoutedEventArgs e)
         {
             Button btn = e.Source as Button;
-            var item = btn?.ParentOfType<TreeListViewRow>()?.Item as IndicatorTreeViewModel;
+            var item = btn?.ParentOfType<TreeListViewRow>()?.Item as IndicatorTreeItemViewModel;
             if (item == null)
                 return;
             this.indicatorConfigViewModel.DeleteItem(item);

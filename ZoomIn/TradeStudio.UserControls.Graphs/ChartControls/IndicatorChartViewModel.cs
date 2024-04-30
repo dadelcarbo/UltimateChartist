@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators;
+using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls;
@@ -12,10 +13,10 @@ public class IndicatorChartViewModel : ViewModelBase
     public ChartViewModel ChartViewModel { get; }
     public IndicatorViewModel Indicator { get; }
 
-    public IndicatorChartViewModel(ChartViewModel chartViewModel, IIndicator indicator)
+    public IndicatorChartViewModel(ChartViewModel chartViewModel, IndicatorSettings indicatorSettings)
     {
         ChartViewModel = chartViewModel;
-        Indicator = new IndicatorViewModel(indicator, chartViewModel.DataSerie);
+        Indicator = new IndicatorViewModel(indicatorSettings, chartViewModel.DataSerie);
     }
 
     #region Commands
