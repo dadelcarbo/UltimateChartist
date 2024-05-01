@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
@@ -27,6 +29,34 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             geometryGroup.Children.Add(streamGeometry);
             geometry = geometryGroup;
         }
+
+        public void CreateGeometry(double?[] lows, double?[] highs)
+        {
+            var geometryGroup = new GeometryGroup();
+            var streamGeometry = new StreamGeometry();
+
+            var indexes = GetNotNullIndexes(lows);
+            foreach (var item in indexes)
+            {
+                using (StreamGeometryContext ctx = streamGeometry.Open())
+                {
+                    ctx.BeginFigure(new Point(item.Start, lows[item.Start].Value), true, true);
+
+                    for (int i = item.Start + 1; i <= item.End; i++)
+                    {
+                        ctx.LineTo(new Point(i, lows[i].Value), true /* is stroked */, false /* is smooth join */);
+                    }
+                    ctx.LineTo(new Point(item.End, highs[item.End].Value), false /* is stroked */, false /* is smooth join */);
+                    for (int i = item.End -1; i >= item.Start; i--)
+                    {
+                        ctx.LineTo(new Point(i, highs[i].Value), true /* is stroked */, false /* is smooth join */);
+                    }
+                }
+                geometryGroup.Children.Add(streamGeometry);
+            }
+            geometry = geometryGroup;
+        }
+
     }
 
 }

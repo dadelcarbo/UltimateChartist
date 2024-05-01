@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using Telerik.Windows.Documents.Spreadsheet.Model;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
@@ -20,6 +21,27 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
                 }
             }
             geometryGroup.Children.Add(streamGeometry);
+            geometry = geometryGroup;
+        }
+        public void CreateGeometry(double?[] values)
+        {
+            var geometryGroup = new GeometryGroup();
+            var streamGeometry = new StreamGeometry();
+
+            var indexes = GetNotNullIndexes(values);
+            foreach (var item in indexes)
+            {
+                using (StreamGeometryContext ctx = streamGeometry.Open())
+                {
+                    ctx.BeginFigure(new Point(item.Start, values[item.Start].Value), false, false);
+
+                    for (int i = item.Start + 1; i <= item.End; i++)
+                    {
+                        ctx.LineTo(new Point(i, values[i].Value), true /* is stroked */, false /* is smooth join */);
+                    }
+                }
+                geometryGroup.Children.Add(streamGeometry);
+            }
             geometry = geometryGroup;
         }
     }

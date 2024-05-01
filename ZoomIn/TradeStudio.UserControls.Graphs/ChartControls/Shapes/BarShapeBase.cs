@@ -28,6 +28,46 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 
         protected Geometry geometry;
         protected override Geometry DefiningGeometry => geometry;
+
+        protected static List<StartEndIndex> GetNotNullIndexes(double?[] values)
+        {
+            List<StartEndIndex> indexes = new();
+            StartEndIndex indexPair = null;
+            int i = 0;
+            bool isNull = true;
+            while (i < values.Length)
+            {
+                if (isNull)
+                {
+                    if (values[i] != null)
+                    {
+                        isNull = false;
+                        indexPair = new StartEndIndex() { Start = i };
+                        indexPair.Start = i;
+                    }
+                }
+                else
+                {
+                    if (values[i] == null)
+                    {
+                        isNull = true;
+                        indexPair.End = i - 1;
+                        indexes.Add(indexPair);
+                        indexPair = null;
+                    }
+                }
+                i++;
+            }
+            if (indexPair != null)
+                indexPair.End = values.Length - 1;
+
+            return indexes;
+        }
+    }
+    public class StartEndIndex
+    {
+        public int Start;
+        public int End;
     }
 
     public abstract class BarsShapeBase : ChartShapeBase, IChartShapeBase

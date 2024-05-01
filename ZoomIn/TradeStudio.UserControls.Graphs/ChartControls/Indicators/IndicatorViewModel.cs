@@ -9,6 +9,8 @@ using TradeStudio.Data.Indicators.Display;
 using Curve = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Curve;
 using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
+using Range = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Range;
+using Telerik.Windows.Controls.ChartView;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
@@ -83,181 +85,141 @@ public class IndicatorViewModel : ViewModelBase
                         Shapes.Add(lineSeries);
                     }
                     break;
-                    //case "IndicatorLineSignalSeries":
-                    //    {
-                    //        var lineSeries = new LineSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            ValueBinding = new PropertyNameDataPointBinding("Value")
-                    //        };
-                    //        var binding = new Binding($"Series.Curve.Stroke");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                    //        binding = new Binding($"Series.Curve.Thickness");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Values");
-                    //        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        lineSeries.DataContext = indicator;
+                case "IndicatorLineSignalSeries":
+                    {
+                        var lineSeries = new Curve() { Tag = this };
 
-                    //        CartesianSeries.Add(lineSeries);
+                        var binding = new Binding($"Series.Signal.Stroke");
+                        lineSeries.SetBinding(Shape.StrokeProperty, binding);
+                        binding = new Binding($"Series.Signal.Thickness");
+                        lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                    //        lineSeries = new LineSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            ValueBinding = new PropertyNameDataPointBinding("Signal")
-                    //        };
-                    //        binding = new Binding($"Series.Signal.Stroke");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                    //        binding = new Binding($"Series.Signal.Thickness");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Values");
-                    //        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        lineSeries.DataContext = indicator;
+                        lineSeries.DataContext = indicator;
+                        lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
 
-                    //        CartesianSeries.Add(lineSeries);
-                    //    }
-                    //    break;
-                    //case "IndicatorRangeSeries":
-                    //    {
-                    //        var rangeSeries = new RangeSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            HighBinding = new PropertyNameDataPointBinding("High"),
-                    //            LowBinding = new PropertyNameDataPointBinding("Low"),
-                    //            StrokeMode = RangeSeriesStrokeMode.LowAndHighPoints,
-                    //        };
 
-                    //        var binding = new Binding($"Series.Area.Fill");
-                    //        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
-                    //        binding = new Binding($"Series.Area.Thickness");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Area.Stroke");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+                        Shapes.Add(lineSeries);
 
-                    //        binding = new Binding($"Series.Values");
-                    //        rangeSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        rangeSeries.DataContext = indicator;
+                        lineSeries = new Curve() { Tag = this };
+                        binding = new Binding($"Series.Curve.Stroke");
+                        lineSeries.SetBinding(Shape.StrokeProperty, binding);
+                        binding = new Binding($"Series.Curve.Thickness");
+                        lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Values");
 
-                    //        CartesianSeries.Add(rangeSeries);
-                    //    }
-                    //    break;
-                    //case "IndicatorBandSeries":
-                    //    {
-                    //        var lineSeries = new LineSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            ValueBinding = new PropertyNameDataPointBinding("Mid")
-                    //        };
-                    //        var binding = new Binding($"Series.MidLine.Stroke");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                    //        binding = new Binding($"Series.MidLine.Thickness");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Values");
-                    //        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        lineSeries.DataContext = indicator;
+                        lineSeries.DataContext = indicator;
+                        lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
 
-                    //        CartesianSeries.Add(lineSeries);
+                        Shapes.Add(lineSeries);
+                    }
+                    break;
+                case "IndicatorRangeSeries":
+                    {
+                        var rangeSeries = new Range() { Tag = this };
 
-                    //        var rangeSeries = new RangeSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            HighBinding = new PropertyNameDataPointBinding("High"),
-                    //            LowBinding = new PropertyNameDataPointBinding("Low"),
-                    //            StrokeMode = RangeSeriesStrokeMode.LowAndHighPoints,
-                    //        };
+                        var binding = new Binding($"Series.Area.Fill");
+                        rangeSeries.SetBinding(Shape.FillProperty, binding);
+                        binding = new Binding($"Series.Area.Thickness");
+                        rangeSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Area.Stroke");
+                        rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                    //        binding = new Binding($"Series.Area.Fill");
-                    //        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
-                    //        binding = new Binding($"Series.Area.Thickness");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Area.Stroke");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+                        rangeSeries.DataContext = indicator;
+                        var rangeValues = (IndicatorRangeValues)indicator.Series.Values;
+                        rangeSeries.CreateGeometry(rangeValues.Low, rangeValues.High);
 
-                    //        binding = new Binding($"Series.Values");
-                    //        rangeSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        rangeSeries.DataContext = indicator;
+                        Shapes.Add(rangeSeries);
+                    }
+                    break;
+                case "IndicatorBandSeries":
+                    {
+                        var rangeSeries = new Range() { Tag = this };
 
-                    //        CartesianSeries.Add(rangeSeries);
-                    //    }
-                    //    break;
-                    //case "IndicatorTrailSeries":
-                    //    {
+                        var binding = new Binding($"Series.Area.Fill");
+                        rangeSeries.SetBinding(Shape.FillProperty, binding);
+                        binding = new Binding($"Series.Area.Thickness");
+                        rangeSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Area.Stroke");
+                        rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                    //        var lineSeries = new LineSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            ValueBinding = new PropertyNameDataPointBinding("LongReentry")
-                    //        };
-                    //        var binding = new Binding($"Series.LongReentry.Stroke");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                    //        binding = new Binding($"Series.LongReentry.Thickness");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Values");
-                    //        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        lineSeries.DataContext = indicator;
+                        rangeSeries.DataContext = indicator;
+                        var bandValues = (IndicatorBandValues)indicator.Series.Values;
+                        rangeSeries.CreateGeometry(bandValues.Low, bandValues.High);
 
-                    //        CartesianSeries.Add(lineSeries);
+                        Shapes.Add(rangeSeries);
 
-                    //        lineSeries = new LineSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            ValueBinding = new PropertyNameDataPointBinding("ShortReentry")
-                    //        };
-                    //        binding = new Binding($"Series.ShortReentry.Stroke");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeProperty, binding);
-                    //        binding = new Binding($"Series.ShortReentry.Thickness");
-                    //        lineSeries.SetBinding(CategoricalStrokedSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Values");
-                    //        lineSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        lineSeries.DataContext = indicator;
+                        var lineSeries = new Curve() { Tag = this };
 
-                    //        CartesianSeries.Add(lineSeries);
+                        binding = new Binding($"Series.MidLine.Stroke");
+                        lineSeries.SetBinding(Shape.StrokeProperty, binding);
+                        binding = new Binding($"Series.MidLine.Thickness");
+                        lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                    //        var rangeSeries = new RangeSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            HighBinding = new PropertyNameDataPointBinding("High"),
-                    //            LowBinding = new PropertyNameDataPointBinding("Long"),
-                    //            StrokeMode = RangeSeriesStrokeMode.LowPoints
-                    //        };
+                        lineSeries.DataContext = indicator;
+                        lineSeries.CreateGeometry(bandValues.Mid);
 
-                    //        binding = new Binding($"Series.Long.Fill");
-                    //        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
-                    //        binding = new Binding($"Series.Long.Thickness");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Long.Stroke");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+                        Shapes.Add(lineSeries);
+                    }
+                    break;
+                case "IndicatorTrailSeries":
+                    {
+                        var trailValues = (IndicatorTrailValues) indicator.Series.Values;
 
-                    //        binding = new Binding($"Series.Values");
-                    //        rangeSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        rangeSeries.DataContext = indicator;
+                        var lineSeries = new Curve() { Tag = this };
 
-                    //        CartesianSeries.Add(rangeSeries);
+                        var binding = new Binding($"Series.LongReentry.Stroke");
+                        lineSeries.SetBinding(Shape.StrokeProperty, binding);
+                        binding = new Binding($"Series.LongReentry.Thickness");
+                        lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                    //        rangeSeries = new RangeSeries()
-                    //        {
-                    //            CategoryBinding = new PropertyNameDataPointBinding() { PropertyName = "Date" },
-                    //            HighBinding = new PropertyNameDataPointBinding("Short"),
-                    //            LowBinding = new PropertyNameDataPointBinding("Low"),
-                    //            StrokeMode = RangeSeriesStrokeMode.HighPoints
-                    //        };
+                        lineSeries.DataContext = indicator;
+                        lineSeries.CreateGeometry(trailValues.LongReentry);
 
-                    //        binding = new Binding($"Series.Short.Fill");
-                    //        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
-                    //        binding = new Binding($"Series.Short.Thickness");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
-                    //        binding = new Binding($"Series.Short.Stroke");
-                    //        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+                        Shapes.Add(lineSeries);
 
-                    //        binding = new Binding($"Series.Values");
-                    //        rangeSeries.SetBinding(ChartSeries.ItemsSourceProperty, binding);
-                    //        rangeSeries.DataContext = indicator;
+                        lineSeries = new Curve() { Tag = this };
 
-                    //        CartesianSeries.Add(rangeSeries);
+                        binding = new Binding($"Series.ShortReentry.Stroke");
+                        lineSeries.SetBinding(Shape.StrokeProperty, binding);
+                        binding = new Binding($"Series.ShortReentry.Thickness");
+                        lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                    //    }
-                    //    break;
-                    //default: §§§§
-                    //    throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
+                        lineSeries.DataContext = indicator;
+                        lineSeries.CreateGeometry(trailValues.ShortReentry);
+
+                        Shapes.Add(lineSeries);
+
+                        var rangeSeries = new Range() { Tag = this };
+
+                        binding = new Binding($"Series.Long.Fill");
+                        rangeSeries.SetBinding(Shape.FillProperty, binding);
+                        binding = new Binding($"Series.Long.Thickness");
+                        rangeSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Long.Stroke");
+                        rangeSeries.SetBinding(Shape.StrokeProperty, binding);
+
+                        rangeSeries.DataContext = indicator;
+                        rangeSeries.CreateGeometry(trailValues.Long, trailValues.High);
+                        Shapes.Add(rangeSeries);
+
+                        rangeSeries = new Range() { Tag = this };
+
+                        binding = new Binding($"Series.Short.Fill");
+                        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
+                        binding = new Binding($"Series.Short.Thickness");
+                        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
+                        binding = new Binding($"Series.Short.Stroke");
+                        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+
+                        rangeSeries.DataContext = indicator;
+                        rangeSeries.CreateGeometry(trailValues.Short, trailValues.Low);
+
+                        Shapes.Add(rangeSeries);
+
+                    }
+                    break;
+                default: // §§§§
+                        throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
             }
         }
     }
