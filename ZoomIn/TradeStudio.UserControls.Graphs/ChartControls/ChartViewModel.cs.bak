@@ -8,11 +8,9 @@ using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Instruments;
 using System.Windows.Media;
 using System.Linq;
-using System.Diagnostics;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls;
 
-[DebuggerDisplay("Name={Instrument?.Name} Duration={Duration} Theme={Theme?.Name}")]
 public class ChartViewModel : ViewModelBase
 {
     public ChartViewModel()
@@ -96,10 +94,10 @@ public class ChartViewModel : ViewModelBase
                 break;
             case DisplayType.Ranged:
             case DisplayType.NonRanged:
-                //Indicators.RemoveAll(i => i.Indicator == indicatorSettings); // §§§§
+                Indicators.RemoveAll(i => i.Indicator?.Indicator == indicatorSettings);
                 break;
             case DisplayType.Volume:
-                Indicators.RemoveAll(i => i.Indicator?.IndicatorSettings == indicatorSettings);
+                Indicators.RemoveAll(i => i.Indicator?.Indicator == indicatorSettings);
                 break;
             default:
                 break;

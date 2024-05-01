@@ -62,7 +62,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
             #region Price Indicators (EMA, Cloud, Trail...)
 
-            foreach(var indicator in viewModel.PriceIndicators)
+            foreach (var indicator in viewModel.PriceIndicators)
             {
                 var ivm = new IndicatorViewModel(indicator, viewModel.DataSerie);
                 this.shapes.AddRange(ivm.Shapes);
@@ -111,7 +111,25 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private void Ivm_GeometryChanged(IndicatorViewModel indicatorViewModel)
         {
-            throw new NotImplementedException();
+            foreach (var shape in indicatorViewModel.Shapes)
+            {
+                shape.ApplyTransform(chartToPixelTransform);
+            }
+            //this.shapes.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
+            this.shapes.AddRange(indicatorViewModel.Shapes);
+            this.chartCanvas.Children.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
+            this.chartCanvas.Children.AddRange(indicatorViewModel.Shapes.SelectMany(s => s.Shapes));
+            return;
+
+            //int shapeIndex = 0;
+            //for (int i = 0; i < this.chartCanvas.Children.Count; i++)
+            //{
+            //    var shape = (this.chartCanvas.Children[i] as Shape);
+            //    if (shape != null && shape.Tag == indicatorViewModel)
+            //    {
+            //        this.chartCanvas.Children[i] = indicatorViewModel.Shapes[shapeIndex++].Shapes;
+            //    }
+            //}
         }
 
         private void GeneratePriceBars<T>() where T : BarsShapeBase, new()

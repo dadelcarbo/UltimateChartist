@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
-using TradeStudio.Data.Indicators.Display;
 using TradeStudio.Data.Indicators.Theme;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
@@ -19,14 +18,11 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             Indicator = indicatorSettings.GetIndicator();
             Name = Indicator.DisplayName;
             Indicator.ParameterChanged += Indicator_ParameterChanged;
-            Indicator.DisplayChanged += Indicator_DisplayChanged; ;
         }
-
 
         protected new void Dispose()
         {
             Indicator.ParameterChanged -= Indicator_ParameterChanged;
-            Indicator.DisplayChanged -= Indicator_DisplayChanged;
             foreach (var item in Items)
             {
                 item.Dispose();
@@ -34,15 +30,10 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             base.Dispose();
         }
 
-        private void Indicator_ParameterChanged(IIndicator indicator, ParameterValue parameterValue)
+        private void Indicator_ParameterChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Name = indicator.DisplayName;
-
-            this.IndicatorSettings.UpdateParameter(parameterValue);
-        }
-        private void Indicator_DisplayChanged(IIndicator indicator, IDisplayItem displayItem)
-        {
-            this.IndicatorSettings.UpdateDisplay(displayItem);
+            Name = Indicator.DisplayName;
+            RaisePropertyChanged(nameof(Name));
         }
 
         public string Name { get; set; }

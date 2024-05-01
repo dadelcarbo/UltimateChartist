@@ -28,10 +28,5 @@ public class IndicatorChartViewModel : ViewModelBase
     {
         ChartViewModel.RemoveIndicator(this);
     }
-
-    internal void Initialize(DataSerie dataSerie)
-    {
-        this.Indicator.Indicator.Initialize(dataSerie);
-    }
     #endregion
 }
