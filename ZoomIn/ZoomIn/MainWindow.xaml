@@ -27,20 +27,21 @@
                             <telerik:RadComboBox x:Name="InstrumentComboBox" Width="160" HorizontalAlignment="Left"
                                                      ItemsSource="{Binding Instruments}" DisplayMemberPath="Name"/>
                             <telerik:Label HorizontalAlignment="Left">Duration:</telerik:Label>
-                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left"
-                                                     ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
-                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left"
-                                                     ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
                             <StackPanel Orientation="Horizontal">
-                                <telerik:Label Content="EMA" Margin="2"/>
-                                <telerik:RadNumericUpDown Value="{Binding EmaPeriod}" Minimum="10" Maximum="300" Width="40" Margin="2" ValueFormat="Numeric" NumberDecimalDigits="0"/>
-                                <Button Content="Add" Command="{Binding AddIndicator}" Margin="2"/>
-                                <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}"
+                                <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
+                                                     ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
+                                <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}" Margin="1"
                                 Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14"/>
                             </StackPanel>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
-                            <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
+                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
+                                                     ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
+                            <telerik:GroupBox Header="MousePos">
+                                <StackPanel >
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding ChartViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.MaxIndex, StringFormat='MaxIndex: {0:0}'}"/>
+                                </StackPanel>
+                            </telerik:GroupBox>
                             <telerik:GroupBox Header="MousePos">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

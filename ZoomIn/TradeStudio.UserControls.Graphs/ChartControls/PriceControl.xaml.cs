@@ -46,6 +46,28 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         {
             InitializeComponent();
         }
+        public override void SetViewModel(ChartViewModel viewModel)
+        {
+            this.ViewModel = viewModel;
+
+            viewModel.PriceIndicators.CollectionChanged += PriceIndicators_CollectionChanged;
+        }
+
+        private void PriceIndicators_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                    this.OnStockSerieChanged();
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
+                    break;
+            }
+        }
 
         private List<IChartShapeBase> shapes = new();
         protected override void OnStockSerieChanged()
@@ -60,29 +82,13 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             this.chartCanvas.Children.Clear();
             shapes.Clear();
 
-            #region Price Indicators (EMA, Cloud, Trail...)
-
-            foreach (var indicator in viewModel.PriceIndicators)
+            foreach (var indicatorSettings in viewModel.PriceIndicators)
             {
-                var ivm = new IndicatorViewModel(indicator, viewModel.DataSerie);
+                var ivm = new IndicatorViewModel(indicatorSettings, viewModel.DataSerie);
                 this.shapes.AddRange(ivm.Shapes);
 
                 ivm.GeometryChanged += Ivm_GeometryChanged;
             }
-
-            //var fill = new Fill() { };
-            //fill.CreateGeometry(closeSerie.CalculateEMA(12), closeSerie.CalculateEMA(26));
-            //this.shapes.Add(fill);
-
-            //var trail = new Trail() { };
-            //var upperBand = closeSerie.Mult(1.05);
-            //var lowerBand = closeSerie.Mult(0.95);
-            //double?[] longStop, shortStop;
-            //viewModel.Serie.Bars.CalculateBandTrailStop(lowerBand, upperBand, out longStop, out shortStop);
-            //trail.CreateGeometry(closeSerie, longStop, shortStop);
-            //this.shapes.Add(trail);
-
-            #endregion
 
             #region Price Candle/Barchart...
             switch (BarType)

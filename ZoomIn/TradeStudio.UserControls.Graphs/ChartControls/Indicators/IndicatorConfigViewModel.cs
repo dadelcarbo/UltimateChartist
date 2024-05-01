@@ -264,7 +264,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         {
             RadWindow.Confirm(new DialogParameters
             {
-                Content = "Are you sure you want to delete theme ?",
+                Content = $"Are you sure you want to delete theme {ChartViewModel.Theme.Name}?",
                 Closed = OnConfirmDeleteClosed,
                 DialogStartupLocation = WindowStartupLocation.CenterOwner
             });

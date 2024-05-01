@@ -93,6 +93,7 @@ public class ChartViewModel : ViewModelBase
             case DisplayType.Price:
             case DisplayType.TrailStop:
                 PriceIndicators.Remove(indicatorSettings);
+                OnPropertyChanged("PriceIndicators");
                 break;
             case DisplayType.Ranged:
             case DisplayType.NonRanged:

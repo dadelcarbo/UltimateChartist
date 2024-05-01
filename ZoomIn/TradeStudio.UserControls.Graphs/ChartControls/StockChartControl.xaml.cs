@@ -54,12 +54,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             InitializeComponent();
 
             viewModel = new ChartViewModel();
-            viewModel.Theme = Persister<TradeTheme>.Instance.Items.First();
-            this.DataContext = viewModel;
             foreach (var child in grid.ChildrenOfType<ChartControlBase>())
             {
                 child.SetViewModel(viewModel);
             }
+            viewModel.Theme = Persister<TradeTheme>.Instance.Items.First();
+            this.DataContext = viewModel;
         }
     }
 }

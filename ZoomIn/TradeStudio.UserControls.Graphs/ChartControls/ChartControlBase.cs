@@ -21,6 +21,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                     if (viewModel != null)
                     {
                         viewModel.PropertyChanged -= ViewModel_PropertyChanged;
+                        throw new InvalidOperationException("Change of viewModel unexpected");
                     }
                     viewModel = value;
                     if (viewModel != null)
@@ -45,6 +46,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 case "ZoomRange":
                     this.OnResize();
                     return;
+                case "PriceIndicators":
+                    this.OnIndicatorsChanged();
+                    break;
                 case "DataSerie":
                     this.OnStockSerieChanged();
                     return;
@@ -53,6 +57,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                     break;
             }
         }
+
+        protected virtual void OnIndicatorsChanged() { }
 
         protected abstract void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e);
         protected abstract void OnResize();
