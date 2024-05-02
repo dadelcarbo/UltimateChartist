@@ -26,11 +26,11 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
         public void CreateGeometry(double?[] values)
         {
             var geometryGroup = new GeometryGroup();
-            var streamGeometry = new StreamGeometry();
 
             var indexes = values.GetNotNullIndexes();
             foreach (var item in indexes)
             {
+                var streamGeometry = new StreamGeometry();
                 using (StreamGeometryContext ctx = streamGeometry.Open())
                 {
                     ctx.BeginFigure(new Point(item.Start, values[item.Start].Value), false, false);

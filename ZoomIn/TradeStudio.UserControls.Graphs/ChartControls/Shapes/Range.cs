@@ -29,27 +29,28 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             geometry = geometryGroup;
         }
 
-        public void CreateGeometry(double?[] lows, double?[] highs)
+        public void CreateGeometry(double?[] stop, double?[] close)
         {
             var geometryGroup = new GeometryGroup();
-            var streamGeometry = new StreamGeometry();
 
-            var indexes = lows.GetNotNullIndexes();
+            var indexes = stop.GetNotNullIndexes();
             foreach (var item in indexes)
             {
+                var streamGeometry = new StreamGeometry();
                 using (StreamGeometryContext ctx = streamGeometry.Open())
                 {
-                    ctx.BeginFigure(new Point(item.Start, lows[item.Start].Value), true, true);
+                    ctx.BeginFigure(new Point(item.Start, stop[item.Start].Value), true, false);
 
                     for (int i = item.Start + 1; i <= item.End; i++)
                     {
-                        ctx.LineTo(new Point(i, lows[i].Value), true /* is stroked */, false /* is smooth join */);
+                        ctx.LineTo(new Point(i, stop[i].Value), true /* is stroked */, false /* is smooth join */);
                     }
-                    ctx.LineTo(new Point(item.End, highs[item.End].Value), false /* is stroked */, false /* is smooth join */);
+                    ctx.LineTo(new Point(item.End, close[item.End].Value), false /* is stroked */, false /* is smooth join */);
                     for (int i = item.End - 1; i >= item.Start; i--)
                     {
-                        ctx.LineTo(new Point(i, highs[i].Value), true /* is stroked */, false /* is smooth join */);
+                        ctx.LineTo(new Point(i, close[i].Value), false /* is stroked */, false /* is smooth join */);
                     }
+                    ctx.LineTo(new Point(item.Start, stop[item.Start].Value), false /* is stroked */, false /* is smooth join */);
                 }
                 geometryGroup.Children.Add(streamGeometry);
             }

@@ -11,6 +11,7 @@ using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Range = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Range;
 using Telerik.Windows.Controls.ChartView;
+using Telerik.Windows.Documents.Model.Drawing.Charts;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
@@ -71,7 +72,7 @@ public class IndicatorViewModel : ViewModelBase
             {
                 case "IndicatorLineSeries":
                     {
-                        var lineSeries = new Curve() { Tag = this };
+                        var lineSeries = new Curve { Tag = this, DataContext = indicator };
 
                         var binding = new Binding($"Series.Curve.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
@@ -79,7 +80,6 @@ public class IndicatorViewModel : ViewModelBase
                         binding = new Binding($"Series.Curve.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
 
                         Shapes.Add(lineSeries);
@@ -87,27 +87,24 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorLineSignalSeries":
                     {
-                        var lineSeries = new Curve() { Tag = this };
+                        var lineSeries = new Curve { Tag = this, DataContext = indicator };
 
                         var binding = new Binding($"Series.Signal.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
                         binding = new Binding($"Series.Signal.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
-
 
                         Shapes.Add(lineSeries);
 
-                        lineSeries = new Curve() { Tag = this };
+                        lineSeries = new Curve { Tag = this, DataContext = indicator };
+
                         binding = new Binding($"Series.Curve.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
                         binding = new Binding($"Series.Curve.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
-                        binding = new Binding($"Series.Values");
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
 
                         Shapes.Add(lineSeries);
@@ -115,7 +112,7 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorRangeSeries":
                     {
-                        var rangeSeries = new Range() { Tag = this };
+                        var rangeSeries = new Range { Tag = this, DataContext = indicator };
 
                         var binding = new Binding($"Series.Area.Fill");
                         rangeSeries.SetBinding(Shape.FillProperty, binding);
@@ -124,7 +121,6 @@ public class IndicatorViewModel : ViewModelBase
                         binding = new Binding($"Series.Area.Stroke");
                         rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                        rangeSeries.DataContext = indicator;
                         var rangeValues = (IndicatorRangeValues)indicator.Series.Values;
                         rangeSeries.CreateGeometry(rangeValues.Low, rangeValues.High);
 
@@ -133,7 +129,7 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorBandSeries":
                     {
-                        var rangeSeries = new Range() { Tag = this };
+                        var rangeSeries = new Range { Tag = this, DataContext = indicator };
 
                         var binding = new Binding($"Series.Area.Fill");
                         rangeSeries.SetBinding(Shape.FillProperty, binding);
@@ -142,20 +138,18 @@ public class IndicatorViewModel : ViewModelBase
                         binding = new Binding($"Series.Area.Stroke");
                         rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                        rangeSeries.DataContext = indicator;
                         var bandValues = (IndicatorBandValues)indicator.Series.Values;
                         rangeSeries.CreateGeometry(bandValues.Low, bandValues.High);
 
                         Shapes.Add(rangeSeries);
 
-                        var lineSeries = new Curve() { Tag = this };
+                        var lineSeries = new Curve { Tag = this, DataContext = indicator };
 
                         binding = new Binding($"Series.MidLine.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
                         binding = new Binding($"Series.MidLine.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry(bandValues.Mid);
 
                         Shapes.Add(lineSeries);
@@ -163,33 +157,31 @@ public class IndicatorViewModel : ViewModelBase
                     break;
                 case "IndicatorTrailSeries":
                     {
-                        var trailValues = (IndicatorTrailValues) indicator.Series.Values;
+                        var trailValues = (IndicatorTrailValues)indicator.Series.Values;
 
-                        var lineSeries = new Curve() { Tag = this };
+                        var lineSeries = new Curve { Tag = this, DataContext = indicator };
 
                         var binding = new Binding($"Series.LongReentry.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
                         binding = new Binding($"Series.LongReentry.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry(trailValues.LongReentry);
 
                         Shapes.Add(lineSeries);
 
-                        lineSeries = new Curve() { Tag = this };
+                        lineSeries = new Curve { Tag = this, DataContext = indicator };
 
                         binding = new Binding($"Series.ShortReentry.Stroke");
                         lineSeries.SetBinding(Shape.StrokeProperty, binding);
                         binding = new Binding($"Series.ShortReentry.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.DataContext = indicator;
                         lineSeries.CreateGeometry(trailValues.ShortReentry);
 
                         Shapes.Add(lineSeries);
 
-                        var rangeSeries = new Range() { Tag = this };
+                        var rangeSeries = new Range { Tag = this, DataContext = indicator };
 
                         binding = new Binding($"Series.Long.Fill");
                         rangeSeries.SetBinding(Shape.FillProperty, binding);
@@ -198,20 +190,18 @@ public class IndicatorViewModel : ViewModelBase
                         binding = new Binding($"Series.Long.Stroke");
                         rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                        rangeSeries.DataContext = indicator;
                         rangeSeries.CreateGeometry(trailValues.Long, trailValues.High);
                         Shapes.Add(rangeSeries);
 
-                        rangeSeries = new Range() { Tag = this };
+                        rangeSeries = new Range { Tag = this, DataContext = indicator };
 
                         binding = new Binding($"Series.Short.Fill");
-                        rangeSeries.SetBinding(RangeSeries.FillProperty, binding);
+                        rangeSeries.SetBinding(Shape.FillProperty, binding);
                         binding = new Binding($"Series.Short.Thickness");
-                        rangeSeries.SetBinding(RangeSeries.StrokeThicknessProperty, binding);
+                        rangeSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
                         binding = new Binding($"Series.Short.Stroke");
-                        rangeSeries.SetBinding(RangeSeries.StrokeProperty, binding);
+                        rangeSeries.SetBinding(Shape.StrokeProperty, binding);
 
-                        rangeSeries.DataContext = indicator;
                         rangeSeries.CreateGeometry(trailValues.Short, trailValues.Low);
 
                         Shapes.Add(rangeSeries);
@@ -219,7 +209,7 @@ public class IndicatorViewModel : ViewModelBase
                     }
                     break;
                 default: // §§§§
-                        throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
+                    throw new NotImplementedException($"Series type not implemented {indicatorSeries.GetType().Name} in IndicatorViewModel");
             }
         }
     }

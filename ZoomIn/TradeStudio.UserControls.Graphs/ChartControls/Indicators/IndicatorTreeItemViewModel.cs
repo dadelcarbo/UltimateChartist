@@ -11,15 +11,15 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
     {
         public IndicatorTreeItemViewModel(string name)
         {
-            Name = name;
+            this.name = name;
         }
         public IndicatorTreeItemViewModel(IndicatorSettings indicatorSettings)
         {
             IndicatorSettings = indicatorSettings;
             Indicator = indicatorSettings.GetIndicator();
-            Name = Indicator.DisplayName;
+            this.name = Indicator.DisplayName;
             Indicator.ParameterChanged += Indicator_ParameterChanged;
-            Indicator.DisplayChanged += Indicator_DisplayChanged; ;
+            Indicator.DisplayChanged += Indicator_DisplayChanged;
         }
 
 
@@ -45,7 +45,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             this.IndicatorSettings.UpdateDisplay(displayItem);
         }
 
-        public string Name { get; set; }
+        private string name;
+        public string Name { get { return name; } set { if (name != value) { name = value; RaisePropertyChanged(); } } }
+
         public ObservableCollection<IndicatorTreeItemViewModel> Items { get; set; } = new ObservableCollection<IndicatorTreeItemViewModel>();
         public IIndicator Indicator { get; private set; }
 
