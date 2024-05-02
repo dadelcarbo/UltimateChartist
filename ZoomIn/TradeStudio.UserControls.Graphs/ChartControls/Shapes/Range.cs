@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using TradeStudio.Common.Extensions;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
@@ -35,7 +34,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             var geometryGroup = new GeometryGroup();
             var streamGeometry = new StreamGeometry();
 
-            var indexes = GetNotNullIndexes(lows);
+            var indexes = lows.GetNotNullIndexes();
             foreach (var item in indexes)
             {
                 using (StreamGeometryContext ctx = streamGeometry.Open())
@@ -47,7 +46,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
                         ctx.LineTo(new Point(i, lows[i].Value), true /* is stroked */, false /* is smooth join */);
                     }
                     ctx.LineTo(new Point(item.End, highs[item.End].Value), false /* is stroked */, false /* is smooth join */);
-                    for (int i = item.End -1; i >= item.Start; i--)
+                    for (int i = item.End - 1; i >= item.Start; i--)
                     {
                         ctx.LineTo(new Point(i, highs[i].Value), true /* is stroked */, false /* is smooth join */);
                     }

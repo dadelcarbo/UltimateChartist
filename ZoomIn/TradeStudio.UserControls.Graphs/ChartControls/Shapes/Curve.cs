@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using TradeStudio.Common.Extensions;
+using System.Windows;
 using System.Windows.Media;
-using Telerik.Windows.Documents.Spreadsheet.Model;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
 {
@@ -28,7 +28,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             var geometryGroup = new GeometryGroup();
             var streamGeometry = new StreamGeometry();
 
-            var indexes = GetNotNullIndexes(values);
+            var indexes = values.GetNotNullIndexes();
             foreach (var item in indexes)
             {
                 using (StreamGeometryContext ctx = streamGeometry.Open())
