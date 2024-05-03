@@ -99,19 +99,6 @@ namespace ZoomIn
             set { ChartViewModel.BarType = value; }
         }
 
-        private int emaPeriod = 20;
-
-        public int EmaPeriod { get => emaPeriod; set => SetProperty(ref emaPeriod, value); }
-
-        private DelegateCommand addIndicator;
-        public ICommand AddIndicator => addIndicator ??= new DelegateCommand(PerformAddIndicator);
-
-        private void PerformAddIndicator(object commandParameter)
-        {
-            var indicator = new TradeIndicator_EMA { Period = emaPeriod };
-            ChartViewModel.AddIndicator(new(indicator));
-        }
-
         private DelegateCommand graphSettingsCommand;
         public ICommand GraphSettingsCommand => graphSettingsCommand ??= new DelegateCommand(GraphSettings);
 

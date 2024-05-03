@@ -71,38 +71,26 @@ public class ChartViewModel : ViewModelBase
 
     public void AddIndicator(IndicatorSettings indicatorSettings)
     {
-        switch (indicatorSettings.DisplayType)
+        switch (indicatorSettings.DisplayTarget)
         {
-            case DisplayType.Price:
-            case DisplayType.TrailStop:
+            case DisplayTarget.Price:
                 PriceIndicators.Add(indicatorSettings);
                 break;
-            case DisplayType.Volume:
-            case DisplayType.Ranged:
-            case DisplayType.NonRanged:
+            default:
                 Indicators.Add(new IndicatorChartViewModel(this, indicatorSettings));
                 break;
-            default:
-                throw new NotImplementedException($"DisplayType {indicatorSettings.DisplayType} not implemented !");
         }
     }
     public void RemoveIndicator(IndicatorSettings indicatorSettings)
     {
-        switch (indicatorSettings.DisplayType)
+        switch (indicatorSettings.DisplayTarget)
         {
-            case DisplayType.Price:
-            case DisplayType.TrailStop:
+            case DisplayTarget.Price:
                 PriceIndicators.Remove(indicatorSettings);
                 OnPropertyChanged("PriceIndicators");
                 break;
-            case DisplayType.Ranged:
-            case DisplayType.NonRanged:
-                //Indicators.RemoveAll(i => i.Indicator == indicatorSettings); // §§§§
-                break;
-            case DisplayType.Volume:
-                Indicators.RemoveAll(i => i.Indicator?.IndicatorSettings == indicatorSettings);
-                break;
             default:
+                //Indicators.RemoveAll(i => i.Indicator == indicatorSettings); // §§§§
                 break;
         }
     }

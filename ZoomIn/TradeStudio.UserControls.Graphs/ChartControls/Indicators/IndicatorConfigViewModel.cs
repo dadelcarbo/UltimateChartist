@@ -73,20 +73,16 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             {
                 foreach (var indicatorSettings in theme.IndicatorSettings)
                 {
-                    switch (indicatorSettings.DisplayType)
+                    switch (indicatorSettings.DisplayTarget)
                     {
-                        case DisplayType.Price:
-                        case DisplayType.TrailStop:
+                        case DisplayTarget.Price:
                             priceTreeViewModel.Add(new IndicatorTreeItemViewModel(indicatorSettings));
                             break;
-                        case DisplayType.Ranged:
-                        case DisplayType.NonRanged:
+                        default:
                             var indicatorTreeViewModel = new IndicatorTreeItemViewModel($"Indicator{count++} Graph");
                             indicatorTreeViewModel.Items.Add(new IndicatorTreeItemViewModel(indicatorSettings));
                             root.Add(indicatorTreeViewModel);
                             break;
-                        case DisplayType.Volume:
-                            throw new NotImplementedException();
                     }
                 }
             }

@@ -6,12 +6,10 @@ using TradeStudio.Data.Indicators;
 using TradeStudio.Data.DataProviders;
 using System.Windows.Shapes;
 using TradeStudio.Data.Indicators.Display;
-using Curve = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Curve;
 using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Range = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Range;
-using Telerik.Windows.Controls.ChartView;
-using Telerik.Windows.Documents.Model.Drawing.Charts;
+using Curve = TradeStudio.UserControls.Graphs.ChartControls.Shapes.Curve;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
