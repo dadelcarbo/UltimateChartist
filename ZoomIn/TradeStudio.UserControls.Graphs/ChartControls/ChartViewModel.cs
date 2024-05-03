@@ -15,6 +15,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls;
 [DebuggerDisplay("Name={Instrument?.Name} Duration={Duration} Theme={Theme?.Name}")]
 public class ChartViewModel : ViewModelBase
 {
+    PriceControlViewModel priceControlViewModel = new PriceControlViewModel();
+    public PriceControlViewModel PriceControlViewModel => priceControlViewModel;
     public ChartViewModel()
     {
 
@@ -75,6 +77,7 @@ public class ChartViewModel : ViewModelBase
         {
             case DisplayTarget.Price:
                 PriceIndicators.Add(indicatorSettings);
+                PriceControlViewModel.Indicators.Add(indicatorSettings.GetIndicator());
                 break;
             default:
                 Indicators.Add(new IndicatorChartViewModel(this, indicatorSettings));

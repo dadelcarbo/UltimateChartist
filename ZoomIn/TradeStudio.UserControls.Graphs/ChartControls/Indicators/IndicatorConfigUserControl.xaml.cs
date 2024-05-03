@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,6 +19,24 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 /// </summary>
 public partial class IndicatorConfigUserControl : UserControl
 {
+
+
+    public IIndicator Indicator
+    {
+        get { return (IIndicator)GetValue(IndicatorProperty); }
+        set { SetValue(IndicatorProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Indicator.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty IndicatorProperty =
+        DependencyProperty.Register("Indicator", typeof(IIndicator), typeof(IndicatorConfigUserControl), new PropertyMetadata(null, OnIndicatorChanged));
+
+    private static void OnIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var indicatorConfigUserControl = (IndicatorConfigUserControl)d;
+        indicatorConfigUserControl.SetIndicator(indicatorConfigUserControl.Indicator, true);
+    }
+
     public IndicatorConfigUserControl()
     {
         InitializeComponent();
