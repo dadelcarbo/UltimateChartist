@@ -13,10 +13,10 @@ public class IndicatorChartViewModel : ViewModelBase
     public ChartViewModel ChartViewModel { get; }
     public IndicatorViewModel Indicator { get; }
 
-    public IndicatorChartViewModel(ChartViewModel chartViewModel, IndicatorSettings indicatorSettings)
+    public IndicatorChartViewModel(ChartViewModel chartViewModel, IIndicator indicator)
     {
         ChartViewModel = chartViewModel;
-        Indicator = new IndicatorViewModel(indicatorSettings, chartViewModel.DataSerie);
+        Indicator = new IndicatorViewModel(indicator, chartViewModel.DataSerie);
     }
 
     #region Commands

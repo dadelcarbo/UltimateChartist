@@ -18,44 +18,55 @@ public class IndicatorViewModel : ViewModelBase
 {
     public event GeometryChangedEventHandler GeometryChanged;
 
-    public IndicatorSettings IndicatorSettings { get; }
+    public string DisplayName => Indicator?.DisplayName;
 
     public List<IChartShapeBase> Shapes { get; } = new();
     public IndicatorViewModel() { }
 
     private DataSerie dataSerie;
-    private IIndicator indicator;
-    public IndicatorViewModel(IndicatorSettings indicatorSettings, DataSerie dataSerie)
+    public IIndicator Indicator { get;}
+
+    public IndicatorViewModel(IIndicator indicator, DataSerie dataSerie)
     {
-        this.IndicatorSettings = indicatorSettings;
-        indicator = indicatorSettings.GetIndicator();
+        this.Indicator = indicator;
+        indicator.ParameterChanged += Indicator_ParameterChanged;
+
         this.dataSerie = dataSerie;
         if (dataSerie != null)
+        {
             indicator.Initialize(dataSerie);
-
-        this.GetIndicatorGeometry(indicator);
-
-        IndicatorSettings.ParameterChanged += IndicatorSettings_ParameterChanged;
-        IndicatorSettings.DisplayChanged += IndicatorSettings_DisplayChanged;
+            this.GetIndicatorGeometry(indicator);
+        }
     }
 
-    private void IndicatorSettings_DisplayChanged(DisplaySettings displaySettings)
+    public void SetDataSerie(DataSerie dataSerie)
     {
-        var seriesType = indicator.Series.GetType();
-        var prop = seriesType.GetProperty(displaySettings.Name);
-        var displayItem = prop.GetValue(indicator.Series) as IDisplayItem;
-        displayItem.FromJson(displaySettings.Json);
+        this.dataSerie = dataSerie;
+        if (dataSerie != null)
+        {
+            Indicator.Initialize(dataSerie);
+        }
+        this.GetIndicatorGeometry(Indicator);
+        this.GeometryChanged?.Invoke(this);
     }
-
-    private void IndicatorSettings_ParameterChanged(IndicatorSettings indicatorSettings)
+    private void Indicator_ParameterChanged(IIndicator indicator, ParameterValue parameterValue)
     {
-        indicator = indicatorSettings.GetIndicator();
         if (indicator != null && dataSerie != null)
         {
             indicator.Initialize(dataSerie);
         }
         this.GetIndicatorGeometry(indicator);
         this.GeometryChanged?.Invoke(this);
+
+        OnPropertyChanged(nameof(DisplayName));
+    }
+
+    private void IndicatorSettings_DisplayChanged(DisplaySettings displaySettings) // %%%%
+    {
+        var seriesType = Indicator.Series.GetType();
+        var prop = seriesType.GetProperty(displaySettings.Name);
+        var displayItem = prop.GetValue(Indicator.Series) as IDisplayItem;
+        displayItem.FromJson(displaySettings.Json);
     }
 
     void GetIndicatorGeometry(IIndicator indicator)

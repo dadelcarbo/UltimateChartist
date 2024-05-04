@@ -44,6 +44,8 @@ public partial class IndicatorConfigUserControl : UserControl
 
     public void SetIndicator(IIndicator indicator, bool showDisplay = true)
     {
+        if (indicator == null)
+            return;
         this.DataContext = indicator;
 
         // Parameters control

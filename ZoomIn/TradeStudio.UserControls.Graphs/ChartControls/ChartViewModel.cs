@@ -9,6 +9,7 @@ using TradeStudio.Data.Instruments;
 using System.Windows.Media;
 using System.Linq;
 using System.Diagnostics;
+using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls;
 
@@ -39,7 +40,6 @@ public class ChartViewModel : ViewModelBase
     }
     #endregion    #region THEME & INDICATORS
 
-    public ObservableCollection<IndicatorSettings> PriceIndicators { get; set; } = new();
     public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
     public void RemoveIndicator(IndicatorChartViewModel indicatorViewModel)
@@ -57,7 +57,7 @@ public class ChartViewModel : ViewModelBase
             {
                 theme = value;
                 Indicators.Clear();
-                PriceIndicators.Clear();
+                PriceControlViewModel.Indicators.Clear();
                 if (theme != null)
                 {
                     foreach (var indicatorSettings in theme.IndicatorSettings)
@@ -76,29 +76,27 @@ public class ChartViewModel : ViewModelBase
         switch (indicatorSettings.DisplayTarget)
         {
             case DisplayTarget.Price:
-                PriceIndicators.Add(indicatorSettings);
-                PriceControlViewModel.Indicators.Add(indicatorSettings.GetIndicator());
+                PriceControlViewModel.Indicators.Add(new IndicatorViewModel(indicatorSettings.GetIndicator(), this.DataSerie));
                 break;
             default:
-                Indicators.Add(new IndicatorChartViewModel(this, indicatorSettings));
+                Indicators.Add(new IndicatorChartViewModel(this, indicatorSettings.GetIndicator()));
                 break;
         }
     }
     public void RemoveIndicator(IndicatorSettings indicatorSettings)
     {
-        switch (indicatorSettings.DisplayTarget)
-        {
-            case DisplayTarget.Price:
-                PriceIndicators.Remove(indicatorSettings);
-                OnPropertyChanged("PriceIndicators");
-                break;
-            default:
-                //Indicators.RemoveAll(i => i.Indicator == indicatorSettings); // §§§§
-                break;
-        }
+        return; // §§§§
+        //switch (indicatorSettings.DisplayTarget)
+        //{
+        //    case DisplayTarget.Price:
+        //        PriceIndicators.Remove(indicatorSettings);
+        //        OnPropertyChanged("PriceIndicators");
+        //        break;
+        //    default:
+        //        //Indicators.RemoveAll(i => i.Indicator == indicatorSettings); // §§§§
+        //        break;
+        //}
     }
-
-
 
     public int MaxIndex => serie?.Bars == null ? 0 : serie.Bars.Count - 1;
 

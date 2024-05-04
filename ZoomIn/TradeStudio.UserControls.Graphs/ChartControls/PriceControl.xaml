@@ -25,12 +25,12 @@
                                 BorderBrush="Transparent" DropDownIndicatorVisibility="Collapsed"
                                 Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="10">
                             <telerik:RadDropDownButton.DropDownContent>
-                                <indicator:IndicatorConfigUserControl Indicator="{Binding}">
+                                <indicator:IndicatorConfigUserControl Indicator="{Binding Indicator}">
                                 </indicator:IndicatorConfigUserControl>
                             </telerik:RadDropDownButton.DropDownContent>
                         </telerik:RadDropDownButton>
                         <Button VerticalAlignment="Center"  Margin="0,2,0,0" Background="Transparent" BorderBrush="Transparent" Padding="0"
-                                Command="{Binding DataContext.PriceControlViewModel.DeleteIndicatorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type chartcontrols:PriceControl}}, ValidatesOnNotifyDataErrors=False}" CommandParameter="{Binding}"
+                                Command="{Binding DataContext.PriceControlViewModel.DeleteIndicatorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type chartcontrols:PriceControl}}}" CommandParameter="{Binding}"
                                 Content="{StaticResource GlyphClose}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="10"/>
                     </StackPanel>
                 </DataTemplate>

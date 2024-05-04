@@ -50,7 +50,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         {
             this.ViewModel = viewModel;
 
-            viewModel.PriceIndicators.CollectionChanged += PriceIndicators_CollectionChanged;
+            viewModel.PriceControlViewModel.Indicators.CollectionChanged += PriceIndicators_CollectionChanged;
         }
 
         private void PriceIndicators_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -82,9 +82,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             this.chartCanvas.Children.Clear();
             shapes.Clear();
 
-            foreach (var indicatorSettings in viewModel.PriceIndicators)
+            foreach (var ivm in ViewModel.PriceControlViewModel.Indicators)
             {
-                var ivm = new IndicatorViewModel(indicatorSettings, viewModel.DataSerie);
+                ivm.SetDataSerie(viewModel.DataSerie);
                 this.shapes.AddRange(ivm.Shapes);
 
                 ivm.GeometryChanged += Ivm_GeometryChanged;

@@ -9,12 +9,13 @@ using System.Windows.Input;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.Indicators;
 using TradeStudio.Data.Indicators.Theme;
+using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     public class PriceControlViewModel : ViewModelBase
     {
-        public ObservableCollection<IIndicator> Indicators { get; set; } = new();
+        public ObservableCollection<IndicatorViewModel> Indicators { get; set; } = new();
 
 
         private DelegateCommand deleteIndicatorCommand;
@@ -22,7 +23,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private void DeleteIndicator(object commandParameter)
         {
-            this.Indicators.Remove(commandParameter as IIndicator);
+            this.Indicators.Remove(commandParameter as IndicatorViewModel);
         }
 
     }
