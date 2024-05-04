@@ -24,7 +24,7 @@ public class IndicatorViewModel : ViewModelBase
     public IndicatorViewModel() { }
 
     private DataSerie dataSerie;
-    public IIndicator Indicator { get;}
+    public IIndicator Indicator { get; }
 
     public IndicatorViewModel(IIndicator indicator, DataSerie dataSerie)
     {
@@ -59,14 +59,6 @@ public class IndicatorViewModel : ViewModelBase
         this.GeometryChanged?.Invoke(this);
 
         OnPropertyChanged(nameof(DisplayName));
-    }
-
-    private void IndicatorSettings_DisplayChanged(DisplaySettings displaySettings) // %%%%
-    {
-        var seriesType = Indicator.Series.GetType();
-        var prop = seriesType.GetProperty(displaySettings.Name);
-        var displayItem = prop.GetValue(Indicator.Series) as IDisplayItem;
-        displayItem.FromJson(displaySettings.Json);
     }
 
     void GetIndicatorGeometry(IIndicator indicator)
@@ -222,8 +214,6 @@ public class IndicatorViewModel : ViewModelBase
             }
         }
     }
-
-
 }
 
 public interface IIndicatorParameterViewModel

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ZoomIn" 
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:chartcontrols="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls;assembly=TradeStudio.UserControls.Graphs"
+        xmlns:indicator="clr-namespace:TradeStudio.Data.Indicators;assembly=TradeStudio.Data"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1000">
@@ -32,6 +33,26 @@
                                                      ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
                                 <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}" Margin="1"
                                 Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14"/>
+                                <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed"  Content="&#xea0d;" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14" >
+                                    <telerik:EventToCommandBehavior.EventBindings>
+                                        <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
+                                        <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" PassEventArgsToCommand="True" EventName="DropDownOpening" />
+                                    </telerik:EventToCommandBehavior.EventBindings>
+                                    <telerik:RadDropDownButton.DropDownContent>
+                                        <telerik:RadGridView ItemsSource="{Binding Source={x:Static indicator:IndicatorManager.Indicators}}" RowIndicatorVisibility="Collapsed"
+                              AutoGenerateColumns="False" ShowGroupPanel="False" CanUserDeleteRows="False" FrozenColumnsSplitterVisibility="Collapsed" 
+                              SelectionMode="Single" SelectionUnit="FullRow"
+                              SelectedItem="{Binding NewIndicator, Mode=TwoWay}">
+                                            <telerik:RadGridView.Columns>
+                                                <telerik:GridViewDataColumn Header="Name" MinWidth="100" DataMemberBinding="{Binding ShortName}"/>
+                                                <telerik:GridViewDataColumn Header="Type" MinWidth="80" DataMemberBinding="{Binding DisplayType}"/>
+                                            </telerik:RadGridView.Columns>
+                                            <telerik:EventToCommandBehavior.EventBindings>
+                                                <telerik:EventBinding EventName="SelectionChanged" Command="telerik:PopupCommands.CloseAll" RaiseOnHandledEvents="True" />
+                                            </telerik:EventToCommandBehavior.EventBindings>
+                                        </telerik:RadGridView>
+                                    </telerik:RadDropDownButton.DropDownContent>
+                                </telerik:RadDropDownButton>
                             </StackPanel>
                             <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
                                                      ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>

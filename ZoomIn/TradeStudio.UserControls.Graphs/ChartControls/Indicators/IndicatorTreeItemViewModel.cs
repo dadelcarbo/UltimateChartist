@@ -19,14 +19,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
             Indicator = indicatorSettings.GetIndicator();
             this.name = Indicator.DisplayName;
             Indicator.ParameterChanged += Indicator_ParameterChanged;
-            Indicator.DisplayChanged += Indicator_DisplayChanged;
         }
 
 
         protected new void Dispose()
         {
             Indicator.ParameterChanged -= Indicator_ParameterChanged;
-            Indicator.DisplayChanged -= Indicator_DisplayChanged;
             foreach (var item in Items)
             {
                 item.Dispose();
@@ -37,14 +35,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators
         private void Indicator_ParameterChanged(IIndicator indicator, ParameterValue parameterValue)
         {
             Name = indicator.DisplayName;
-
-            this.IndicatorSettings.UpdateParameter(parameterValue);
         }
-        private void Indicator_DisplayChanged(IIndicator indicator, IDisplayItem displayItem)
-        {
-            this.IndicatorSettings.UpdateDisplay(displayItem);
-        }
-
         private string name;
         public string Name { get { return name; } set { if (name != value) { name = value; RaisePropertyChanged(); } } }
 

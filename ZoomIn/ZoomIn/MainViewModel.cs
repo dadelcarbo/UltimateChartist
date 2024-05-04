@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.OData.UriParser;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -112,5 +113,32 @@ namespace ZoomIn
             };
             indicatorSelectorWindow.ShowDialog();
         }
+
+        #region Add Indicator Drop Down Button
+
+        private DelegateCommand dropDownClosedCommand;
+        public ICommand DropDownClosedCommand => dropDownClosedCommand ??= new DelegateCommand(DropDownClosed);
+
+        private void DropDownClosed(object commandParameter)
+        {
+            if (NewIndicator != null)
+            {
+                ChartViewModel.AddIndicator(new IndicatorSettings(NewIndicator.CreateInstance()));
+                NewIndicator = null;
+            }
+        }
+
+        private DelegateCommand dropDownOpeningCommand;
+        public ICommand DropDownOpeningCommand => dropDownOpeningCommand ??= new DelegateCommand(DropDownOpening);
+
+        private void DropDownOpening(object commandParameter)
+        {
+            NewIndicator = null;
+        }
+
+        private IndicatorDescriptor newIndicator;
+        public IndicatorDescriptor NewIndicator { get => newIndicator; set { if (newIndicator != value) { newIndicator = value; RaisePropertyChanged(); } } }
+
+        #endregion
     }
 }

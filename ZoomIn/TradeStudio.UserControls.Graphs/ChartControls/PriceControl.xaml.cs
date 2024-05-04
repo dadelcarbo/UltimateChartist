@@ -84,6 +84,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
             foreach (var ivm in ViewModel.PriceControlViewModel.Indicators)
             {
+                ivm.GeometryChanged -= Ivm_GeometryChanged;
+
                 ivm.SetDataSerie(viewModel.DataSerie);
                 this.shapes.AddRange(ivm.Shapes);
 
@@ -111,7 +113,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             }
             #endregion
 
-            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
+            this.chartCanvas.Children.AddRange(shapes);
             this.OnResize();
         }
 
