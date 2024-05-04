@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
@@ -142,24 +143,17 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         private void GeneratePriceBars<T>() where T : BarsShapeBase, new()
         {
-            for (int i = 0; i < viewModel.DataSerie.Bars.Count; i++)
-            {
-                var bar = viewModel.DataSerie.Bars[i];
-                BarsShapeBase shape = new T() { StrokeThickness = 1 };
-                shape.CreateGeometry(bar, i);
+            BarsShapeBase shape = new T() { StrokeThickness = 1 };
+            shape.CreateGeometry(viewModel.DataSerie.Bars, true);
+            shape.Stroke = Brushes.DarkGreen;
+            shape.Fill = Brushes.Green;
+            shapes.Add(shape);
 
-                if (bar.Close >= bar.Open)
-                {
-                    shape.Stroke = Brushes.DarkGreen;
-                    shape.Fill = Brushes.Green;
-                }
-                else
-                {
-                    shape.Stroke = Brushes.DarkRed;
-                    shape.Fill = Brushes.Red;
-                }
-                shapes.Add(shape);
-            }
+            shape = new T() { StrokeThickness = 1 };
+            shape.CreateGeometry(viewModel.DataSerie.Bars, false);
+            shape.Stroke = Brushes.DarkRed;
+            shape.Fill = Brushes.Red;
+            shapes.Add(shape);
         }
 
         protected override void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)

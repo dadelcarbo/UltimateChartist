@@ -12,15 +12,12 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
     }
     public abstract class ChartShapeBase : Shape, IChartShapeBase
     {
-        IEnumerable<Shape> shapes;
-        public ChartShapeBase()
-        {
-            shapes = new List<Shape>() { this };
-        }
+        IEnumerable<Shape> shapes = new List<Shape>();
 
         public void ApplyTransform(Transform transform)
         {
-            if (geometry == null) return;
+            if (geometry == null)
+                return;
             geometry.Transform = transform;
         }
 
@@ -33,6 +30,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
     public abstract class BarsShapeBase : ChartShapeBase, IChartShapeBase
     {
         public abstract void CreateGeometry(Bar bar, int index);
+        public abstract void CreateGeometry(List<Bar> bars, bool bullBars);
     }
 
 }
