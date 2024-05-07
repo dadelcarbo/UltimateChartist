@@ -33,7 +33,7 @@
                                                      ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
                                 <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}" Margin="1"
                                 Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14"/>
-                                <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed"  Content="&#xea0d;" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14" >
+                                <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Content="&#xea0d;" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14" >
                                     <telerik:EventToCommandBehavior.EventBindings>
                                         <telerik:EventBinding Command="{Binding DropDownClosedCommand}" EventName="DropDownClosed" />
                                         <telerik:EventBinding Command="{Binding DropDownOpeningCommand}" PassEventArgsToCommand="True" EventName="DropDownOpening" />
@@ -56,7 +56,7 @@
                             </StackPanel>
                             <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
                                                      ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
-                            <telerik:GroupBox Header="MousePos">
+                            <telerik:GroupBox Header="Zooming">
                                 <StackPanel >
                                     <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding ChartViewModel.ZoomRange.End, StringFormat='EndIndex: {0:0}'}"/>
@@ -97,7 +97,7 @@
                         </StackPanel>
                     </Border>
                     <Border Name="contentBorder" Grid.Row="0" Grid.Column="1" BorderThickness="1">
-                        <chartcontrols:StockChartControl x:Name="StockChartControl"
+                        <chartcontrols:TradeChartControl x:Name="TradeChartControl"
                                                          Instrument="{Binding SelectedItem, ElementName=InstrumentComboBox}"
                                                          Duration="{Binding Duration, Mode=TwoWay}"
                                                          />

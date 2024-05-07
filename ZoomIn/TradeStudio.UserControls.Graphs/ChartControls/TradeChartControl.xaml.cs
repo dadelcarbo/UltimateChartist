@@ -11,9 +11,9 @@ using TradeStudio.Data.Instruments;
 namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     /// <summary>
-    /// Interaction logic for StockChartControl.xaml
+    /// Interaction logic for TradeChartControl.xaml
     /// </summary>
-    public partial class StockChartControl : UserControl
+    public partial class TradeChartControl : UserControl
     {
         public BarDuration Duration
         {
@@ -23,11 +23,11 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         // Using a DependencyProperty as the backing store for Duration.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DurationProperty =
-            DependencyProperty.Register("Duration", typeof(BarDuration), typeof(StockChartControl), new PropertyMetadata(BarDuration.Daily, DurationChanged));
+            DependencyProperty.Register("Duration", typeof(BarDuration), typeof(TradeChartControl), new PropertyMetadata(BarDuration.Daily, DurationChanged));
 
         private static void DurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chart = (StockChartControl)d;
+            var chart = (TradeChartControl)d;
             chart.viewModel.Duration = chart.Duration;
         }
 
@@ -39,17 +39,17 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
         // Using a DependencyProperty as the backing store for Instrument.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty InstrumentProperty =
-            DependencyProperty.Register("Instrument", typeof(TradeInstrument), typeof(StockChartControl), new PropertyMetadata(null, InstrumentChanged));
+            DependencyProperty.Register("Instrument", typeof(TradeInstrument), typeof(TradeChartControl), new PropertyMetadata(null, InstrumentChanged));
 
         private static void InstrumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chart = (StockChartControl)d;
+            var chart = (TradeChartControl)d;
             chart.viewModel.Instrument = chart.Instrument;
         }
 
         private ChartViewModel viewModel;
         public ChartViewModel ViewModel => viewModel;
-        public StockChartControl()
+        public TradeChartControl()
         {
             InitializeComponent();
 

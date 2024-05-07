@@ -16,7 +16,7 @@ namespace ZoomIn
             this.DataContext = MainViewModel.Instance;
             InitializeComponent();
 
-            MainViewModel.Instance.ChartViewModel = this.StockChartControl.ViewModel;
+            MainViewModel.Instance.ChartViewModel = this.TradeChartControl.ViewModel;
             InstrumentComboBox.SelectedIndex = 0;
         }
     }

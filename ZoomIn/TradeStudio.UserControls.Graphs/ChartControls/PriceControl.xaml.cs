@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
-using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
@@ -351,7 +350,16 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         }
         #endregion
 
-        Point? drawingStartPoint;
-        Rectangle rect;
+        private void mouseCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            //if (e.Delta > 0)
+            //{
+            //    this.viewModel.ZoomRange.End += 50;
+            //}
+            //else
+            //{
+            //    this.viewModel.ZoomRange.Start -= 50;
+            //}
+        }
     }
 }
