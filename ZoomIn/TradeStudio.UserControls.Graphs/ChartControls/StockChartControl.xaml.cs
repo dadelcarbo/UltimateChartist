@@ -61,5 +61,10 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             viewModel.Theme = Persister<TradeTheme>.Instance.Items.First();
             this.DataContext = viewModel;
         }
+
+        private void Grid_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            this.overviewControl.overviewSlider_MouseWheel(sender, e);
+        }
     }
 }

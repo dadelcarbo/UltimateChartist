@@ -206,9 +206,9 @@
         <Canvas Name="overviewGraph" ClipToBounds="True" LayoutTransform="1 0 0 1 0 0" Margin="4,0,4,0"/>
         <telerik:RadSlider Name="overviewSlider"
             Minimum="0" Maximum="{Binding MaxIndex}" MinimumRangeSpan="{Binding MinRange}" MaximumRangeSpan="{Binding MaxRange}"
+            Selection="{Binding }"
             SelectionChanged="overviewSlider_SelectionChanged"
             IsSelectionRangeEnabled="True" RepeatInterval="1" SmallChange="1" LargeChange="1"
-            MouseWheel="overviewSlider_MouseWheel"
             SelectionMiddleThumbStyle="{StaticResource SelectionMiddleThumbStyle}"
             Template="{StaticResource SliderControlTemplate}"/>
     </Grid>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Input;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
@@ -54,10 +55,17 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         {
         }
 
-        private void overviewSlider_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        public void overviewSlider_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             var dir = Math.Sign(e.Delta) * this.viewModel.MaxIndex / 20;
-            this.overviewSlider.Selection = new SelectionRange<double>(Math.Max(0, this.viewModel.ZoomRange.Start + dir), this.viewModel.ZoomRange.End);
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                this.overviewSlider.Selection = new SelectionRange<double>(Math.Max(0, this.viewModel.ZoomRange.Start + dir), Math.Min(this.viewModel.ZoomRange.End + dir, this.ViewModel.MaxIndex));
+            }
+            else
+            {
+                this.overviewSlider.Selection = new SelectionRange<double>(Math.Max(0, this.viewModel.ZoomRange.Start + dir), this.viewModel.ZoomRange.End);
+            }
         }
     }
 }

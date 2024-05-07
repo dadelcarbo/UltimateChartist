@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
     </UserControl.Resources>
-    <Grid Background="Black">
+    <Grid Background="Black" MouseWheel="Grid_MouseWheel">
         <Grid Name="grid" Visibility="{Binding DataSerie, Converter={StaticResource NullToVisibilityConverter}}">
 
             <Grid.RowDefinitions >

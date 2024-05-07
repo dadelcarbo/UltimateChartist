@@ -15,8 +15,7 @@
         <Canvas Name="drawingCanvas" ClipToBounds="False" Background="Transparent"/>
         <Canvas Name="mouseCanvas" ClipToBounds="False" Background="Transparent" 
                 MouseMove="mouseCanvas_MouseMove" MouseLeave="mouseCanvas_MouseLeave" 
-                MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp" 
-                MouseWheel="mouseCanvas_MouseWheel"/>
+                MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp" />
         <ItemsControl ItemsSource="{Binding PriceControlViewModel.Indicators}" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

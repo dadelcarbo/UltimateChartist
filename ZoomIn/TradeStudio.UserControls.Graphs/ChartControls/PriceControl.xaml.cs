@@ -351,18 +351,6 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         }
         #endregion
 
-        private void mouseCanvas_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            //if (e.Delta > 0)
-            //{
-            //    this.viewModel.ZoomRange.End += 50;
-            //}
-            //else
-            //{
-            //    this.viewModel.ZoomRange.Start -= 50;
-            //}
-        }
-
         Point? drawingStartPoint;
         Rectangle rect;
     }
