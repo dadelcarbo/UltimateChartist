@@ -5,9 +5,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
@@ -263,6 +265,21 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         #region Mouse Events
         private void mouseCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            if (drawingStartPoint != null)
+            {
+                var pos = e.GetPosition(this);
+                // Mettez à jour la largeur et la hauteur du rectangle en fonction de la position de la souris
+                var x = Math.Min(pos.X, drawingStartPoint.Value.X);
+                var y = Math.Min(pos.Y, drawingStartPoint.Value.Y);
+                var w = Math.Max(pos.X, drawingStartPoint.Value.X) - x;
+                var h = Math.Max(pos.Y, drawingStartPoint.Value.Y) - y;
+
+                rect.Width = w;
+                rect.Height = h;
+                Canvas.SetLeft(rect, x);
+                Canvas.SetTop(rect, y);
+            }
+
             mouseCanvas.Children.Clear();
             var point = e.GetPosition(sender as IInputElement);
             if (point.X < 0 || point.X > mouseCanvas.ActualWidth || this.chartToPixelTransform?.Inverse == null)
@@ -298,16 +315,39 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         private void mouseCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             mouseCanvas.Children.Clear();
+
+            if (drawingStartPoint == null)
+                return;
+            this.drawingCanvas.Children.Remove(rect);
+            drawingStartPoint = null;
         }
 
         private void mouseCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                drawingStartPoint = e.GetPosition(this);
 
+                // Créez un nouveau rectangle si ce n'est pas déjà fait
+                rect = new Rectangle
+                {
+                    Stroke = Brushes.Green,
+                    StrokeThickness = 2
+                };
+                Canvas.SetLeft(rect, drawingStartPoint.Value.X);
+                Canvas.SetTop(rect, drawingStartPoint.Value.Y);
+                drawingCanvas.Children.Add(rect);
+            }
         }
 
         private void mouseCanvas_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (drawingStartPoint == null || rect == null)
+                return;
 
+            drawingCanvas.Children.Remove(rect);
+            rect = null;
+            drawingStartPoint = null;
         }
         #endregion
 
@@ -322,5 +362,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             //    this.viewModel.ZoomRange.Start -= 50;
             //}
         }
+
+        Point? drawingStartPoint;
+        Rectangle rect;
     }
 }

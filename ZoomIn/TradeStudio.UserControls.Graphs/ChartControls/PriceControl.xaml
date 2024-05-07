@@ -12,6 +12,7 @@
     <Grid>
         <Canvas Name="gridCanvas" ClipToBounds="False"/>
         <Canvas Name="chartCanvas" ClipToBounds="True"/>
+        <Canvas Name="drawingCanvas" ClipToBounds="False" Background="Transparent"/>
         <Canvas Name="mouseCanvas" ClipToBounds="False" Background="Transparent" 
                 MouseMove="mouseCanvas_MouseMove" MouseLeave="mouseCanvas_MouseLeave" 
                 MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp" 
