@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Telerik.Windows.Controls;
 using TradeStudio.Data.DataProviders;
@@ -16,8 +18,6 @@ namespace TradeStudio.UserControls.Graphs.ChartControls;
 [DebuggerDisplay("Name={Instrument?.Name} Duration={Duration} Theme={Theme?.Name}")]
 public class ChartViewModel : ViewModelBase
 {
-    PriceControlViewModel priceControlViewModel = new PriceControlViewModel();
-    public PriceControlViewModel PriceControlViewModel => priceControlViewModel;
     public ChartViewModel()
     {
 
@@ -39,6 +39,9 @@ public class ChartViewModel : ViewModelBase
         set { if (maxRange != value) { maxRange = value; RaisePropertyChanged(); } }
     }
     #endregion    #region THEME & INDICATORS
+
+    PriceControlViewModel priceControlViewModel = new PriceControlViewModel();
+    public PriceControlViewModel PriceControlViewModel => priceControlViewModel;
 
     public ObservableCollection<IndicatorChartViewModel> Indicators { get; } = new ObservableCollection<IndicatorChartViewModel>();
 
@@ -154,7 +157,6 @@ public class ChartViewModel : ViewModelBase
     private BarType type = BarType.Candle;
     public BarType BarType { get { return type; } set { if (type != value) { type = value; RaisePropertyChanged(); } } }
 
-
     private Brush mouseBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x80, 0x80, 0x80));
     public Brush MouseBrush { get { return mouseBrush; } set { if (mouseBrush != value) { mouseBrush = value; RaisePropertyChanged(); } } }
 
@@ -164,4 +166,6 @@ public class ChartViewModel : ViewModelBase
     private Brush textBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0XB0, 0xB0, 0xB0));
     public Brush TextBrush { get { return textBrush; } set { if (textBrush != value) { textBrush = value; RaisePropertyChanged(); } } }
 
+    private bool showOverview = true;
+    public bool ShowOverview { get => showOverview; set { if (showOverview != value) { showOverview = value; RaisePropertyChanged(); } } }
 }
