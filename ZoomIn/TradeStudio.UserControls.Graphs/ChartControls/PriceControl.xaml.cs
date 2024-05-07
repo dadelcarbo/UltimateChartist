@@ -262,6 +262,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         }
 
         #region Mouse Events
+        Point? drawingStartPoint;
+        Rectangle rect;
         private void mouseCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (drawingStartPoint != null)
