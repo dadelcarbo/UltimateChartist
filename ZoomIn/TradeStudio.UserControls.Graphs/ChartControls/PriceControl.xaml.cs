@@ -126,7 +126,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             //this.shapes.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
             this.shapes.AddRange(indicatorViewModel.Shapes);
             this.chartCanvas.Children.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
-            this.chartCanvas.Children.AddRange(indicatorViewModel.Shapes.SelectMany(s => s.Shapes));
+            this.chartCanvas.Children.AddRange(indicatorViewModel.Shapes);
             return;
 
             //int shapeIndex = 0;

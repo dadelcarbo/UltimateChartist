@@ -46,7 +46,7 @@ public partial class IndicatorConfigUserControl : UserControl
     {
         if (indicator == null)
             return;
-        this.DataContext = indicator;
+        // this.DataContext = indicator;
 
         // Parameters control
         parameterPanel.Children.Clear();
@@ -164,7 +164,7 @@ public partial class IndicatorConfigUserControl : UserControl
         var label = new Label() { Content = parameter.Parameter.Name, Width = 90, Margin = new Thickness(2) };
         var upDown = new CheckBox() { VerticalAlignment = VerticalAlignment.Center };
 
-        var binding = new Binding(parameter.PropertyName) { Mode = BindingMode.TwoWay };
+        var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay };
         upDown.SetBinding(CheckBox.IsCheckedProperty, binding);
 
         var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -187,7 +187,7 @@ public partial class IndicatorConfigUserControl : UserControl
             Height = 22
         };
 
-        var binding = new Binding(parameter.PropertyName) { Mode = BindingMode.TwoWay };
+        var binding = new Binding("Indicator." +  parameter.PropertyName) { Mode = BindingMode.TwoWay };
         upDown.SetBinding(RadNumericUpDown.ValueProperty, binding);
 
         var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
@@ -211,7 +211,7 @@ public partial class IndicatorConfigUserControl : UserControl
             Height = 22
         };
 
-        var binding = new Binding(parameter.PropertyName) { Mode = BindingMode.TwoWay, StringFormat = doubleParameter.Format };
+        var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay, StringFormat = doubleParameter.Format };
         upDown.SetBinding(RadNumericUpDown.ValueProperty, binding);
 
         var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };
