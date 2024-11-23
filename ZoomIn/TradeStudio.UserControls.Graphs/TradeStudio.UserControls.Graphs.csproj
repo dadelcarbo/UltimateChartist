@@ -1,14 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\TradeStudio\TradeStudio.Data\TradeStudio.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Telerik.UI.for.Wpf.70">
-      <Version>2024.1.423</Version>
-    </PackageReference>
+    <PackageReference Include="Telerik.UI.for.Wpf.80" Version="2024.4.1111" />
   </ItemGroup>
 </Project>

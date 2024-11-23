@@ -9,8 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
-using TradeStudio.Data.DataProviders;
-using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Label = Telerik.Windows.Controls.Label;
