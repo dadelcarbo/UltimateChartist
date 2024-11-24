@@ -149,10 +149,7 @@ public class ChartViewModel : ViewModelBase
     public Point MouseValue { get { return mouseValue; } set { if (mouseValue != value) { mouseValue = value; RaisePropertyChanged(); } } }
 
     private int mouseIndex;
-    public int MouseIndex { get { return mouseIndex; } set { if (mouseIndex != value) { mouseIndex = value; this.CurrentBar = serie?.Bars[mouseIndex]; RaisePropertyChanged(); } } }
-
-    private Bar currentBar;
-    public Bar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
+    public int MouseIndex { get { return mouseIndex; } set { if (mouseIndex != value) { mouseIndex = value; RaisePropertyChanged(); } } }
 
     private BarType type = BarType.Candle;
     public BarType BarType { get { return type; } set { if (type != value) { type = value; RaisePropertyChanged(); } } }

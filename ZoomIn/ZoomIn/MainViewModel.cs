@@ -57,6 +57,9 @@ namespace ZoomIn
             set { if (canvasMousePoint != value) { canvasMousePoint = value; RaisePropertyChanged(); } }
         }
 
+        private Bar currentBar;
+        public Bar CurrentBar { get { return currentBar; } set { if (currentBar != value) { currentBar = value; RaisePropertyChanged(); } } }
+
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -86,19 +89,7 @@ namespace ZoomIn
 
         public List<BarDuration> Durations => new() { BarDuration.Daily, BarDuration.Weekly, BarDuration.Monthly };
 
-        public BarDuration Duration
-        {
-            get => ChartViewModel == null ? BarDuration.Daily : ChartViewModel.Duration;
-            set { ChartViewModel.Duration = value; }
-        }
-
-        public List<BarType> BarTypes => new() { BarType.BarChart, BarType.Line, BarType.Candle };
-
-        public BarType BarType
-        {
-            get => ChartViewModel == null ? BarType.Candle : ChartViewModel.BarType;
-            set { ChartViewModel.BarType = value; }
-        }
+        public List<BarType> BarTypes => new() { BarType.Line, BarType.Candle, BarType.BarChart };
 
         private DelegateCommand graphSettingsCommand;
         public ICommand GraphSettingsCommand => graphSettingsCommand ??= new DelegateCommand(GraphSettings);

@@ -17,6 +17,14 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             this.IsHitTestVisible = false;
             this.SnapsToDevicePixels = false;
         }
+        public MouseCross(Brush brush)
+        {
+            Stroke = brush;
+            StrokeThickness = 1;
+            StrokeDashArray = new DoubleCollection() { 3, 2 };
+            this.IsHitTestVisible = false;
+            this.SnapsToDevicePixels = false;
+        }
         public void CreateGeometry(Point point, double width, double height, bool addHorizontal = true)
         {
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);

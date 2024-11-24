@@ -28,7 +28,6 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                     {
                         viewModel.PropertyChanged += ViewModel_PropertyChanged;
                     }
-                    this.DataContext = viewModel;
                 }
             }
         }

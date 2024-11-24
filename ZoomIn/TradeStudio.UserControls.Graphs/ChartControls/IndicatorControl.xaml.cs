@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 using TradeStudio.Common.Extensions;
+using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Label = Telerik.Windows.Controls.Label;
 
@@ -19,6 +20,19 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
     /// </summary>
     public partial class IndicatorControl : ChartControlBase
     {
+        IndicatorChartViewModel indicatorChartViewModel;
+        public IndicatorChartViewModel IndicatorChartViewModel
+        {
+            get { return indicatorChartViewModel; }
+            set
+            {
+                if (value == indicatorChartViewModel)
+                    return;
+                indicatorChartViewModel = value;
+                this.OnStockSerieChanged();
+            }
+        }
+
         public IndicatorControl()
         {
             InitializeComponent();
@@ -32,7 +46,15 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 return;
 
             this.shapes.Clear();
-            this.indicatorCanvas.Children.Clear();
+            this.chartCanvas.Children.Clear();
+
+            this.IndicatorChartViewModel.Indicator.GeometryChanged -= Ivm_GeometryChanged;
+
+            this.IndicatorChartViewModel.Indicator.SetDataSerie(viewModel.DataSerie);
+            this.shapes.AddRange(this.IndicatorChartViewModel.Indicator.Shapes);
+
+            this.IndicatorChartViewModel.Indicator.GeometryChanged += Ivm_GeometryChanged;
+
 
             var macd = closeSerie.CalculateMACD(12, 26);
             var macdCurve = new Shapes.Curve()
@@ -56,7 +78,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             fill.CreateGeometry(macd, signal);
             this.shapes.Add(fill);
 
-            this.indicatorCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
+            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
 
             lowSerie = new double[macd.Length];
             highSerie = new double[macd.Length];
@@ -88,12 +110,27 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             }
         }
 
+
+        private void Ivm_GeometryChanged(IndicatorViewModel indicatorViewModel)
+        {
+            foreach (var shape in indicatorViewModel.Shapes)
+            {
+                shape.ApplyTransform(chartToPixelTransform);
+            }
+            //this.shapes.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
+            this.shapes.AddRange(indicatorViewModel.Shapes);
+            this.chartCanvas.Children.RemoveAll(s => (s as Shape).Tag == indicatorViewModel);
+            this.chartCanvas.Children.AddRange(indicatorViewModel.Shapes);
+            return;
+        }
+
         private List<IChartShapeBase> shapes = new();
         private Transform chartToPixelTransform;
+
         protected override void OnResize()
         {
-            var canvasWidth = indicatorCanvas.ActualWidth;
-            var canvasHeight = indicatorCanvas.ActualHeight;
+            var canvasWidth = chartCanvas.ActualWidth;
+            var canvasHeight = chartCanvas.ActualHeight;
             if (canvasWidth == 0 || canvasHeight == 0)
                 return;
             if (viewModel == null)
@@ -103,6 +140,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 return;
             if (viewModel.DataSerie?.Bars == null)
                 return;
+
 
             double min = double.MaxValue;
             double max = double.MinValue;
@@ -135,7 +173,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 StrokeThickness = 1,
                 Data = new LineGeometry(new Point(0, 0), new Point(canvasWidth, 0), tg)
             };
-            zeroLine.SetBinding(Path.StrokeProperty, new Binding("GridBrush"));
+            zeroLine.SetBinding(Path.StrokeProperty, new Binding("ChartViewModel.GridBrush"));
 
             this.gridCanvas.Children.Add(zeroLine);
 
@@ -144,7 +182,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             tg.Children.Add(new TranslateTransform(-viewModel.ZoomRange.Start + 0.5, 0));
             tg.Children.Add(new ScaleTransform(canvasWidth / curveWidth, 1));
             var verticalGrid = new VerticalGrid() { StrokeThickness = 1 };
-            verticalGrid.SetBinding(Shape.StrokeProperty, new Binding("GridBrush"));
+            verticalGrid.SetBinding(Shape.StrokeProperty, new Binding("ChartViewModel.GridBrush"));
             verticalGrid.CreateGeometry(viewModel.DataSerie, viewModel.ZoomRange.Start, viewModel.ZoomRange.End, gridCanvas.RenderSize, TradeStudio.Data.DataProviders.BarDuration.Daily); // §§§§
             verticalGrid.ApplyTransform(tg);
             this.gridCanvas.Children.Add(verticalGrid);
@@ -154,7 +192,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         private void OnMouseIndexChanged()
         {
             mouseCanvas.Children.Clear();
-            var mouseCross = new MouseCross();
+            var mouseCross = new MouseCross(this.ViewModel.MouseBrush);
             mouseCross.CreateGeometry(new Point(viewModel.MousePos.X, 0), mouseCanvas.ActualWidth, mouseCanvas.ActualHeight, false);
             mouseCanvas.Children.Add(mouseCross);
         }
@@ -174,7 +212,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             this.viewModel.MouseValue = p2;
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
-            var mouseCross = new MouseCross();
+            var mouseCross = new MouseCross(this.ViewModel.MouseBrush);
             mouseCross.CreateGeometry(point, mouseCanvas.ActualWidth, mouseCanvas.ActualHeight);
             mouseCanvas.Children.Add(mouseCross);
 
@@ -186,7 +224,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 FontSize = 10,
                 Padding = new Thickness(1)
             };
-            label.SetBinding(Label.BorderBrushProperty, new Binding("GridBrush"));
+            label.SetBinding(Label.BorderBrushProperty, new Binding("ChartViewModel.GridBrush"));
 
 
             label.Measure(mouseCanvas.RenderSize);

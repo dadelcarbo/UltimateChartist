@@ -3,14 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:indicator="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls.Indicators"
              xmlns:chartcontrols="clr-namespace:TradeStudio.UserControls.Graphs.ChartControls" 
+             d:DataContext="{d:DesignInstance Type=chartcontrols:IndicatorChartViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Canvas Name="gridCanvas" ClipToBounds="True"/>
-        <Canvas Name="indicatorCanvas" ClipToBounds="True"/>
+        <Canvas Name="chartCanvas" ClipToBounds="True"/>
         <Canvas Name="mouseCanvas" ClipToBounds="False" Background="Transparent" 
                 MouseMove="mouseCanvas_MouseMove" MouseLeave="mouseCanvas_MouseLeave" 
                 MouseDown="mouseCanvas_MouseDown" MouseUp="mouseCanvas_MouseUp"/>
+
+        <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+            <TextBlock Text="{Binding Indicator.DisplayName}" FontSize="11"/>
+            <telerik:RadDropDownButton VerticalAlignment="Top" Margin="2,3,0,0" Background="Transparent" Padding="1"
+                                BorderBrush="Transparent" DropDownIndicatorVisibility="Collapsed" DataContext="{Binding Indicator}" 
+                                Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="10">
+                <telerik:RadDropDownButton.DropDownContent>
+                    <indicator:IndicatorConfigUserControl Indicator="{Binding Indicator}">
+                    </indicator:IndicatorConfigUserControl>
+                </telerik:RadDropDownButton.DropDownContent>
+            </telerik:RadDropDownButton>
+            <Button VerticalAlignment="Top" Margin="0,4,0,0" Background="Transparent" BorderBrush="Transparent" Padding="0"
+                                Command="{Binding DataContext.PriceControlViewModel.DeleteIndicatorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type chartcontrols:PriceControl}}}" CommandParameter="{Binding}"
+                                Content="{StaticResource GlyphClose}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="10"/>
+        </StackPanel>
+
     </Grid>
 </chartcontrols:ChartControlBase>

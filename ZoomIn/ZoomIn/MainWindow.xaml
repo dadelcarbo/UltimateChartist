@@ -29,8 +29,8 @@
                                                      ItemsSource="{Binding Instruments}" DisplayMemberPath="Name"/>
                             <telerik:Label HorizontalAlignment="Left">Duration:</telerik:Label>
                             <StackPanel Orientation="Horizontal">
-                                <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
-                                                     ItemsSource="{Binding Durations}" SelectedItem="{Binding Duration}"/>
+                                <telerik:RadComboBox x:Name="DurationComboBox" Width="120" HorizontalAlignment="Left" Margin="1"
+                                                     ItemsSource="{Binding Durations}"  SelectedIndex="0"/>
                                 <Button Name="indicatorSettings" BorderThickness="1" Width="22" Height="22" Command="{Binding GraphSettingsCommand}" Margin="1"
                                 Content="{StaticResource GlyphGear}" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14"/>
                                 <telerik:RadDropDownButton DropDownIndicatorVisibility="Collapsed" Content="&#xea0d;" FontFamily="{x:Static telerik:RadGlyph.TelerikFontFamily}" FontSize="14" >
@@ -54,8 +54,8 @@
                                     </telerik:RadDropDownButton.DropDownContent>
                                 </telerik:RadDropDownButton>
                             </StackPanel>
-                            <telerik:RadComboBox Width="120" HorizontalAlignment="Left" Margin="1"
-                                                     ItemsSource="{Binding BarTypes}" SelectedItem="{Binding BarType}"/>
+                            <telerik:RadComboBox x:Name="BarTypeComboBox" Width="120" HorizontalAlignment="Left" Margin="1"
+                                                     ItemsSource="{Binding BarTypes}" SelectedIndex="0"/>
                             <telerik:GroupBox Header="Zooming">
                                 <StackPanel >
                                     <TextBlock Grid.Column="0" Text="{Binding ChartViewModel.ZoomRange.Start, StringFormat='StartIndex: {0:0}'}"/>
@@ -85,21 +85,23 @@
                             </telerik:GroupBox>
                             <telerik:GroupBox Header="Current Bar">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
-                                    <TextBlock Text="{Binding ChartViewModel.CurrentBar.Exchanged, StringFormat='Exchanged: {0:0}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Date , StringFormat='Date:     {0:dd/MM/yyyy HH:mm:ss}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Open , StringFormat='Open:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.High , StringFormat='High:    {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Low  , StringFormat='Low:     {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Close, StringFormat='Close:   {0:0.####}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Volume, StringFormat='Volume: {0:0}'}"/>
+                                    <TextBlock Text="{Binding CurrentBar.Exchanged, StringFormat='Exchanged: {0:0}'}"/>
                                 </StackPanel>
                             </telerik:GroupBox>
                         </StackPanel>
                     </Border>
                     <Border Name="contentBorder" Grid.Row="0" Grid.Column="1" BorderThickness="1">
-                        <chartcontrols:TradeChartControl x:Name="TradeChartControl"
+                        <chartcontrols:TradeChartControl x:Name="tradeChartControl"
                                                          Instrument="{Binding SelectedItem, ElementName=InstrumentComboBox}"
-                                                         Duration="{Binding Duration, Mode=TwoWay}"
+                                                         Duration="{Binding SelectedItem, ElementName=DurationComboBox}"
+                                                         BarType="{Binding SelectedItem, ElementName=BarTypeComboBox}"
+                                                         CurrentBarChanged="TradeChartControl_CurrentBarChanged"
                                                          />
                     </Border>
                 </Grid>

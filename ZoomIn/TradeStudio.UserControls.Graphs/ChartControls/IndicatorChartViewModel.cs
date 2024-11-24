@@ -1,9 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Telerik.Windows.Controls;
-using TradeStudio.Data.DataProviders;
 using TradeStudio.Data.Indicators;
-using TradeStudio.Data.Indicators.Theme;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 
 namespace TradeStudio.UserControls.Graphs.ChartControls;

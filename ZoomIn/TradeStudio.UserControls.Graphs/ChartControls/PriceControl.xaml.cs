@@ -17,9 +17,9 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 {
     public enum BarType
     {
+        Line,
         Candle,
-        BarChart,
-        Line
+        BarChart
     }
     /// <summary>
     /// Interaction logic for PriceControl.xaml
@@ -159,7 +159,7 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
         {
             switch (e.PropertyName)
             {
-                case "MousePos":
+                case "MouseIndex":
                     this.OnMouseIndexChanged();
                     break;
                 default:
@@ -286,8 +286,8 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
                 return;
             }
             var p2 = this.chartToPixelTransform.Inverse.Transform(point);
-            this.viewModel.MousePos = point;
-            this.viewModel.MouseValue = p2;
+            //this.viewModel.MousePos = point;
+            //this.viewModel.MouseValue = p2;
             this.viewModel.MouseIndex = Math.Min(Math.Max(0, (int)Math.Round(p2.X)), this.viewModel.MaxIndex);
 
             var mouseCross = new MouseCross();

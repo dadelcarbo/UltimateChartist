@@ -16,8 +16,15 @@ namespace ZoomIn
             this.DataContext = MainViewModel.Instance;
             InitializeComponent();
 
-            MainViewModel.Instance.ChartViewModel = this.TradeChartControl.ViewModel;
             InstrumentComboBox.SelectedIndex = 0;
+
+
+            MainViewModel.Instance.ChartViewModel = tradeChartControl.ViewModel;
+        }
+
+        private void TradeChartControl_CurrentBarChanged(object sender, Bar bar)
+        {
+            MainViewModel.Instance.CurrentBar = bar;
         }
     }
 }
