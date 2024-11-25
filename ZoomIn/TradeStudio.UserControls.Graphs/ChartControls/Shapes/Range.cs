@@ -56,7 +56,5 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Shapes
             }
             geometry = geometryGroup;
         }
-
     }
-
 }

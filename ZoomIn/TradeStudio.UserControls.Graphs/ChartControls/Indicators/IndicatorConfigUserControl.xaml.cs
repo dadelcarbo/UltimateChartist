@@ -19,8 +19,6 @@ namespace TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 /// </summary>
 public partial class IndicatorConfigUserControl : UserControl
 {
-
-
     public IIndicator Indicator
     {
         get { return (IIndicator)GetValue(IndicatorProperty); }
@@ -46,7 +44,6 @@ public partial class IndicatorConfigUserControl : UserControl
     {
         if (indicator == null)
             return;
-        // this.DataContext = indicator;
 
         // Parameters control
         parameterPanel.Children.Clear();
@@ -187,7 +184,7 @@ public partial class IndicatorConfigUserControl : UserControl
             Height = 22
         };
 
-        var binding = new Binding("Indicator." +  parameter.PropertyName) { Mode = BindingMode.TwoWay };
+        var binding = new Binding("Indicator." + parameter.PropertyName) { Mode = BindingMode.TwoWay };
         upDown.SetBinding(RadNumericUpDown.ValueProperty, binding);
 
         var stackPanel = new StackPanel() { Orientation = Orientation.Horizontal };

@@ -95,7 +95,7 @@ public class IndicatorViewModel : ViewModelBase
                         binding = new Binding($"Series.Signal.Thickness");
                         lineSeries.SetBinding(Shape.StrokeThicknessProperty, binding);
 
-                        lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineValues).Values);
+                        lineSeries.CreateGeometry((indicator.Series.Values as IndicatorLineSignalValues).Signal);
 
                         Shapes.Add(lineSeries);
 

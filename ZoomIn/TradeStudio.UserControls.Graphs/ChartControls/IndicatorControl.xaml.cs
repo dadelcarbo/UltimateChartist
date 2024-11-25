@@ -8,7 +8,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using TradeStudio.Common.Extensions;
+using TradeStudio.Data.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Indicators;
 using TradeStudio.UserControls.Graphs.ChartControls.Shapes;
 using Label = Telerik.Windows.Controls.Label;
@@ -55,46 +57,54 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
 
             this.IndicatorChartViewModel.Indicator.GeometryChanged += Ivm_GeometryChanged;
 
+            this.chartCanvas.Children.AddRange(shapes);
 
-            var macd = closeSerie.CalculateMACD(12, 26);
-            var macdCurve = new Shapes.Curve()
+            //var macd = closeSerie.CalculateMACD(12, 26);
+            //var macdCurve = new Shapes.Curve()
+            //{
+            //    Stroke = Brushes.DarkGreen,
+            //    StrokeThickness = 1
+            //};
+            //macdCurve.CreateGeometry(macd);
+            //this.shapes.Add(macdCurve);
+
+            //var signal = macd.CalculateEMA(9);
+            //var signalCurve = new Shapes.Curve()
+            //{
+            //    Stroke = Brushes.DarkRed,
+            //    StrokeThickness = 1
+            //};
+            //signalCurve.CreateGeometry(signal);
+            //this.shapes.Add(signalCurve);
+
+            //var fill = new Shapes.Fill();
+            //fill.CreateGeometry(macd, signal);
+            //this.shapes.Add(fill);
+
+            //this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
+
+            //lowSerie = new double[macd.Length];
+            //highSerie = new double[macd.Length];
+            //for (int i = 0; i < macd.Length; i++)
+            //{
+            //    if (macd[i] < signal[i])
+            //    {
+            //        lowSerie[i] = macd[i];
+            //        highSerie[i] = signal[i];
+            //    }
+            //    else
+            //    {
+            //        lowSerie[i] = signal[i];
+            //        highSerie[i] = macd[i];
+            //    }
+            //}
+
+            if (this.indicatorChartViewModel.Indicator.Indicator.DisplayType == DisplayType.NonRanged)
             {
-                Stroke = Brushes.DarkGreen,
-                StrokeThickness = 1
-            };
-            macdCurve.CreateGeometry(macd);
-            this.shapes.Add(macdCurve);
-
-            var signal = macd.CalculateEMA(9);
-            var signalCurve = new Shapes.Curve()
-            {
-                Stroke = Brushes.DarkRed,
-                StrokeThickness = 1
-            };
-            signalCurve.CreateGeometry(signal);
-            this.shapes.Add(signalCurve);
-
-            var fill = new Shapes.Fill();
-            fill.CreateGeometry(macd, signal);
-            this.shapes.Add(fill);
-
-            this.chartCanvas.Children.AddRange(shapes.SelectMany(s => s.Shapes));
-
-            lowSerie = new double[macd.Length];
-            highSerie = new double[macd.Length];
-            for (int i = 0; i < macd.Length; i++)
-            {
-                if (macd[i] < signal[i])
-                {
-                    lowSerie[i] = macd[i];
-                    highSerie[i] = signal[i];
-                }
-                else
-                {
-                    lowSerie[i] = signal[i];
-                    highSerie[i] = macd[i];
-                }
+                lowSerie = this.IndicatorChartViewModel.Indicator.Indicator.Series.Values.GetLow();
+                highSerie = this.IndicatorChartViewModel.Indicator.Indicator.Series.Values.GetHigh();
             }
+
             this.OnResize();
         }
 
@@ -141,14 +151,28 @@ namespace TradeStudio.UserControls.Graphs.ChartControls
             if (viewModel.DataSerie?.Bars == null)
                 return;
 
-
             double min = double.MaxValue;
             double max = double.MinValue;
-            for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
+            switch (this.indicatorChartViewModel.Indicator.Indicator.DisplayType)
             {
-                min = Math.Min(lowSerie[i], min);
-                max = Math.Max(highSerie[i], max);
+                case DisplayType.Ranged:
+                    var rangedIndicator = this.indicatorChartViewModel.Indicator.Indicator as IRangedIndicator;
+                    min = rangedIndicator.Minimum;
+                    max = rangedIndicator.Maximum;
+                    break;
+                case DisplayType.NonRanged:
+
+                    for (int i = viewModel.ZoomRange.Start; i <= viewModel.ZoomRange.End; i++)
+                    {
+                        min = Math.Min(lowSerie[i], min);
+                        max = Math.Max(highSerie[i], max);
+                    }
+
+                    break;
+                default:
+                    throw new NotSupportedException($"Indicator display type '{this.indicatorChartViewModel.Indicator.Indicator.DisplayType}'");
             }
+
             //min *= 0.98;
             //max *= 1.02;
             var curveHeight = max - min;
